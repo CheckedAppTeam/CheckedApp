@@ -24,3 +24,4 @@ app.MapRazorPages();
 
 app.Run();
 
+//adding myself to contributors ~michau
