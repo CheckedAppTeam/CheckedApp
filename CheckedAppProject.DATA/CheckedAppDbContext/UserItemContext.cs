@@ -29,7 +29,7 @@ namespace CheckedAppProject.DATA.CheckedAppDbContext
                 });
             modelBuilder.Entity<ItemListTable>(eb =>
             {
-                eb.Property(il => il.Date).HasDefaultValueSql("getutcdate()");
+                eb.Property(il => il.Date).HasDefaultValueSql("CURRENT_TIMESTAMP");
             });
         }
     }
