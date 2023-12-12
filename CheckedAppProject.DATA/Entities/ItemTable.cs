@@ -6,6 +6,7 @@ namespace CheckedAppProject.DATA.Entities
         public int ItemTableId { get; set; }
         public string ItemName { get; set; }
         public string? ItemCompany { get; set; }
+        public List<ItemListTable> ItemListTables { get; set; }
 
     }
 }

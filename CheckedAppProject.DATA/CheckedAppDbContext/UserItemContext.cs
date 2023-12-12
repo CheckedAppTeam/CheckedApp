@@ -30,7 +30,23 @@ namespace CheckedAppProject.DATA.CheckedAppDbContext
             modelBuilder.Entity<ItemListTable>(eb =>
             {
                 eb.Property(il => il.Date).HasDefaultValueSql("CURRENT_TIMESTAMP");
+                eb.HasMany(x => x.ItemTables)
+                .WithMany(i => i.ItemListTables)
+                .UsingEntity<UserItemTable>(
+                    x => x.HasOne(uit => uit.ItemTable)
+                    .WithMany()
+                    .HasForeignKey(uit => uit.ItemTableId),
+
+                    x => x.HasOne(uit => uit.ItemListTable)
+                    .WithMany()
+                    .HasForeignKey(uit => uit.ItemListTableId),
+
+                    uit =>
+                    {
+                        uit.HasKey(uit => new { uit.ItemListTableId, uit.ItemTableId });
+                    });
             });
+            
         }
     }
 }

@@ -3,10 +3,10 @@ namespace CheckedAppProject.DATA.Entities
 {
     public class UserItemTable
     {
-        public int UserItemTableId { get; set; }
-
+        public ItemListTable ItemListTable { get; set; }
         public int ItemListTableId { get; set; }
-        public int ItemsTableId { get; set; }
+        public ItemTable ItemTable { get; set; }
+        public int ItemTableId { get; set; }
         public string ItemState { get; set; }
     }
 }
