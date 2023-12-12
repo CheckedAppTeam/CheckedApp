@@ -1,9 +1,9 @@
 ﻿
 using System.Diagnostics.Contracts;
 
-namespace CheckedAppProject.DATA.DataBaseConnector
+namespace CheckedAppProject.DATA.DbServices.Repository
 {
-    public class DataBaseUserConnector
+    public class UserRepository
     {
         public List<User> UserList { get; set; }
 
