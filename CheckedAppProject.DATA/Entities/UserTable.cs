@@ -1,9 +1,9 @@
 ﻿
 namespace CheckedAppProject.DATA.Entities
 {
-    public class Users
+    public class UserTable
     {
-        public int UserId { get; set; } 
+        public int UserTableId { get; set; } 
         public string UserName { get; set; }
         public string UserSurname { get; set; }
         public string UserEmail { get; set; }
@@ -11,5 +11,6 @@ namespace CheckedAppProject.DATA.Entities
         public int UserAge { get; set; }
         public string UserSex { get; set; }
         public bool UserLogged { get; set; }
+        public List<ItemListTable> ItemListTable { get; set; } = new List<ItemListTable>();
     }
 }
