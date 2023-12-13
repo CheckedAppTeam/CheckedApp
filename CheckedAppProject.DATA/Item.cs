@@ -5,6 +5,6 @@ namespace CheckedAppProject.DATA
     {
         public string ItemName { get; set; }
         public string CompanyName { get; set; }
-        public int ItemI {  get; set; }
+        public int ItemID {  get; set; }
     }
 }

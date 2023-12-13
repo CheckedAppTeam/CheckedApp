@@ -22,6 +22,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\CheckedAppProject.DATA\CheckedAppProject.DATA.csproj" />
+    <ProjectReference Include="..\CheckedAppProject.LOGIC\CheckedAppProject.LOGIC.csproj" />
   </ItemGroup>
 
 </Project>
