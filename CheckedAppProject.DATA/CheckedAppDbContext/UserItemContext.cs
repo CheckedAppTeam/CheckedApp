@@ -1,6 +1,5 @@
 ﻿using CheckedAppProject.DATA.Entities;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
 
 namespace CheckedAppProject.DATA.CheckedAppDbContext
 

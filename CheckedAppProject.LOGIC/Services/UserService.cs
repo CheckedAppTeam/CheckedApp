@@ -1,31 +1,26 @@
 ﻿using CheckedAppProject.LOGIC.DTOs;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace CheckedAppProject.LOGIC.Services
 {
-    public class UserService
+    public class UserService : IUserService
     {
-        private bool AuthenticateUser(string Email, string? Pasword)
+        public bool AuthenticateUser(string Email, string? Pasword)
         {
             return true;
         }
-        private void CreateUser(UserInputData data) { }
+        public void CreateUser(UserInputData data) { }
 
-        private UserDataDTO GetLoggedUserData(string Email,string Password)
+        public UserDataDTO GetLoggedUserData(string Email, string Password)
         {
             return new UserDataDTO();
         }
-        private void EditUserData(int UserId)
+        public void EditUserData(int UserId)
         {
 
         }
-        private void LogOutUser() { }
-        private void LogInUser() { }
-        private bool CheckIfUserIsLogged() 
+        public void LogOutUser() { }
+        public void LogInUser() { }
+        public bool CheckIfUserIsLogged()
         {
             return true;
         }

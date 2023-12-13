@@ -8,6 +8,6 @@ namespace CheckedAppProject.LOGIC.DTOs
 {
     public class AllUsersReadDTO
     {
-        public List<string>  UsernameList { get; set; }
+        public List<string>  UserNameList { get; set; }
     }
 }
