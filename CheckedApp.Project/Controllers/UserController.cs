@@ -2,6 +2,7 @@
 using CheckedAppProject.DATA.CheckedAppDbContext;
 using CheckedAppProject.LOGIC.DTOs;
 using CheckedAppProject.LOGIC.Services;
+
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -27,6 +28,7 @@ namespace CheckedAppProject.API.Controllers
 
             if (userData == null)
                 return NotFound();
+            
 
             return Ok(userData);
         }
