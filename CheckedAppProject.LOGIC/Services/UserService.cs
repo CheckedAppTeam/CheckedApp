@@ -2,6 +2,7 @@
 using AutoMapper.QueryableExtensions;
 using CheckedAppProject.DATA;
 using CheckedAppProject.DATA.CheckedAppDbContext;
+using CheckedAppProject.DATA.Entities;
 using CheckedAppProject.LOGIC.DTOs;
 using Microsoft.EntityFrameworkCore;
 using System.Net;
@@ -28,6 +29,14 @@ namespace CheckedAppProject.LOGIC.Services
                 .FirstOrDefaultAsync();
 
             return userDto;
+        }
+
+        public async Task AddUserAsync(AddUserDTO dto)
+        {
+            var user = _mapper.Map<UserTable>(dto);
+            _userItemContext.Users.Add(user);
+            await _userItemContext.SaveChangesAsync();
+
         }
     }
 }

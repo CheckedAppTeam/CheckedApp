@@ -13,6 +13,8 @@ namespace CheckedAppProject.LOGIC.AutoMapperProfiles
             CreateMap<UserTable, UserDataDTO>()
                 .ForMember(dest => dest.OwnItemList, opt => opt.MapFrom(src => src.ItemListTable))
                 .ForMember(dest => dest.UserId, opt => opt.MapFrom(src => src.UserTableId));
+
+            CreateMap<AddUserDTO, UserTable>();
         }
     }
 }

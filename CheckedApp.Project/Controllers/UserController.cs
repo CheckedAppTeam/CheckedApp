@@ -23,6 +23,10 @@ namespace CheckedAppProject.API.Controllers
     [HttpGet("GetUserData/{id}")]
         public async Task<IActionResult> GetUserData([FromRoute] int id)
         {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
             var userData = await _userService.GetUserDataDtoAsync(id);
 
             if (userData == null)
@@ -30,6 +34,21 @@ namespace CheckedAppProject.API.Controllers
 
             return Ok(userData);
         }
+
+    [HttpPost("AddUser")]
+
+        public async Task<IActionResult> AddUserToDb(AddUserDTO dto)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+            await _userService.AddUserAsync(dto);
+            var successResponse = new { Message = "User created successfully" };
+
+            return Ok(successResponse);
+        }
+
 
 
         //public void AddUser(UserDataDTO user) { }
