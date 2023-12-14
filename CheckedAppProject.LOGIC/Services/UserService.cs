@@ -1,8 +1,11 @@
 ﻿using AutoMapper;
 using AutoMapper.QueryableExtensions;
+using CheckedAppProject.DATA;
 using CheckedAppProject.DATA.CheckedAppDbContext;
 using CheckedAppProject.LOGIC.DTOs;
 using Microsoft.EntityFrameworkCore;
+using System.Net;
+using System.Web.Http;
 
 namespace CheckedAppProject.LOGIC.Services
 {
@@ -18,14 +21,13 @@ namespace CheckedAppProject.LOGIC.Services
         }
         public async Task<UserDataDTO> GetUserDataDtoAsync(int userId)
         {
-            var userDtos = await _userItemContext.Users
+            var userDto = await _userItemContext.Users
                 .Where(u => u.UserTableId == userId)
+                .Include(e => e.ItemListTable)
                 .ProjectTo<UserDataDTO>(_mapper.ConfigurationProvider)
                 .FirstOrDefaultAsync();
-         
-            if (userDtos == null) return null;// dodac wyjątek że nie ma uzytkownika
 
-            return userDtos;
+            return userDto;
         }
     }
 }

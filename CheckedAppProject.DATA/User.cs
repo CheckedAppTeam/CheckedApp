@@ -11,7 +11,6 @@ namespace CheckedAppProject.DATA
         public string Password { get; set; }
         public int UserAge { get; set; }
         public enum UserSex { }
-        public string UserCountry { get; set; }
         public bool UserLogged { get; set; }
 
     }

@@ -6,7 +6,7 @@ namespace CheckedAppProject.LOGIC.DTOs
     public class UserDataDTO
     {
         public int UserId { get; set; }
-        public List<ItemList> OwnItemList { get; set; } // pytanie o mapowanie listy?
+        public List<ItemListDTO> OwnItemList { get; set; }
         [Required]
         [MaxLength(30)]
         public string UserName { get; set; }
@@ -14,7 +14,6 @@ namespace CheckedAppProject.LOGIC.DTOs
         [Required]
         [Range(0, 100)] 
         public int UserAge { get; set; }
-        public string UserCountry { get; set; }
         public string UserSex { get; set; }
     }
 }

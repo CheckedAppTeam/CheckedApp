@@ -26,7 +26,7 @@ namespace CheckedAppProject.API.Controllers
             var userData = await _userService.GetUserDataDtoAsync(id);
 
             if (userData == null)
-                return NotFound();
+                return NotFound(new { ErrorCode = 404, Message = "User with this ID not found" });
 
             return Ok(userData);
         }
