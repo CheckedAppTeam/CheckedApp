@@ -1,28 +1,38 @@
-﻿using CheckedAppProject.LOGIC.DTOs;
+﻿using AutoMapper;
+using AutoMapper.QueryableExtensions;
+using CheckedAppProject.DATA.CheckedAppDbContext;
+using CheckedAppProject.LOGIC.DTOs;
+using Microsoft.EntityFrameworkCore;
 
 namespace CheckedAppProject.LOGIC.Services
 {
     public class UserService : IUserService
     {
-        public bool AuthenticateUser(string Email, string? Pasword)
-        {
-            return true;
-        }
-        public void CreateUser(UserInputData data) { }
+        private readonly UserItemContext _userItemContext;
+        private readonly IMapper _mapper;
 
-        public UserDataDTO GetLoggedUserData(string Email, string Password)
+        public UserService(UserItemContext userItemContext, IMapper mapper)
         {
-            return new UserDataDTO();
+            _userItemContext = userItemContext;
+            _mapper = mapper;
         }
-        public void EditUserData(int UserId)
+        public async Task<UserDataDTO> GetUserDataDtoAsync(int userId)
         {
 
-        }
-        public void LogOutUser() { }
-        public void LogInUser() { }
-        public bool CheckIfUserIsLogged()
-        {
-            return true;
+            var userDtos = await _userItemContext.Users
+                .Where(u => u.UserTableId == userId)
+                .ProjectTo<UserDataDTO>(_mapper.ConfigurationProvider)
+                .FirstOrDefaultAsync();
+            //var userDtos = _userItemContext
+            //    .Users
+            //    //.Include(u => u.OwnItemList)
+            //    .FirstOrDefaultAsync(u => u.UserTableId == userId);
+
+            if (userDtos == null) return null;
+
+            //var result = _mapper.Map<UserDataDTO>(userDtos);
+
+            return userDtos;
         }
     }
 }
