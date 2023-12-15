@@ -1,23 +1,25 @@
-﻿using CheckedAppProject.DATA;
+﻿
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 
 namespace CheckedAppProject.LOGIC.DTOs
 {
-    public class UserDataDTO
+    public class AddUserDTO
     {
-        [Required]
-        public int UserId { get; set; }
-        public List<ItemListDTO> OwnItemList { get; set; }
         [Required]
         [MaxLength(30)]
         public string UserName { get; set; }
         [Required]
-        [MaxLength(30)]
+        [MaxLength(40)]
         public string UserSurname { get; set; }
         [Required]
-        [Range(0, 100)] 
+        [EmailAddress]
+        public string UserEmail { get; set; }
+        [Required]
+        [PasswordPropertyText]
+        public string Password { get; set; }
+        [Range(0, 100)]
         public int UserAge { get; set; }
-        [MaxLength(30)]
-        public string UserSex { get; set; }
+        public enum UserSex { }
     }
 }

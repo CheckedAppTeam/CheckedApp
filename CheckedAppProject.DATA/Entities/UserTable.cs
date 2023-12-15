@@ -1,8 +1,13 @@
 ﻿
+using System.ComponentModel.DataAnnotations.Schema;
+using System.ComponentModel.DataAnnotations;
+
 namespace CheckedAppProject.DATA.Entities
 {
     public class UserTable
     {
+        //[Key]
+        //[DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int UserTableId { get; set; } 
         public string UserName { get; set; }
         public string UserSurname { get; set; }

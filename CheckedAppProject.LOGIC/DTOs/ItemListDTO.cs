@@ -3,12 +3,12 @@
 
 namespace CheckedAppProject.LOGIC.DTOs
 {
-    public class ItemListByTravelDestinationDTO
+    public class ItemListDTO
     {
+        public int ItemListId { get; set; }
         public string ListName { get; set; }
-        public List<UserItem> Items { get; set; }
         public string TravelDestination { get; set; }
-        public string MonthName {  get; set; }
-        private bool IsPublic { get; set; }
+        public DateTime TravelDate {  get; set; }
+        public bool IsPublic { get; set; }
     }
 }
