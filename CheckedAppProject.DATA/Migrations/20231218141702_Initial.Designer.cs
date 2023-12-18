@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace CheckedAppProject.DATA.Migrations
 {
     [DbContext(typeof(UserItemContext))]
-    [Migration("20231218133055_RefactorEntities")]
-    partial class RefactorEntities
+    [Migration("20231218141702_Initial")]
+    partial class Initial
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -103,8 +103,8 @@ namespace CheckedAppProject.DATA.Migrations
                         .HasMaxLength(200)
                         .HasColumnType("character varying(200)");
 
-                    b.Property<int>("UserSex")
-                        .HasColumnType("integer");
+                    b.Property<string>("UserSex")
+                        .HasColumnType("text");
 
                     b.Property<string>("UserSurname")
                         .IsRequired()

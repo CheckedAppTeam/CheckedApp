@@ -7,7 +7,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace CheckedAppProject.DATA.Migrations
 {
     /// <inheritdoc />
-    public partial class FirstMigration : Migration
+    public partial class Initial : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -16,36 +16,21 @@ namespace CheckedAppProject.DATA.Migrations
                 name: "Items",
                 columns: table => new
                 {
-                    ItemTableId = table.Column<int>(type: "integer", nullable: false)
+                    ItemId = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     ItemName = table.Column<string>(type: "text", nullable: true),
                     ItemCompany = table.Column<string>(type: "text", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Items", x => x.ItemTableId);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "UserItems",
-                columns: table => new
-                {
-                    UserItemTableId = table.Column<int>(type: "integer", nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    ItemListTableId = table.Column<int>(type: "integer", nullable: false),
-                    ItemsTableId = table.Column<int>(type: "integer", nullable: false),
-                    ItemState = table.Column<string>(type: "text", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_UserItems", x => x.UserItemTableId);
+                    table.PrimaryKey("PK_Items", x => x.ItemId);
                 });
 
             migrationBuilder.CreateTable(
                 name: "Users",
                 columns: table => new
                 {
-                    UserTableId = table.Column<int>(type: "integer", nullable: false)
+                    UserId = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     UserName = table.Column<string>(type: "character varying(200)", maxLength: 200, nullable: false),
                     UserSurname = table.Column<string>(type: "character varying(200)", maxLength: 200, nullable: false),
@@ -57,49 +42,79 @@ namespace CheckedAppProject.DATA.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Users", x => x.UserTableId);
+                    table.PrimaryKey("PK_Users", x => x.UserId);
                 });
 
             migrationBuilder.CreateTable(
                 name: "ItemLists",
                 columns: table => new
                 {
-                    ItemListTableId = table.Column<int>(type: "integer", nullable: false)
+                    ItemListId = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     ItemListName = table.Column<string>(type: "text", nullable: true),
                     Date = table.Column<DateTime>(type: "timestamp with time zone", nullable: true, defaultValueSql: "CURRENT_TIMESTAMP"),
                     ItemListPublic = table.Column<bool>(type: "boolean", nullable: false),
                     ItemListDestination = table.Column<string>(type: "text", nullable: true),
-                    UserTableId = table.Column<int>(type: "integer", nullable: false)
+                    UserId = table.Column<int>(type: "integer", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_ItemLists", x => x.ItemListTableId);
+                    table.PrimaryKey("PK_ItemLists", x => x.ItemListId);
                     table.ForeignKey(
-                        name: "FK_ItemLists_Users_UserTableId",
-                        column: x => x.UserTableId,
+                        name: "FK_ItemLists_Users_UserId",
+                        column: x => x.UserId,
                         principalTable: "Users",
-                        principalColumn: "UserTableId",
+                        principalColumn: "UserId",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "UserItems",
+                columns: table => new
+                {
+                    ItemListId = table.Column<int>(type: "integer", nullable: false),
+                    ItemId = table.Column<int>(type: "integer", nullable: false),
+                    ItemState = table.Column<string>(type: "text", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_UserItems", x => new { x.ItemListId, x.ItemId });
+                    table.ForeignKey(
+                        name: "FK_UserItems_ItemLists_ItemListId",
+                        column: x => x.ItemListId,
+                        principalTable: "ItemLists",
+                        principalColumn: "ItemListId",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_UserItems_Items_ItemId",
+                        column: x => x.ItemId,
+                        principalTable: "Items",
+                        principalColumn: "ItemId",
                         onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_ItemLists_UserTableId",
+                name: "IX_ItemLists_UserId",
                 table: "ItemLists",
-                column: "UserTableId");
+                column: "UserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_UserItems_ItemId",
+                table: "UserItems",
+                column: "ItemId");
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
+                name: "UserItems");
+
+            migrationBuilder.DropTable(
                 name: "ItemLists");
 
             migrationBuilder.DropTable(
                 name: "Items");
-
-            migrationBuilder.DropTable(
-                name: "UserItems");
 
             migrationBuilder.DropTable(
                 name: "Users");
