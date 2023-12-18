@@ -1,4 +1,6 @@
-﻿namespace CheckedAppProject.DATA.DbServices.Repository
+﻿using CheckedAppProject.DATA.Entities;
+
+namespace CheckedAppProject.DATA.DbServices.Repository
 {
     public class ItemListRepository
     {

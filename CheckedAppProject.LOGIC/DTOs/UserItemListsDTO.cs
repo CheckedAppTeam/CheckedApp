@@ -1,5 +1,4 @@
-﻿using CheckedAppProject.DATA;
-
+﻿using CheckedAppProject.DATA.Entities;
 
 namespace CheckedAppProject.LOGIC.DTOs
 {
