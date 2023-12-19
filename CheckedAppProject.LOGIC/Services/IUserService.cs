@@ -6,5 +6,7 @@ namespace CheckedAppProject.LOGIC.Services
     {
         Task AddUserAsync(AddUserDTO dto);
         Task<UserDataDTO> GetUserDataDtoAsync(int userId);
+        Task<IEnumerable<UserDataDTO>> GetAllUsersDataDtoAsync();
+        Task<bool> DeleteUserDataDtoAsync(int userId);
     }
 }

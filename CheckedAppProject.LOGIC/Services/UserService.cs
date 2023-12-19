@@ -4,7 +4,7 @@ using CheckedAppProject.DATA.CheckedAppDbContext;
 using CheckedAppProject.DATA.Entities;
 using CheckedAppProject.LOGIC.DTOs;
 using Microsoft.EntityFrameworkCore;
-
+using System.Reflection.Metadata.Ecma335;
 
 namespace CheckedAppProject.LOGIC.Services
 {
@@ -28,6 +28,17 @@ namespace CheckedAppProject.LOGIC.Services
 
             return userDto;
         }
+        public async Task<IEnumerable<UserDataDTO>> GetAllUsersDataDtoAsync()
+        {
+            var users = await _userItemContext
+                .Users
+                .Include(e => e.ItemList)
+                .ToListAsync();
+
+            var usersDtos = _mapper.Map<List<UserDataDTO>>(users);
+
+            return usersDtos;
+        }
 
         public async Task AddUserAsync(AddUserDTO dto)
         {
@@ -35,6 +46,18 @@ namespace CheckedAppProject.LOGIC.Services
             _userItemContext.Users.Add(user);
             await _userItemContext.SaveChangesAsync();
 
+        }
+
+        public async Task<bool> DeleteUserDataDtoAsync(int userId)
+        {
+            var user = await _userItemContext.Users
+                .Where(u => u.UserId == userId)
+                .FirstOrDefaultAsync();
+            if (user is null) return false;
+
+            _userItemContext.Users.Remove(user);
+            await _userItemContext.SaveChangesAsync();
+            return true;
         }
     }
 }

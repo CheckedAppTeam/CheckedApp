@@ -1,5 +1,4 @@
-﻿
-using CheckedAppProject.LOGIC.DTOs;
+﻿using CheckedAppProject.LOGIC.DTOs;
 using CheckedAppProject.LOGIC.Services;
 using Microsoft.AspNetCore.Mvc;
 
@@ -15,9 +14,7 @@ namespace CheckedAppProject.API.Controllers
         {
             _userService = userService;
         }
-        
-        
-    
+         
     [HttpGet("UserData/{id}")]
         public async Task<IActionResult> GetUserData([FromRoute] int id)
         {
@@ -33,8 +30,21 @@ namespace CheckedAppProject.API.Controllers
             return Ok(userData);
         }
 
-    [HttpPost("UserData")]
+    [HttpGet("UserData/users")]
+        public async Task<IActionResult> GetAllUsersData()
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+            var usersDatas = await _userService.GetAllUsersDataDtoAsync();
 
+            if (usersDatas == null) return NotFound(new { ErrorCode = 404, Message = "User not found" });
+
+            return Ok(usersDatas);
+        }
+
+    [HttpPost("UserData")]
         public async Task<IActionResult> AddUserToDb(AddUserDTO dto)
         {
             if (!ModelState.IsValid)
@@ -46,13 +56,21 @@ namespace CheckedAppProject.API.Controllers
 
             return Ok(successResponse);
         }
+    [HttpDelete("UserData/{id}")]
+        public async Task<IActionResult> DeleteUser([FromRoute] int id)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+            var isDeleted = await _userService.DeleteUserDataDtoAsync(id);
 
+            if (isDeleted == false)
+                return NotFound(new { ErrorCode = 404, Message = "User with this ID not found" });
 
+            return Ok(new {Message = "User successfully deleted"});
 
-        //public void AddUser(UserDataDTO user) { }
-        //public void EditUser(int id) { }
-        //public void DeleteUser(int id) { }
-        //public void LogInUser(string email,  string password) { }
-        //public void LogOutUser() { }
+        }
+        //public void EditUser(int id) { }      
     }
 }

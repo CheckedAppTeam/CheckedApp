@@ -19,6 +19,7 @@ namespace CheckedAppProject.LOGIC.DTOs
         public string Password { get; set; }
         [Range(0, 100)]
         public int UserAge { get; set; }
+        [MaxLength(10)]
         public string UserSex { get; set; }
     }
 }
