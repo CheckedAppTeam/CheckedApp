@@ -47,7 +47,6 @@ namespace CheckedAppProject.LOGIC.Services
             await _userItemContext.SaveChangesAsync();
 
         }
-
         public async Task<bool> DeleteUserDataDtoAsync(int userId)
         {
             var user = await _userItemContext.Users
@@ -56,6 +55,23 @@ namespace CheckedAppProject.LOGIC.Services
             if (user is null) return false;
 
             _userItemContext.Users.Remove(user);
+            await _userItemContext.SaveChangesAsync();
+            return true;
+        }
+        public async Task<bool> UpdateUser(int userId, AddUserDTO dto)
+        {
+            var user = await _userItemContext.Users
+                .Where(u => u.UserId == userId)
+                .FirstOrDefaultAsync();
+            if (user is null) return false;
+
+            user.UserName = dto.UserName;
+            user.UserSurname = dto.UserSurname;
+            user.UserEmail = dto.UserEmail;
+            user.Password = dto.Password;
+            user.UserAge = dto.UserAge;
+            user.UserSex = dto.UserSex;
+
             await _userItemContext.SaveChangesAsync();
             return true;
         }

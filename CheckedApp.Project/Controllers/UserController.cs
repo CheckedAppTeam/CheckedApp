@@ -45,17 +45,31 @@ namespace CheckedAppProject.API.Controllers
         }
 
     [HttpPost("UserData")]
-        public async Task<IActionResult> AddUserToDb(AddUserDTO dto)
+        public async Task<IActionResult> AddUser(AddUserDTO dto)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
             await _userService.AddUserAsync(dto);
-            var successResponse = new { Message = "User created successfully" };
 
-            return Ok(successResponse);
+            return Ok(new{ Message = "User created successfully" });
         }
+
+        [HttpPut("UserData/{id}")]
+        public async Task<IActionResult> EditUser([FromBody] AddUserDTO dto, [FromRoute] int id)
+        {
+
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+            var isUpdated = await _userService.UpdateUser(id, dto);
+            if (isUpdated == false) return NotFound(new { ErrorCode = 404, Message = "User with this ID not found" });
+
+            return Ok(new { Message = "Changes added successfully" });
+        }
+
     [HttpDelete("UserData/{id}")]
         public async Task<IActionResult> DeleteUser([FromRoute] int id)
         {
