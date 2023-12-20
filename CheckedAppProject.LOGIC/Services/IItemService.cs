@@ -2,9 +2,11 @@
 {
     public interface IItemService
     {
-        void DeleteItem(string itemName, int itemListId);
-        void EditName(string itemName);
-        void ToggleItemToBuy(string itemName);
-        void ToggleItemToPack(string itemName);
+       
+            void AddItem(string name, string? company);
+            void DeleteItem(string itemName, int itemListId);
+            void EditName(string itemName);
+            void ToggleItemState(string itemName, string itemState);
+
     }
 }
