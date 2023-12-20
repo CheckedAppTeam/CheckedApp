@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
+﻿
 namespace CheckedAppProject.LOGIC.Services.Logger
 {
     public class Logger : IAppLogger
@@ -33,10 +28,10 @@ namespace CheckedAppProject.LOGIC.Services.Logger
             Console.WriteLine($"[{timestamp}] - Log: {{message}}");
         }
 
-        public void LogException(Exception exception)
+        public void LogException(Exception? exception, string message)
         {
             Console.ForegroundColor = ConsoleColor.Red;
-            Console.WriteLine($"Exception: {exception}");
+            Console.WriteLine($"Exception {exception}:  {message}");
             Console.ForegroundColor = ConsoleColor.White;
         }
         public void LogToFileAndConsole(string message) 

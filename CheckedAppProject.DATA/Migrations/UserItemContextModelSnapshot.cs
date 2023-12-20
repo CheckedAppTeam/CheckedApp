@@ -22,13 +22,32 @@ namespace CheckedAppProject.DATA.Migrations
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
-            modelBuilder.Entity("CheckedAppProject.DATA.Entities.ItemListTable", b =>
+            modelBuilder.Entity("CheckedAppProject.DATA.Entities.Item", b =>
                 {
-                    b.Property<int>("ItemListTableId")
+                    b.Property<int>("ItemId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("integer");
 
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("ItemListTableId"));
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("ItemId"));
+
+                    b.Property<string>("ItemCompany")
+                        .HasColumnType("text");
+
+                    b.Property<string>("ItemName")
+                        .HasColumnType("text");
+
+                    b.HasKey("ItemId");
+
+                    b.ToTable("Items");
+                });
+
+            modelBuilder.Entity("CheckedAppProject.DATA.Entities.ItemList", b =>
+                {
+                    b.Property<int>("ItemListId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("ItemListId"));
 
                     b.Property<DateTime?>("Date")
                         .ValueGeneratedOnAdd()
@@ -44,60 +63,23 @@ namespace CheckedAppProject.DATA.Migrations
                     b.Property<bool>("ItemListPublic")
                         .HasColumnType("boolean");
 
-                    b.Property<int>("UserTableId")
+                    b.Property<int>("UserId")
                         .HasColumnType("integer");
 
-                    b.HasKey("ItemListTableId");
+                    b.HasKey("ItemListId");
 
-                    b.HasIndex("UserTableId");
+                    b.HasIndex("UserId");
 
                     b.ToTable("ItemLists");
                 });
 
-            modelBuilder.Entity("CheckedAppProject.DATA.Entities.ItemTable", b =>
+            modelBuilder.Entity("CheckedAppProject.DATA.Entities.User", b =>
                 {
-                    b.Property<int>("ItemTableId")
+                    b.Property<int>("UserId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("integer");
 
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("ItemTableId"));
-
-                    b.Property<string>("ItemCompany")
-                        .HasColumnType("text");
-
-                    b.Property<string>("ItemName")
-                        .HasColumnType("text");
-
-                    b.HasKey("ItemTableId");
-
-                    b.ToTable("Items");
-                });
-
-            modelBuilder.Entity("CheckedAppProject.DATA.Entities.UserItemTable", b =>
-                {
-                    b.Property<int>("ItemListTableId")
-                        .HasColumnType("integer");
-
-                    b.Property<int>("ItemTableId")
-                        .HasColumnType("integer");
-
-                    b.Property<string>("ItemState")
-                        .HasColumnType("text");
-
-                    b.HasKey("ItemListTableId", "ItemTableId");
-
-                    b.HasIndex("ItemTableId");
-
-                    b.ToTable("UserItems");
-                });
-
-            modelBuilder.Entity("CheckedAppProject.DATA.Entities.UserTable", b =>
-                {
-                    b.Property<int>("UserTableId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("UserTableId"));
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("UserId"));
 
                     b.Property<string>("Password")
                         .HasColumnType("text");
@@ -126,44 +108,62 @@ namespace CheckedAppProject.DATA.Migrations
                         .HasMaxLength(200)
                         .HasColumnType("character varying(200)");
 
-                    b.HasKey("UserTableId");
+                    b.HasKey("UserId");
 
                     b.ToTable("Users");
                 });
 
-            modelBuilder.Entity("CheckedAppProject.DATA.Entities.ItemListTable", b =>
+            modelBuilder.Entity("CheckedAppProject.DATA.Entities.UserItem", b =>
                 {
-                    b.HasOne("CheckedAppProject.DATA.Entities.UserTable", "UserTable")
-                        .WithMany("ItemListTable")
-                        .HasForeignKey("UserTableId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                    b.Property<int>("ItemListId")
+                        .HasColumnType("integer");
 
-                    b.Navigation("UserTable");
+                    b.Property<int>("ItemId")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("ItemState")
+                        .HasColumnType("text");
+
+                    b.HasKey("ItemListId", "ItemId");
+
+                    b.HasIndex("ItemId");
+
+                    b.ToTable("UserItems");
                 });
 
-            modelBuilder.Entity("CheckedAppProject.DATA.Entities.UserItemTable", b =>
+            modelBuilder.Entity("CheckedAppProject.DATA.Entities.ItemList", b =>
                 {
-                    b.HasOne("CheckedAppProject.DATA.Entities.ItemListTable", "ItemListTable")
-                        .WithMany()
-                        .HasForeignKey("ItemListTableId")
+                    b.HasOne("CheckedAppProject.DATA.Entities.User", "User")
+                        .WithMany("ItemList")
+                        .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("CheckedAppProject.DATA.Entities.ItemTable", "ItemTable")
-                        .WithMany()
-                        .HasForeignKey("ItemTableId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("ItemListTable");
-
-                    b.Navigation("ItemTable");
+                    b.Navigation("User");
                 });
 
-            modelBuilder.Entity("CheckedAppProject.DATA.Entities.UserTable", b =>
+            modelBuilder.Entity("CheckedAppProject.DATA.Entities.UserItem", b =>
                 {
-                    b.Navigation("ItemListTable");
+                    b.HasOne("CheckedAppProject.DATA.Entities.Item", "Item")
+                        .WithMany()
+                        .HasForeignKey("ItemId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("CheckedAppProject.DATA.Entities.ItemList", "ItemList")
+                        .WithMany()
+                        .HasForeignKey("ItemListId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Item");
+
+                    b.Navigation("ItemList");
+                });
+
+            modelBuilder.Entity("CheckedAppProject.DATA.Entities.User", b =>
+                {
+                    b.Navigation("ItemList");
                 });
 #pragma warning restore 612, 618
         }

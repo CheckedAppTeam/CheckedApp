@@ -10,39 +10,39 @@ namespace CheckedAppProject.DATA.CheckedAppDbContext
         {
             
         }
-        public DbSet<UserTable> Users { get; set; }
-        public DbSet<ItemTable> Items { get; set; }
-        public DbSet<ItemListTable> ItemLists { get; set; }
-        public DbSet<UserItemTable> UserItems { get; set; }
+        public DbSet<User> Users { get; set; }
+        public DbSet<Item> Items { get; set; }
+        public DbSet<ItemList> ItemLists { get; set; }
+        public DbSet<UserItem> UserItems { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<UserTable>(eb =>
+            modelBuilder.Entity<User>(eb =>
             {
                 eb.Property(u => u.UserEmail).IsRequired().HasMaxLength(200);
                 eb.Property(u => u.UserName).IsRequired().HasMaxLength(200);
                 eb.Property(u => u.UserSurname).IsRequired().HasMaxLength(200);
-                eb.HasMany(w => w.ItemListTable)
-                .WithOne(u => u.UserTable)
-                .HasForeignKey(x => x.UserTableId);
+                eb.HasMany(w => w.ItemList)
+                .WithOne(u => u.User)
+                .HasForeignKey(x => x.UserId);
                 });
-            modelBuilder.Entity<ItemListTable>(eb =>
+            modelBuilder.Entity<ItemList>(eb =>
             {
                 eb.Property(il => il.Date).HasDefaultValueSql("CURRENT_TIMESTAMP");
-                eb.HasMany(x => x.ItemTables)
-                .WithMany(i => i.ItemListTables)
-                .UsingEntity<UserItemTable>(
-                    x => x.HasOne(uit => uit.ItemTable)
+                eb.HasMany(x => x.Item)
+                .WithMany(i => i.ItemList)
+                .UsingEntity<UserItem>(
+                    x => x.HasOne(uit => uit.Item)
                     .WithMany()
-                    .HasForeignKey(uit => uit.ItemTableId),
+                    .HasForeignKey(uit => uit.ItemId),
 
-                    x => x.HasOne(uit => uit.ItemListTable)
+                    x => x.HasOne(uit => uit.ItemList)
                     .WithMany()
-                    .HasForeignKey(uit => uit.ItemListTableId),
+                    .HasForeignKey(uit => uit.ItemListId),
 
                     uit =>
                     {
-                        uit.HasKey(uit => new { uit.ItemListTableId, uit.ItemTableId });
+                        uit.HasKey(uit => new { uit.ItemListId, uit.ItemId });
                     });
             });
             

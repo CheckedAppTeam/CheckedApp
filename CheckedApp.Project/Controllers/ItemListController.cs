@@ -1,29 +1,34 @@
 ﻿using CheckedAppProject.DATA;
 using Microsoft.AspNetCore.Mvc;
 using CheckedAppProject.LOGIC.Services.Logger;
+using CheckedAppProject.DATA.Entities;
+using CheckedAppProject.DATA.CheckedAppDbContext;
 
 namespace CheckedAppProject.API.Controllers
 {
+    [Route("api/itemlist")]
     public class ItemListController : ControllerBase
     {
-        private readonly IAppLogger _logger ;
-        public ItemListController(IAppLogger logger)
-        {
-            _logger = logger;
-        }
 
-        public void AddList(string name) 
-        {
-            try
-            {
-                _logger.LogToFileAndConsole("Successfuly added a list.");
+
+        //private readonly IAppLogger _logger ;
+        //public ItemListController(IAppLogger logger)
+        //{
+        //    _logger = logger;
+        //}
+
+        //public void AddList(string name) 
+        //{
+        //    try
+        //    {
+        //        _logger.LogToFileAndConsole("Successfuly added a list.");
                 
                 
-            }catch (Exception ex)
-            {
-                _logger.LogException(ex);
-            }
-        }
+        //    }catch (Exception ex)
+        //    {
+        //        _logger.LogException(ex);
+        //    }
+        //}
         public List<Item> GetList() { return null; }
         public List<List<Item>> GetAllLists() { return null; }
         public void UpdateList(List<Item> list) { }
