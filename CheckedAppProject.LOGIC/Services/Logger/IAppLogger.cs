@@ -4,7 +4,7 @@
     {
         void LogToConsole(string message);
         void LogToFile(string message);
-        void LogException(Exception exception);
+        void LogException(Exception? exception, string message);
         void LogToFileAndConsole(string message);
     }
 }
