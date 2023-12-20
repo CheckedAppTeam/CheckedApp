@@ -1,5 +1,4 @@
-﻿
-using System.ComponentModel;
+﻿using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 
 namespace CheckedAppProject.LOGIC.DTOs
@@ -20,6 +19,6 @@ namespace CheckedAppProject.LOGIC.DTOs
         public string Password { get; set; }
         [Range(0, 100)]
         public int UserAge { get; set; }
-        public enum UserSex { }
+        public string UserSex { get; set; }
     }
 }

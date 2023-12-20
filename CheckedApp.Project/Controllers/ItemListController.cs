@@ -1,6 +1,7 @@
 ﻿using CheckedAppProject.DATA;
 using Microsoft.AspNetCore.Mvc;
 using CheckedAppProject.LOGIC.Services.Logger;
+using CheckedAppProject.DATA.Entities;
 
 namespace CheckedAppProject.API.Controllers
 {

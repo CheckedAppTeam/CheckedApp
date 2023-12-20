@@ -1,9 +1,6 @@
-﻿using CheckedAppProject.DATA;
-using CheckedAppProject.DATA.CheckedAppDbContext;
+﻿
 using CheckedAppProject.LOGIC.DTOs;
 using CheckedAppProject.LOGIC.Services;
-
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CheckedAppProject.API.Controllers
@@ -21,7 +18,7 @@ namespace CheckedAppProject.API.Controllers
         
         
     
-    [HttpGet("GetUserData/{id}")]
+    [HttpGet("UserData/{id}")]
         public async Task<IActionResult> GetUserData([FromRoute] int id)
         {
             if (!ModelState.IsValid)
@@ -36,7 +33,7 @@ namespace CheckedAppProject.API.Controllers
             return Ok(userData);
         }
 
-    [HttpPost("AddUser")]
+    [HttpPost("UserData")]
 
         public async Task<IActionResult> AddUserToDb(AddUserDTO dto)
         {
