@@ -1,5 +1,4 @@
-﻿
-using CheckedAppProject.LOGIC.DTOs;
+﻿using CheckedAppProject.LOGIC.DTOs;
 using CheckedAppProject.LOGIC.Services;
 using Microsoft.AspNetCore.Mvc;
 
@@ -15,44 +14,60 @@ namespace CheckedAppProject.API.Controllers
         {
             _userService = userService;
         }
-        
-        
-    
+         
     [HttpGet("UserData/{id}")]
         public async Task<IActionResult> GetUserData([FromRoute] int id)
         {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
+            if (!ModelState.IsValid) return BadRequest(ModelState);
+            
             var userData = await _userService.GetUserDataDtoAsync(id);
 
-            if (userData == null)
-                return NotFound(new { ErrorCode = 404, Message = "User with this ID not found" });
+            return userData == null ? (NotFound(new { ErrorCode = 404, Message = "User with this ID not found" })) : Ok(userData);
+        }
 
-            return Ok(userData);
+    [HttpGet("UserData/users")]
+        public async Task<IActionResult> GetAllUsersData()
+        {
+            if (!ModelState.IsValid) return BadRequest(ModelState);
+            
+            var usersDatas = await _userService.GetAllUsersDataDtoAsync();
+
+            return usersDatas == null ? (NotFound(new { ErrorCode = 404, Message = "User with this ID not found" })) : Ok(usersDatas);
         }
 
     [HttpPost("UserData")]
-
-        public async Task<IActionResult> AddUserToDb(AddUserDTO dto)
+        public async Task<IActionResult> AddUser(AddUserDTO dto)
         {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-            await _userService.AddUserAsync(dto);
-            var successResponse = new { Message = "User created successfully" };
+            if (!ModelState.IsValid) return BadRequest(ModelState);
 
-            return Ok(successResponse);
+            await _userService.AddUserAsync(dto);
+
+            return Ok(new{ Message = "User created successfully" });
         }
 
+        [HttpPut("UserData/{id}")]
+        public async Task<IActionResult> EditUser([FromBody] AddUserDTO dto, [FromRoute] int id)
+        {
 
+            if (!ModelState.IsValid) return BadRequest(ModelState);
 
-        //public void AddUser(UserDataDTO user) { }
-        //public void EditUser(int id) { }
-        //public void DeleteUser(int id) { }
-        //public void LogInUser(string email,  string password) { }
-        //public void LogOutUser() { }
+            var isUpdated = await _userService.UpdateUser(dto);
+
+            return isUpdated == false ? 
+                (NotFound(new { ErrorCode = 404, Message = "User with this ID not found" })) 
+                : (Ok(new { Message = "Changes added successfully" }));
+        }
+
+    [HttpDelete("UserData/{id}")]
+        public async Task<IActionResult> DeleteUser([FromRoute] int id)
+        {
+            if (!ModelState.IsValid) return BadRequest(ModelState);
+
+            var isDeleted = await _userService.DeleteUserDataAsync(id);
+
+            return isDeleted == false ? 
+                (NotFound(new { ErrorCode = 404, Message = "User with this ID not found" }))
+                : (Ok(new { Message = "User successfully deleted" }));
+        }    
     }
 }
