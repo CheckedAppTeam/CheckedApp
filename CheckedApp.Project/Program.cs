@@ -1,5 +1,6 @@
 ﻿
 using CheckedAppProject.DATA.CheckedAppDbContext;
+using CheckedAppProject.DATA.DbServices.Repository;
 using CheckedAppProject.LOGIC.Services;
 using Microsoft.EntityFrameworkCore;
 
@@ -11,6 +12,7 @@ builder.Services.AddControllers();
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddScoped<IUserService, UserService>();
+builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 builder.Services.AddSwaggerGen();
 
