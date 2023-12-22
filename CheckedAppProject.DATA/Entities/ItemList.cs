@@ -12,6 +12,6 @@ namespace CheckedAppProject.DATA.Entities
         public string ItemListDestination { get; set; }
         public User User { get; set; }
         public int UserId { get; set; }
-        public List<Item> Item { get; set; }
+        public List<Item> Items { get; set; }
     }
 }

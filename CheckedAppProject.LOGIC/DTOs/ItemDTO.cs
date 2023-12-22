@@ -1,11 +1,14 @@
 ﻿using System;
-namespace CheckedAppProject.LOGIC.DTOs
+using System.ComponentModel.DataAnnotations;
+
+namespace CheckedAppProject.LOGIC.DTOs;
+
+public class ItemDTO
 {
-	public class ItemDTO
-	{
-		public ItemDTO()
-		{
-		}
-	}
+    [Required]
+    [MaxLength(20)]
+    public string ItemName { get; set; }
+    public string? ItemCompany { get; set; }
 }
+
 
