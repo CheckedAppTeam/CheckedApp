@@ -6,6 +6,7 @@ using CheckedAppProject.DATA.CheckedAppDbContext;
 using CheckedAppProject.LOGIC.DTOs;
 using AutoMapper;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.JsonPatch;
 using CheckedAppProject.LOGIC.Services;
 
 namespace CheckedAppProject.API.Controllers
@@ -53,6 +54,25 @@ namespace CheckedAppProject.API.Controllers
 
             return Created($"api/itemList/{id}", null);
         }
+
+        [HttpPut("{id}")]
+        public ActionResult UpdateItemList([FromRoute] int id, [FromBody] UpdateItemListDTO dto)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var isUpdated = _itemListService.Update(id, dto);
+
+            if (isUpdated)
+            {
+                return NoContent();
+            }
+
+            return NotFound();
+        }
+
 
         [HttpDelete("{id}")]
         public ActionResult Delete(int id)

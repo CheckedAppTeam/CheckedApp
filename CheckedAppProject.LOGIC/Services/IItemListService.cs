@@ -7,6 +7,7 @@ namespace CheckedAppProject.LOGIC.Services
         int Create(CreateItemListDTO dto);
         IEnumerable<ItemListDTO> GetAll();
         ItemListDTO GetById(int id);
+        bool Update(int id, UpdateItemListDTO dto);
         bool Delete(int id);
     }
 }
