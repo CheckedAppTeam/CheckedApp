@@ -1,14 +1,13 @@
-﻿using CheckedAppProject.DATA.Entities;
+﻿using CheckedAppProject.LOGIC.DTOs;
 
 namespace CheckedAppProject.LOGIC.Services
 {
     public interface IItemListService
     {
-        void AddFoundList(int id);
-        void EditItemList(int id);
-        List<ItemList> GetListsByTravelDestination(string destination);
-        string GetMonthName(DateTime time);
-        List<Item> GetOneListByName(int id);
-        List<Item> ShowItemList(int id);
+        int Create(CreateItemListDTO dto);
+        IEnumerable<ItemListDTO> GetAll();
+        ItemListDTO GetById(int id);
+        bool Update(int id, UpdateItemListDTO dto);
+        bool Delete(int id);
     }
 }

@@ -29,7 +29,7 @@ namespace CheckedAppProject.DATA.CheckedAppDbContext
             modelBuilder.Entity<ItemList>(eb =>
             {
                 eb.Property(il => il.Date).HasDefaultValueSql("CURRENT_TIMESTAMP");
-                eb.HasMany(x => x.Item)
+                eb.HasMany(x => x.Items)
                 .WithMany(i => i.ItemList)
                 .UsingEntity<UserItem>(
                     x => x.HasOne(uit => uit.Item)

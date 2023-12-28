@@ -1,4 +1,5 @@
-﻿using CheckedAppProject.DATA;
+﻿using System.ComponentModel.DataAnnotations;
+using CheckedAppProject.DATA;
 
 
 namespace CheckedAppProject.LOGIC.DTOs
@@ -6,9 +7,14 @@ namespace CheckedAppProject.LOGIC.DTOs
     public class ItemListDTO
     {
         public int ItemListId { get; set; }
+        [Required]
+        [MaxLength(20)]
         public string ListName { get; set; }
         public string TravelDestination { get; set; }
-        public DateTime TravelDate {  get; set; }
+        public DateTime TravelDate { get; set; }
+        //public string Month { get; set; }
         public bool IsPublic { get; set; }
+
+        public List<ItemDTO> Items { get; set; }
     }
 }
