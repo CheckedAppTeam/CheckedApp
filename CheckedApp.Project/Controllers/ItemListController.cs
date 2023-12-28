@@ -22,9 +22,14 @@ namespace CheckedAppProject.API.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<ItemListDTO>>> GetAll()
+        public ActionResult<IEnumerable<ItemListDTO>> GetAll()
         {
             var itemListsDto = _itemListService.GetAll();
+
+            if (itemListsDto is null)
+            {
+                return NotFound();
+            }
 
             return Ok(itemListsDto);
         }
