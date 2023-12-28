@@ -80,6 +80,6 @@ namespace CheckedAppProject.DATA.DbServices.Repository
                 throw;
             }
 
-        }
+        }// dokończyć merge sprawdzenie
     }
 }
