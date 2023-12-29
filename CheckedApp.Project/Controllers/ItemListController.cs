@@ -22,9 +22,9 @@ namespace CheckedAppProject.API.Controllers
         }
 
         [HttpGet]
-        public ActionResult<IEnumerable<ItemListDTO>> GetAll()
+        public async Task<ActionResult<IEnumerable<ItemListDTO>>> GetAllAsync()
         {
-            var itemListsDto = _itemListService.GetAll();
+            var itemListsDto = await _itemListService.GetAllAsync();
 
             if (itemListsDto is null)
             {
@@ -35,9 +35,9 @@ namespace CheckedAppProject.API.Controllers
         }
 
         [HttpGet("{id}")]
-        public ActionResult<ItemListDTO> Get([FromRoute] int id)
+        public async Task<ActionResult<ItemListDTO>> GetAsync([FromRoute] int id)
         {
-            var itemList = _itemListService.GetById(id);
+            var itemList = await _itemListService.GetByIdAsync(id);
 
             if (itemList is null)
             {
@@ -48,27 +48,27 @@ namespace CheckedAppProject.API.Controllers
         }
 
         [HttpPost]
-        public ActionResult CreateItemList([FromBody] CreateItemListDTO dto)
+        public async Task<ActionResult> CreateItemList([FromBody] CreateItemListDTO dto)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            var id = _itemListService.Create(dto);
+            var id = await _itemListService.CreateAsync(dto);
 
             return Created($"api/itemList/{id}", null);
         }
 
         [HttpPut("{id}")]
-        public ActionResult UpdateItemList([FromRoute] int id, [FromBody] UpdateItemListDTO dto)
+        public async Task<ActionResult> UpdateItemList([FromRoute] int id, [FromBody] UpdateItemListDTO dto)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            var isUpdated = _itemListService.Update(id, dto);
+            var isUpdated = await _itemListService.UpdateAsync(id, dto);
 
             if (isUpdated)
             {
@@ -80,9 +80,9 @@ namespace CheckedAppProject.API.Controllers
 
 
         [HttpDelete("{id}")]
-        public ActionResult Delete(int id)
+        public async Task<ActionResult> Delete(int id)
         {
-            var isDeleted = _itemListService.Delete(id);
+            var isDeleted = await _itemListService.DeleteAsync(id);
 
             if (isDeleted)
             {

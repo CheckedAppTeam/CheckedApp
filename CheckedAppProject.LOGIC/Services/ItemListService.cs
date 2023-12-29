@@ -19,12 +19,12 @@ namespace CheckedAppProject.LOGIC.Services
             _userService = userService;
         }
 
-        public ItemListDTO GetById(int id)
+        public async Task<ItemListDTO> GetByIdAsync(int id)
         {
-            var itemList = _dbContext
+            var itemList = await _dbContext
                 .ItemLists
                 .Include(il => il.Items)
-                .FirstOrDefault(il => il.ItemListId == id);
+                .FirstOrDefaultAsync(il => il.ItemListId == id);
 
             if (itemList is null) return null;
 
@@ -32,9 +32,9 @@ namespace CheckedAppProject.LOGIC.Services
             return result;
         }
 
-        public IEnumerable<ItemListDTO> GetAll()
+        public async Task<IEnumerable<ItemListDTO>> GetAllAsync()
         {
-            var itemLists = _dbContext
+            var itemLists = await _dbContext
                 .ItemLists
                 .Include(il => il.Items)
                 .ToListAsync();
@@ -44,21 +44,21 @@ namespace CheckedAppProject.LOGIC.Services
             return itemListsDto;
         }
 
-        public int Create(CreateItemListDTO dto)
+        public async Task<int> CreateAsync(CreateItemListDTO dto)
         {
             var itemList = _mapper.Map<ItemList>(dto);
             _dbContext.ItemLists.Add(itemList);
-            _dbContext.SaveChanges();
+            await _dbContext.SaveChangesAsync();
 
             return itemList.ItemListId;
         }
 
-        public bool Update(int id, UpdateItemListDTO dto)
+        public async Task<bool> UpdateAsync(int id, UpdateItemListDTO dto)
         {
-            var itemList = _dbContext
+            var itemList = await _dbContext
                 .ItemLists
-                .FirstOrDefault(il => il.ItemListId == id);
-                //.ExecuteUpdate(setters => setters.SetProperty(b => b.Rating, b => b.Rating + 1));
+                .FirstOrDefaultAsync(il => il.ItemListId == id);
+            //.ExecuteUpdate(setters => setters.SetProperty(b => b.Rating, b => b.Rating + 1));
 
             if (itemList == null)
             {
@@ -74,11 +74,11 @@ namespace CheckedAppProject.LOGIC.Services
             return true;
         }
 
-        public bool Delete(int id)
+        public async Task<bool> DeleteAsync(int id)
         {
-            var itemList = _dbContext
+            var itemList = await _dbContext
                 .ItemLists
-                .FirstOrDefault(il => il.ItemListId == id);
+                .FirstOrDefaultAsync(il => il.ItemListId == id);
 
             if (itemList is null) return false;
 
