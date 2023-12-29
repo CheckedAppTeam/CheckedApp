@@ -3,6 +3,7 @@ using CheckedAppProject.DATA.CheckedAppDbContext;
 using CheckedAppProject.DATA.Entities;
 using CheckedAppProject.LOGIC.DTOs;
 using Microsoft.EntityFrameworkCore;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace CheckedAppProject.LOGIC.Services
 {
@@ -32,11 +33,41 @@ namespace CheckedAppProject.LOGIC.Services
             return result;
         }
 
+        public async Task<ItemListDTO> GetByCityAsync(string city)
+        {
+            var itemList = await _dbContext
+                .ItemLists
+                .Include(il => il.Items)
+                .FirstOrDefaultAsync(il => il.ItemListDestination == city);
+
+            if (itemList is null) return null;
+
+            var result = _mapper.Map<ItemListDTO>(itemList);
+            return result;
+        }
+
         public async Task<IEnumerable<ItemListDTO>> GetAllAsync()
         {
             var itemLists = await _dbContext
                 .ItemLists
                 .Include(il => il.Items)
+                .ToListAsync();
+
+            var itemListsDto = _mapper.Map<IEnumerable<ItemListDTO>>(itemLists);
+
+            return itemListsDto;
+        }
+
+        public async Task<IEnumerable<ItemListDTO>> GetAllByUserIdAsync(User user)
+        {
+            var currentUser = await _dbContext
+                .Users
+                .FirstOrDefaultAsync(u => u.UserId == user.UserId);
+
+            var itemLists = await _dbContext
+                .ItemLists
+                .Include(il => il.Items)
+                .Include(il => il.UserId == currentUser.UserId)
                 .ToListAsync();
 
             var itemListsDto = _mapper.Map<IEnumerable<ItemListDTO>>(itemLists);
@@ -51,6 +82,38 @@ namespace CheckedAppProject.LOGIC.Services
             await _dbContext.SaveChangesAsync();
 
             return itemList.ItemListId;
+        }
+
+        public async Task<ItemList> CopyAsync(int itemListid, User user)
+        {
+            var currentUser = await _dbContext
+                .Users
+                .FirstOrDefaultAsync(u => u.UserId == user.UserId);
+
+            var itemList = await _dbContext
+                .ItemLists
+                .Include(il => il.Items)
+                .FirstOrDefaultAsync(il => il.ItemListId == itemListid);
+
+            var copyItemList = new ItemList
+            {
+                Date = itemList.Date,
+                ItemListDestination = itemList.ItemListDestination,
+                User = user,
+                UserId = user.UserId,
+                ItemListName = itemList.ItemListName,
+                Items = itemList.Items,
+                ItemListPublic = false,
+                ItemListId = _dbContext.ItemLists.Count() + 1
+
+            };
+
+            currentUser.ItemList.Add(copyItemList);
+
+            await _dbContext.SaveChangesAsync();
+
+            return copyItemList;
+
         }
 
         public async Task<bool> UpdateAsync(int id, UpdateItemListDTO dto)

@@ -34,6 +34,20 @@ namespace CheckedAppProject.API.Controllers
             return Ok(itemListsDto);
         }
 
+        [HttpGet]
+        public async Task<ActionResult<IEnumerable<ItemListDTO>>> GetAllByUserIdAsync([FromRoute] User user)
+        {
+            var itemListsDto = await _itemListService.GetAllByUserIdAsync(user);
+
+            if (itemListsDto is null)
+            {
+                return NotFound();
+            }
+
+            return Ok(itemListsDto);
+        }
+
+
         [HttpGet("{id}")]
         public async Task<ActionResult<ItemListDTO>> GetAsync([FromRoute] int id)
         {
@@ -47,8 +61,21 @@ namespace CheckedAppProject.API.Controllers
             return Ok(itemList);
         }
 
+        [HttpGet("{id}")]
+        public async Task<ActionResult<ItemListDTO>> GetByCityAsync([FromRoute] string city)
+        {
+            var itemList = await _itemListService.GetByCityAsync(city);
+
+            if (itemList is null)
+            {
+                return NotFound();
+            }
+
+            return Ok(itemList);
+        }
+
         [HttpPost]
-        public async Task<ActionResult> CreateItemList([FromBody] CreateItemListDTO dto)
+        public async Task<ActionResult> CreateItemListAsync([FromBody] CreateItemListDTO dto)
         {
             if (!ModelState.IsValid)
             {
@@ -60,8 +87,21 @@ namespace CheckedAppProject.API.Controllers
             return Created($"api/itemList/{id}", null);
         }
 
+        [HttpPost]
+        public async Task<ActionResult> CopyItemListAsync([FromRoute] int itemListid, [FromRoute] User user)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var copy = await _itemListService.CopyAsync(itemListid, user);
+
+            return Ok(copy);
+        }
+
         [HttpPut("{id}")]
-        public async Task<ActionResult> UpdateItemList([FromRoute] int id, [FromBody] UpdateItemListDTO dto)
+        public async Task<ActionResult> UpdateItemListAsync([FromRoute] int id, [FromBody] UpdateItemListDTO dto)
         {
             if (!ModelState.IsValid)
             {
@@ -80,7 +120,7 @@ namespace CheckedAppProject.API.Controllers
 
 
         [HttpDelete("{id}")]
-        public async Task<ActionResult> Delete(int id)
+        public async Task<ActionResult> DeleteAsync(int id)
         {
             var isDeleted = await _itemListService.DeleteAsync(id);
 
