@@ -34,7 +34,7 @@ namespace CheckedAppProject.API.Controllers
             return Ok(itemListsDto);
         }
 
-        [HttpGet]
+        [HttpGet("{userid}")]
         public async Task<ActionResult<IEnumerable<ItemListDTO>>> GetAllByUserIdAsync([FromRoute] User user)
         {
             var itemListsDto = await _itemListService.GetAllByUserIdAsync(user);
@@ -61,7 +61,7 @@ namespace CheckedAppProject.API.Controllers
             return Ok(itemList);
         }
 
-        [HttpGet("{id}")]
+        [HttpGet("{city}")]
         public async Task<ActionResult<ItemListDTO>> GetByCityAsync([FromRoute] string city)
         {
             var itemList = await _itemListService.GetByCityAsync(city);
@@ -87,7 +87,7 @@ namespace CheckedAppProject.API.Controllers
             return Created($"api/itemList/{id}", null);
         }
 
-        [HttpPost]
+        [HttpPost("{userid}")]
         public async Task<ActionResult> CopyItemListAsync([FromRoute] int itemListid, [FromRoute] User user)
         {
             if (!ModelState.IsValid)
