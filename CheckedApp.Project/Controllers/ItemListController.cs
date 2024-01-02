@@ -34,10 +34,10 @@ namespace CheckedAppProject.API.Controllers
             return Ok(itemListsDto);
         }
 
-        [HttpGet("{userid}")]
-        public async Task<ActionResult<IEnumerable<ItemListDTO>>> GetAllByUserIdAsync([FromRoute] User user)
+        [HttpGet("user/{userid}")]
+        public async Task<ActionResult<IEnumerable<ItemListDTO>>> GetAllByUserIdAsync([FromRoute] int userid)
         {
-            var itemListsDto = await _itemListService.GetAllByUserIdAsync(user);
+            var itemListsDto = await _itemListService.GetAllByUserIdAsync(userid);
 
             if (itemListsDto is null)
             {
@@ -61,7 +61,7 @@ namespace CheckedAppProject.API.Controllers
             return Ok(itemList);
         }
 
-        [HttpGet("{city}")]
+        [HttpGet("city/{city}")]
         public async Task<ActionResult<ItemListDTO>> GetByCityAsync([FromRoute] string city)
         {
             var itemList = await _itemListService.GetByCityAsync(city);
@@ -82,20 +82,20 @@ namespace CheckedAppProject.API.Controllers
                 return BadRequest(ModelState);
             }
 
-            var id = await _itemListService.CreateAsync(dto);
+            await _itemListService.CreateAsync(dto);
 
-            return Created($"api/itemList/{id}", null);
+            return Ok(new { Message = "Item List created successfully" });
         }
 
-        [HttpPost("{userid}")]
-        public async Task<ActionResult> CopyItemListAsync([FromRoute] int itemListid, [FromRoute] User user)
+        [HttpPost("user/{userid}")]
+        public async Task<ActionResult> CopyItemListAsync([FromRoute] int itemListid, [FromRoute] int userid)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            var copy = await _itemListService.CopyAsync(itemListid, user);
+            var copy = await _itemListService.CopyAsync(itemListid, userid);
 
             return Ok(copy);
         }

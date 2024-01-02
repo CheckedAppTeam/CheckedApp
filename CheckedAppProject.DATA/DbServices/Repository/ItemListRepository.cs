@@ -4,7 +4,8 @@ using Microsoft.EntityFrameworkCore;
 
 namespace CheckedAppProject.DATA.DbServices.Repository;
 
-public class ItemListRepository<T> where T : class
+public class ItemListRepository : IItemListRepository
+
 {
     private UserItemContext _userItemContext;
 
@@ -12,32 +13,70 @@ public class ItemListRepository<T> where T : class
     {
         _userItemContext = userItemContext;
     }
-    //public async Task<ItemList?> GetItemListAsync(Func<IQueryable<ItemList>, IQueryable<ItemList>> customQuery)
-    //{
-    //    var query = _userItemContext.ItemLists.AsQueryable();
 
-    //    query = customQuery(query);
+    public async Task<IEnumerable<ItemList>> GetAllItemListsAsync()
+    {
+        var itemLists = await _userItemContext
+            .ItemLists
+            .Include(il => il.Items)
+            .ToListAsync();
 
-    //    return await query
-    //        .Include(il => il.Items)
-    //        .FirstOrDefaultAsync();
-    //}
+        return itemLists;
+    }
 
-    //public async Task<IEnumerable<ItemList>> GetAllItemListsAsync()
-    //{
-    //    var itemLists = await _userItemContext
-    //        .ItemLists
-    //        .Include(il => il.Items)
-    //        .ToListAsync();
+    public async Task<IEnumerable<User>> GetAllByUserIdAsync(Func<IQueryable<User>, IQueryable<User>> customQuery)
+    {
+        var query = _userItemContext.Users.AsQueryable();
 
-    //    return itemLists;
-    //}
+        query = customQuery(query);
 
+        return await query
+            .Include(u => u.ItemList)
+            .ToListAsync();
+    }
 
-    //public void Add(T entity)
-    //{
-    //    _userItemContext.Set<T>(entity);
-    //}
+    public async Task<ItemList?> GetItemListAsync(Func<IQueryable<ItemList>, IQueryable<ItemList>> customQuery)
+    {
+        var query = _userItemContext.ItemLists.AsQueryable();
+
+        query = customQuery(query);
+
+        return await query
+                .Include(il => il.Items)
+                .FirstOrDefaultAsync();
+    }
+
+    public async Task CreateItemList(ItemList itemList)
+    {
+        try
+        {
+            _userItemContext.ItemLists.Add(itemList);
+            await _userItemContext.SaveChangesAsync();
+        }
+        catch (Exception)
+        {
+            throw;
+        }
+
+    }
+
+    public async Task<bool> DeleteAsync(Func<IQueryable<ItemList>, IQueryable<ItemList>> customQuery)
+    {
+        var query = _userItemContext.ItemLists.AsQueryable();
+
+        query = customQuery(query);
+
+        var itemListToDelete = await query.FirstOrDefaultAsync();
+
+        if (itemListToDelete != null)
+        {
+            _userItemContext.ItemLists.Remove(itemListToDelete);
+            await _userItemContext.SaveChangesAsync();
+            return true;
+        }
+        return false;
+    }
+
 
 }
 

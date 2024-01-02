@@ -5,13 +5,13 @@ namespace CheckedAppProject.LOGIC.Services
 {
     public interface IItemListService
     {
-        Task<int> CreateAsync(CreateItemListDTO dto);
+        Task CreateAsync(CreateItemListDTO dto);
         Task<ItemListDTO> GetByCityAsync(string city);
         Task<bool> DeleteAsync(int id);
         Task<IEnumerable<ItemListDTO>> GetAllAsync();
-        Task<IEnumerable<ItemListDTO>> GetAllByUserIdAsync(User user);
+        Task<IEnumerable<ItemListDTO>> GetAllByUserIdAsync(int userid);
         Task<ItemListDTO> GetByIdAsync(int id);
-        Task<ItemList> CopyAsync(int itemListid, User user);
+        Task<ItemList> CopyAsync(int itemListid, int userid);
         Task<bool> UpdateAsync(int id, UpdateItemListDTO dto);
     }
 }
