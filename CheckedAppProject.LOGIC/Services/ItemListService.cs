@@ -79,26 +79,35 @@ namespace CheckedAppProject.LOGIC.Services
                 .Include(il => il.Items)
                 .FirstOrDefaultAsync(il => il.ItemListId == itemListid);
 
-            //if (itemList is null)
-            //{
-            //    throw new Exception();
-            //}
+            Console.WriteLine($"currentUser: {currentUser}");
+            Console.WriteLine($"itemList: {itemList}");
 
-            var copyItemList = new ItemList
+            if (currentUser?.ItemList != null && itemList != null)
             {
-                Date = itemList.Date,
-                ItemListDestination = itemList.ItemListDestination,
-                UserId = userid,
-                ItemListName = itemList.ItemListName,
-                Items = itemList.Items,
-                ItemListPublic = false
-            };
+                Console.WriteLine($"itemList.Date: {itemList.Date}");
+                Console.WriteLine($"itemList.ItemListDestination: {itemList.ItemListDestination}");
 
-            currentUser.ItemList.Add(copyItemList);
+                var copyItemList = new ItemList
+                {
+                    Date = itemList.Date ?? DateTime.Now,
+                    ItemListDestination = itemList.ItemListDestination ?? "Destination",
+                    UserId = userid,
+                    ItemListName = itemList.ItemListName ?? "ItemList",
+                    Items = itemList.Items,
+                    ItemListPublic = false
+                };
 
-            await _dbContext.SaveChangesAsync();
+                currentUser.ItemList.Add(copyItemList);
 
-            return copyItemList;
+                await _dbContext.SaveChangesAsync();
+
+                return copyItemList;
+            }
+            else
+            {
+                throw new Exception("User or ItemList not found.");
+            }
+
 
         }
 
