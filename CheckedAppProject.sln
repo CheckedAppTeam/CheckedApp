@@ -5,9 +5,11 @@ VisualStudioVersion = 17.7.34024.191
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CheckedAppProject.API", "CheckedApp.Project\CheckedAppProject.API.csproj", "{DC6BF074-9E0A-40F4-AC59-883D6B0C0AF2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CheckedAppProject.DATA", "CheckedAppProject.DATA\CheckedAppProject.DATA.csproj", "{B6744BBA-2442-4F98-9089-991BD668EA61}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CheckedAppProject.DATA", "CheckedAppProject.DATA\CheckedAppProject.DATA.csproj", "{B6744BBA-2442-4F98-9089-991BD668EA61}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CheckedAppProject.LOGIC", "CheckedAppProject.LOGIC\CheckedAppProject.LOGIC.csproj", "{D4168148-CBFE-4E61-BB45-B90A4ADA773A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CheckedAppProject.LOGIC", "CheckedAppProject.LOGIC\CheckedAppProject.LOGIC.csproj", "{D4168148-CBFE-4E61-BB45-B90A4ADA773A}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Elementy rozwiązania", "Elementy rozwiązania", "{6410E725-5A2C-4534-9796-E596D77532AA}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
