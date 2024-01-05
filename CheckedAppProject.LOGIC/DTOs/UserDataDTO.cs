@@ -1,5 +1,4 @@
-﻿using CheckedAppProject.DATA;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace CheckedAppProject.LOGIC.DTOs
 {

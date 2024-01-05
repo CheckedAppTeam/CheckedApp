@@ -2,13 +2,11 @@
 using Microsoft.EntityFrameworkCore;
 
 namespace CheckedAppProject.DATA.CheckedAppDbContext
-
 {
     public class UserItemContext : DbContext
     {
         public UserItemContext(DbContextOptions<UserItemContext> options) : base(options)
-        {
-            
+        {    
         }
         public DbSet<User> Users { get; set; }
         public DbSet<Item> Items { get; set; }
@@ -25,27 +23,12 @@ namespace CheckedAppProject.DATA.CheckedAppDbContext
                 eb.HasMany(w => w.ItemList)
                 .WithOne(u => u.User)
                 .HasForeignKey(x => x.UserId);
-                });
-            modelBuilder.Entity<ItemList>(eb =>
-            {
-                eb.Property(il => il.Date).HasDefaultValueSql("CURRENT_TIMESTAMP");
-                eb.HasMany(x => x.Items)
-                .WithMany(i => i.ItemList)
-                .UsingEntity<UserItem>(
-                    x => x.HasOne(uit => uit.Item)
-                    .WithMany()
-                    .HasForeignKey(uit => uit.ItemId),
-
-                    x => x.HasOne(uit => uit.ItemList)
-                    .WithMany()
-                    .HasForeignKey(uit => uit.ItemListId),
-
-                    uit =>
-                    {
-                        uit.HasKey(uit => new { uit.ItemListId, uit.ItemId });
-                    });
             });
-            
+
+            modelBuilder.Entity<ItemList>()
+                .HasMany(e => e.Items)
+                .WithMany(e => e.ItemLists)
+                .UsingEntity<UserItem>();
         }
     }
 }

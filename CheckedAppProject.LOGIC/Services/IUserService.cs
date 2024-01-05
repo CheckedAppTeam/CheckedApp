@@ -8,6 +8,6 @@ namespace CheckedAppProject.LOGIC.Services
         Task<bool> DeleteUserDataAsync(int userId);
         Task<IEnumerable<UserDataDTO>> GetAllUsersDataDtoAsync();
         Task<UserDataDTO> GetUserDataDtoAsync(int userId);
-        Task<bool> UpdateUser(AddUserDTO dto);
+        Task<bool> UpdateUser(UserUpdateDTO dto, int userId);
     }
 }

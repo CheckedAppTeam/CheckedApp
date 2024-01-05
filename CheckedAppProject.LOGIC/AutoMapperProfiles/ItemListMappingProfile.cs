@@ -23,7 +23,8 @@ namespace CheckedAppProject.LOGIC.AutoMapperProfiles
 
             CreateMap<Item, ItemDTO>();
 
-            CreateMap<CreateItemListDTO, ItemList>();
+            CreateMap<CreateItemListDTO, ItemList>()
+             .ForAllMembers(opt => opt.UseDestinationValue());
         }
     }
 }

@@ -48,20 +48,17 @@ namespace CheckedAppProject.DATA.DbServices.Repository
             }
             return false;
         }
-        public async Task<bool> EditUserData(User userData) // do poprawki, nie zapisuje nowych danych dto nowy trzeba zrobic bez warunków
+        public async Task<bool> EditUserData(User userData, int userId) // poprawione, tylko zmiany hasła i mail oddzielnie??
         {
             var dbUser = await _userItemContext.Users
-                .FirstOrDefaultAsync(u => u.UserId == userData.UserId);
+               .FirstOrDefaultAsync(u => u.UserId == userId);
 
             if (dbUser != null)
             {
                 dbUser.UserName = userData.UserName ?? dbUser.UserName;
                 dbUser.UserSurname = userData.UserSurname ?? dbUser.UserSurname;
-                dbUser.UserEmail = userData.UserEmail ?? dbUser.UserEmail;
                 dbUser.Password = userData.Password ?? dbUser.Password;
                 dbUser.UserAge = userData.UserAge != 0 ? userData.UserAge : dbUser.UserAge;
-                dbUser.UserSex = userData.UserSex ?? dbUser.UserSex;
-                dbUser.UserLogged = userData.UserLogged;
 
                 await _userItemContext.SaveChangesAsync();
                 return true;
@@ -80,6 +77,6 @@ namespace CheckedAppProject.DATA.DbServices.Repository
                 throw;
             }
 
-        }// dokończyć merge sprawdzenie
+        }
     }
 }

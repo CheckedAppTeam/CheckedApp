@@ -46,12 +46,11 @@ namespace CheckedAppProject.API.Controllers
         }
 
         [HttpPut("UserData/{id}")]
-        public async Task<IActionResult> EditUser([FromBody] AddUserDTO dto, [FromRoute] int id)
+        public async Task<IActionResult> EditUser([FromBody] UserUpdateDTO dto, [FromRoute] int id)
         {
-
             if (!ModelState.IsValid) return BadRequest(ModelState);
 
-            var isUpdated = await _userService.UpdateUser(dto);
+            var isUpdated = await _userService.UpdateUser(dto, id);
 
             return isUpdated == false ? 
                 (NotFound(new { ErrorCode = 404, Message = "User with this ID not found" })) 

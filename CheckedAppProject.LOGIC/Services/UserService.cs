@@ -45,10 +45,10 @@ namespace CheckedAppProject.LOGIC.Services
             return await _userRepository.DeleteUserAsync(query => query.Where(u => u.UserId == userId));
 
         }
-        public async Task<bool> UpdateUser(AddUserDTO dto)
+        public async Task<bool> UpdateUser(UserUpdateDTO dto, int userId)
         {
             var user = _mapper.Map<User>(dto);
-            return await _userRepository.EditUserData(user);
+            return await _userRepository.EditUserData(user, userId);
         }
     }
 }
