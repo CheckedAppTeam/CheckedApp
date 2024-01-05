@@ -23,9 +23,9 @@ namespace CheckedAppProject.LOGIC.Services
             _itemListRepository = iemListRepository;
         }
 
-        public async Task<ItemListDTO> GetByIdAsync(int id)
+        public async Task<ItemListDTO> GetByIdAsync(int itemListId)
         {
-            var itemList = await _itemListRepository.GetItemListAsync(query => query.Where(il => il.ItemListId == id));
+            var itemList = await _itemListRepository.GetItemListAsync(query => query.Where(il => il.ItemListId == itemListId));
 
             if (itemList == null) return null;
 
@@ -37,11 +37,21 @@ namespace CheckedAppProject.LOGIC.Services
         {
             var itemList = await _itemListRepository.GetItemListAsync(query => query.Where(il => il.ItemListDestination == city));
 
-            //if (itemList == null) return null;
+            if (itemList == null) return null;
 
             var itemListDto = _mapper.Map<ItemListDTO>(itemList);
             return itemListDto;
         }
+
+        //public async Task<ItemListDTO> GetByMonthAndCity(DateTime date, string city)
+        //{
+        //    var itemList = await _itemListRepository.GetItemListAsync(query => query.Where(il => il.ItemListDestination == city && il.Date.ToString("MMM") == date.ToString("MMMM")));
+
+        //    if (itemList == null) return null;
+
+        //    var itemListDto = _mapper.Map<ItemListDTO>(itemList);
+        //    return itemListDto;
+        //}
 
         public async Task<IEnumerable<ItemListDTO>> GetAllAsync()
         {
@@ -61,43 +71,37 @@ namespace CheckedAppProject.LOGIC.Services
             return itemListsDto;
         }
 
-        public async Task CreateAsync(CreateItemListDTO dto)
+        public async Task CreateAsync(CreateItemListDTO dto, int userId)
         {
             var itemList = _mapper.Map<ItemList>(dto);
+
+            itemList.UserId = userId;
+
             await _itemListRepository.CreateItemList(itemList);
         }
 
-        public async Task<ItemList> CopyAsync(int itemListid, int userid)
+        public async Task<ItemList> CopyAsync(int itemListid, int userId)
         {
-            var currentUser = await _dbContext
-                .Users
-                .Include(u => u.ItemList)
-                .FirstOrDefaultAsync(u => u.UserId == userid);
-
             var itemList = await _dbContext
                 .ItemLists
                 .Include(il => il.Items)
                 .FirstOrDefaultAsync(il => il.ItemListId == itemListid);
 
-            Console.WriteLine($"currentUser: {currentUser}");
-            Console.WriteLine($"itemList: {itemList}");
-
-            if (currentUser?.ItemList != null && itemList != null)
+            if (itemList != null)
             {
-                Console.WriteLine($"itemList.Date: {itemList.Date}");
-                Console.WriteLine($"itemList.ItemListDestination: {itemList.ItemListDestination}");
+                var newItemList = _mapper.Map<CreateItemListDTO>(itemList);
+
+                var createCopy = CreateAsync(newItemList, userId);
 
                 var copyItemList = new ItemList
                 {
                     Date = itemList.Date ?? DateTime.Now,
                     ItemListDestination = itemList.ItemListDestination ?? "Destination",
-                    UserId = userid,
+                    UserId = userId,
                     ItemListName = itemList.ItemListName ?? "ItemList",
                     Items = itemList.Items,
                     ItemListPublic = false
                 };
-
-                currentUser.ItemList.Add(copyItemList);
 
                 await _dbContext.SaveChangesAsync();
 
@@ -111,24 +115,10 @@ namespace CheckedAppProject.LOGIC.Services
 
         }
 
-        public async Task<bool> UpdateAsync(int id, UpdateItemListDTO dto)
+        public async Task<bool> UpdateAsync(UpdateItemListDTO dto)
         {
-            var itemList = await _dbContext
-                .ItemLists
-                .FirstOrDefaultAsync(il => il.ItemListId == id);
-
-            if (itemList == null)
-            {
-                return false;
-            }
-
-            itemList.ItemListName = dto.ItemListName;
-            itemList.ItemListDestination = dto.ItemListDestination;
-            itemList.ItemListPublic = dto.ItemListPublic;
-            itemList.Date = dto.Date;
-
-            _dbContext.SaveChanges();
-            return true;
+            var itemList = _mapper.Map<ItemList>(dto);
+            return await _itemListRepository.UpdateItemListAsync(itemList);
         }
 
         public async Task<bool> DeleteAsync(int id)

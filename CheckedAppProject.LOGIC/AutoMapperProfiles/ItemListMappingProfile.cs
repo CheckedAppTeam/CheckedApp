@@ -23,7 +23,9 @@ namespace CheckedAppProject.LOGIC.AutoMapperProfiles
 
             CreateMap<Item, ItemDTO>();
 
+            CreateMap<ItemListDTO, ItemList>();
             CreateMap<CreateItemListDTO, ItemList>();
+            CreateMap<ItemList, CreateItemListDTO>();
         }
     }
 }

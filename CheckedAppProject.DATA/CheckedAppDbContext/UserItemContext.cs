@@ -26,26 +26,13 @@ namespace CheckedAppProject.DATA.CheckedAppDbContext
                 .WithOne(u => u.User)
                 .HasForeignKey(x => x.UserId);
                 });
-            modelBuilder.Entity<ItemList>(eb =>
-            {
-                eb.Property(il => il.Date).HasDefaultValueSql("CURRENT_TIMESTAMP");
-                eb.HasMany(x => x.Items)
-                .WithMany(i => i.ItemList)
-                .UsingEntity<UserItem>(
-                    x => x.HasOne(uit => uit.Item)
-                    .WithMany()
-                    .HasForeignKey(uit => uit.ItemId),
 
-                    x => x.HasOne(uit => uit.ItemList)
-                    .WithMany()
-                    .HasForeignKey(uit => uit.ItemListId),
 
-                    uit =>
-                    {
-                        uit.HasKey(uit => new { uit.ItemListId, uit.ItemId });
-                    });
-            });
-            
+            modelBuilder.Entity<ItemList>()
+                            .HasMany(e => e.Items)
+                            .WithMany(e => e.ItemLists)
+                            .UsingEntity<UserItem>();
+
         }
     }
 }

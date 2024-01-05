@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
+using CheckedAppProject.DATA.Entities;
 
 namespace CheckedAppProject.LOGIC.DTOs;
 

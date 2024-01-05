@@ -21,7 +21,7 @@ namespace CheckedAppProject.API.Controllers
             _itemListService = itemListService;
         }
 
-        [HttpGet]
+        [HttpGet("getalllists")]
         public async Task<ActionResult<IEnumerable<ItemListDTO>>> GetAllAsync()
         {
             var itemListsDto = await _itemListService.GetAllAsync();
@@ -47,11 +47,10 @@ namespace CheckedAppProject.API.Controllers
             return Ok(itemListsDto);
         }
 
-
-        [HttpGet("{id}")]
-        public async Task<ActionResult<ItemListDTO>> GetAsync([FromRoute] int id)
+        [HttpGet("getlist/{itemlistid}")]
+        public async Task<ActionResult<ItemListDTO>> GetList([FromRoute] int itemlistid)
         {
-            var itemList = await _itemListService.GetByIdAsync(id);
+            var itemList = await _itemListService.GetByIdAsync(itemlistid);
 
             if (itemList is null)
             {
@@ -74,17 +73,30 @@ namespace CheckedAppProject.API.Controllers
             return Ok(itemList);
         }
 
-        [HttpPost]
-        public async Task<ActionResult> CreateItemListAsync([FromBody] CreateItemListDTO dto)
+        //[HttpGet("cityanddate/{city}/{date}")]
+        //public async Task<AcceptedResult<ItemListDTO>> GetByDateAndCity([FromRoute] string city, [FromRoute] DateTime date)
+        //{
+        //    var itemList = await _itemListService.GetByCityAndDateAsync(city, date);
+
+        //    if (itemList is null)
+        //    {
+        //        return NotFound();
+        //    }
+
+        //    return Ok(itemList);
+        //}
+
+        [HttpPost("addlist/{userid}")]
+        public async Task<ActionResult> AddList([FromBody] CreateItemListDTO dto, [FromRoute] int userid)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            await _itemListService.CreateAsync(dto);
+            await _itemListService.CreateAsync(dto, userid);
 
-            return Ok(new { Message = "Item List created successfully" });
+            return Ok(new { Message = "Item List added successfully" });
         }
 
         [HttpPost("user/{userid}")]
@@ -101,14 +113,14 @@ namespace CheckedAppProject.API.Controllers
         }
 
         [HttpPut("{id}")]
-        public async Task<ActionResult> UpdateItemListAsync([FromRoute] int id, [FromBody] UpdateItemListDTO dto)
+        public async Task<ActionResult> UpdateItemListAsync([FromBody] UpdateItemListDTO dto)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            var isUpdated = await _itemListService.UpdateAsync(id, dto);
+            var isUpdated = await _itemListService.UpdateAsync(dto);
 
             if (isUpdated)
             {
@@ -117,7 +129,6 @@ namespace CheckedAppProject.API.Controllers
 
             return NotFound();
         }
-
 
         [HttpDelete("{id}")]
         public async Task<ActionResult> DeleteAsync(int id)
@@ -131,31 +142,5 @@ namespace CheckedAppProject.API.Controllers
 
             return NotFound();
         }
-
-        //private readonly IAppLogger _logger ;
-        //public ItemListController(IAppLogger logger)
-        //{
-        //    _logger = logger;
-        //}
-
-        //public void AddList(string name) 
-        //{
-        //    try
-        //    {
-        //        _logger.LogToFileAndConsole("Successfuly added a list.");
-
-
-        //    }catch (Exception ex)
-        //    {
-        //        _logger.LogException(ex);
-        //    }
-        //}
-        //public List<Item> GetList() { return null; }
-        //public List<List<Item>> GetAllLists() { return null; }
-        //public void UpdateList(List<Item> list) { }
-        //public void DeleteList(string name) { }
-        //public void PublishList(string name) { }
-        //public void TakeDownList(string name) { }
-        //public List<string> GetAllListNames() { return null; }
     }
 }

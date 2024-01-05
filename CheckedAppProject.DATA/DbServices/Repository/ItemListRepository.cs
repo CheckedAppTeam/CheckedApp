@@ -24,14 +24,13 @@ public class ItemListRepository : IItemListRepository
         return itemLists;
     }
 
-    public async Task<IEnumerable<User>> GetAllByUserIdAsync(Func<IQueryable<User>, IQueryable<User>> customQuery)
+    public async Task<IEnumerable<ItemList>> GetAllByUserIdAsync(Func<IQueryable<ItemList>, IQueryable<ItemList>> customQuery)
     {
-        var query = _userItemContext.Users.AsQueryable();
+        var query = _userItemContext.ItemLists.AsQueryable();
 
         query = customQuery(query);
 
         return await query
-            .Include(u => u.ItemList)
             .ToListAsync();
     }
 
@@ -57,7 +56,25 @@ public class ItemListRepository : IItemListRepository
         {
             throw;
         }
+    }
 
+    public async Task<bool> UpdateItemListAsync(ItemList itemList)
+    {
+        var dbItemList = await _userItemContext.ItemLists.FirstOrDefaultAsync(il => il.ItemListId == itemList.ItemListId);
+
+        if (dbItemList == null)
+        {
+            return false;
+        }
+
+        dbItemList.ItemListName = itemList.ItemListName ?? itemList.ItemListName;
+        dbItemList.ItemListDestination = itemList.ItemListDestination ?? itemList.ItemListDestination;
+        dbItemList.ItemListPublic = itemList.ItemListPublic;
+        dbItemList.Date = itemList.Date ?? DateTime.Now;
+
+        await _userItemContext.SaveChangesAsync();
+
+        return true;
     }
 
     public async Task<bool> DeleteAsync(Func<IQueryable<ItemList>, IQueryable<ItemList>> customQuery)
@@ -79,9 +96,4 @@ public class ItemListRepository : IItemListRepository
 
 
 }
-
-//public class ItemListRepository
-//{
-//    public List<ItemList> ItemLists { get; set; }
-//}
 
