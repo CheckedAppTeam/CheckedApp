@@ -58,9 +58,9 @@ public class ItemListRepository : IItemListRepository
         }
     }
 
-    public async Task<bool> UpdateItemListAsync(ItemList itemList)
+    public async Task<bool> UpdateItemListAsync(ItemList itemList, int id)
     {
-        var dbItemList = await _userItemContext.ItemLists.FirstOrDefaultAsync(il => il.ItemListId == itemList.ItemListId);
+        var dbItemList = await _userItemContext.ItemLists.FirstOrDefaultAsync(il => il.ItemListId == id);
 
         if (dbItemList == null)
         {

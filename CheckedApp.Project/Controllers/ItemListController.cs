@@ -113,14 +113,14 @@ namespace CheckedAppProject.API.Controllers
         }
 
         [HttpPut("{id}")]
-        public async Task<ActionResult> UpdateItemListAsync([FromBody] UpdateItemListDTO dto)
+        public async Task<ActionResult> UpdateItemListAsync([FromBody] UpdateItemListDTO dto, int id)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            var isUpdated = await _itemListService.UpdateAsync(dto);
+            var isUpdated = await _itemListService.UpdateAsync(dto, id);
 
             if (isUpdated)
             {

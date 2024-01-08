@@ -12,6 +12,6 @@ namespace CheckedAppProject.LOGIC.Services
         Task<IEnumerable<ItemListDTO>> GetAllByUserIdAsync(int userid);
         Task<ItemListDTO> GetByIdAsync(int id);
         Task<ItemList> CopyAsync(int itemListid, int userid);
-        Task<bool> UpdateAsync(UpdateItemListDTO dto);
+        Task<bool> UpdateAsync(UpdateItemListDTO dto, int id);
     }
 }

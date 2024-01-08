@@ -22,10 +22,14 @@ namespace CheckedAppProject.LOGIC.AutoMapperProfiles
             .ForMember(dest => dest.IsPublic, opt => opt.MapFrom(src => src.ItemListPublic));
 
             CreateMap<Item, ItemDTO>();
+            CreateMap<ItemDTO, Item>();
 
             CreateMap<ItemListDTO, ItemList>();
             CreateMap<CreateItemListDTO, ItemList>();
             CreateMap<ItemList, CreateItemListDTO>();
+            CreateMap<UpdateItemListDTO, ItemList>();
+            CreateMap<ItemList, UpdateItemListDTO>();
+            
         }
     }
 }

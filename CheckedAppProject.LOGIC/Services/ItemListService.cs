@@ -115,10 +115,10 @@ namespace CheckedAppProject.LOGIC.Services
 
         }
 
-        public async Task<bool> UpdateAsync(UpdateItemListDTO dto)
+        public async Task<bool> UpdateAsync(UpdateItemListDTO dto, int id)
         {
             var itemList = _mapper.Map<ItemList>(dto);
-            return await _itemListRepository.UpdateItemListAsync(itemList);
+            return await _itemListRepository.UpdateItemListAsync(itemList, id);
         }
 
         public async Task<bool> DeleteAsync(int id)
