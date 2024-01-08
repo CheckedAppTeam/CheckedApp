@@ -10,5 +10,7 @@ namespace CheckedAppProject.DATA.DbServices.Repository
         Task<IEnumerable<ItemList>> GetAllItemListsAsync();
         Task<ItemList> GetItemListAsync(Func<IQueryable<ItemList>, IQueryable<ItemList>> customQuery);
         Task<bool> UpdateItemListAsync(ItemList itemList, int id);
+        Task<ItemList> CopyItemList(int itemListid, int userId);
+        Task<IEnumerable<ItemList>> GetAllItemListsByCityAndMonthAsync(string city, DateTime date);
     }
 }

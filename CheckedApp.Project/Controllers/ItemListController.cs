@@ -78,18 +78,18 @@ namespace CheckedAppProject.API.Controllers
             return Ok(itemList);
         }
 
-        //[HttpGet("cityanddate/{city}/{date}")]
-        //public async Task<AcceptedResult<ItemListDTO>> GetByDateAndCity([FromRoute] string city, [FromRoute] DateTime date)
-        //{
-        //    var itemList = await _itemListService.GetByCityAndDateAsync(city, date);
+        [HttpGet("cityanddate/{city}/{date}")]
+        public async Task<ActionResult<ItemListDTO>> GetByDateAndCity([FromRoute] string city, [FromRoute] DateTime date)
+        {
+            var itemList = await _itemListService.GetByMonthAndCity(date, city);
 
-        //    if (itemList is null)
-        //    {
-        //        return NotFound();
-        //    }
+            if (itemList is null)
+            {
+                return NotFound();
+            }
 
-        //    return Ok(itemList);
-        //}
+            return Ok(itemList);
+        }
 
         [HttpPost("addlist/{userid}")]
         public async Task<ActionResult> AddList([FromBody] CreateItemListDTO dto, [FromRoute] int userid)
@@ -105,7 +105,7 @@ namespace CheckedAppProject.API.Controllers
             return Ok(new { Message = "Item List added successfully" });
         }
 
-        [HttpPost("user/{userid}")]
+        [HttpPost("user/{itemListid}/{userid}")]
         public async Task<ActionResult> CopyItemListAsync([FromRoute] int itemListid, [FromRoute] int userid)
         {
             if (!ModelState.IsValid)
