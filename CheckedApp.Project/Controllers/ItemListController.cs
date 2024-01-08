@@ -14,10 +14,12 @@ namespace CheckedAppProject.API.Controllers
     public class ItemListController : ControllerBase
     {
         private readonly IItemListService _itemListService;
+        private readonly ILogger<ItemListController> _logger;
 
-        public ItemListController(IItemListService itemListService)
+        public ItemListController(IItemListService itemListService, ILogger<ItemListController> logger)
         {
             _itemListService = itemListService;
+            _logger = logger;
         }
 
         [HttpGet("getalllists")]
@@ -27,6 +29,7 @@ namespace CheckedAppProject.API.Controllers
 
             if (itemListsDto is null)
             {
+                _logger.LogInformation("No Item List found");
                 return NotFound();
             }
 
@@ -40,6 +43,7 @@ namespace CheckedAppProject.API.Controllers
 
             if (itemListsDto is null)
             {
+                _logger.LogInformation("No Item List found");
                 return NotFound();
             }
 
@@ -53,6 +57,7 @@ namespace CheckedAppProject.API.Controllers
 
             if (itemList is null)
             {
+                _logger.LogInformation($"Item List with id {itemList} not found");
                 return NotFound();
             }
 
@@ -66,6 +71,7 @@ namespace CheckedAppProject.API.Controllers
 
             if (itemList is null)
             {
+                _logger.LogInformation("Item List not found");
                 return NotFound();
             }
 
@@ -95,6 +101,7 @@ namespace CheckedAppProject.API.Controllers
 
             await _itemListService.CreateAsync(dto, userid);
 
+            _logger.LogInformation($"ItemList {dto.ItemListName} is added");
             return Ok(new { Message = "Item List added successfully" });
         }
 
@@ -108,6 +115,7 @@ namespace CheckedAppProject.API.Controllers
 
             var copy = await _itemListService.CopyAsync(itemListid, userid);
 
+            _logger.LogInformation($"Item List with id {itemListid} is copied");
             return Ok(copy);
         }
 
@@ -123,9 +131,11 @@ namespace CheckedAppProject.API.Controllers
 
             if (isUpdated)
             {
+                _logger.LogInformation($"Item List {dto.ItemListName} is created");
                 return NoContent();
             }
 
+            _logger.LogInformation($"Item List with id {id} is not found");
             return NotFound();
         }
 
@@ -136,9 +146,11 @@ namespace CheckedAppProject.API.Controllers
 
             if (isDeleted)
             {
+                _logger.LogInformation($"Item List with id {id} is deleted");
                 return NoContent();
             }
 
+            _logger.LogInformation($"Item List with id {id} is deleted");
             return NotFound();
         }
     }
