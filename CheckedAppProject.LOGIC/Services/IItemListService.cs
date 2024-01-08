@@ -1,13 +1,17 @@
-﻿using CheckedAppProject.LOGIC.DTOs;
+﻿using CheckedAppProject.DATA.Entities;
+using CheckedAppProject.LOGIC.DTOs;
 
 namespace CheckedAppProject.LOGIC.Services
 {
     public interface IItemListService
     {
-        int Create(CreateItemListDTO dto);
-        IEnumerable<ItemListDTO> GetAll();
-        ItemListDTO GetById(int id);
-        bool Update(int id, UpdateItemListDTO dto);
-        bool Delete(int id);
+        Task CreateAsync(CreateItemListDTO dto, int userId);
+        Task<ItemListDTO> GetByCityAsync(string city);
+        Task<bool> DeleteAsync(int id);
+        Task<IEnumerable<ItemListDTO>> GetAllAsync();
+        Task<IEnumerable<ItemListDTO>> GetAllByUserIdAsync(int userid);
+        Task<ItemListDTO> GetByIdAsync(int id);
+        Task<ItemList> CopyAsync(int itemListid, int userid);
+        Task<bool> UpdateAsync(UpdateItemListDTO dto, int id);
     }
 }

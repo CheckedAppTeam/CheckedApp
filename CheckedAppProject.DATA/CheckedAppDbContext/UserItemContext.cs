@@ -23,12 +23,15 @@ namespace CheckedAppProject.DATA.CheckedAppDbContext
                 eb.HasMany(w => w.ItemList)
                 .WithOne(u => u.User)
                 .HasForeignKey(x => x.UserId);
-            });
+
+                });
+
 
             modelBuilder.Entity<ItemList>()
-                .HasMany(e => e.Items)
-                .WithMany(e => e.ItemLists)
-                .UsingEntity<UserItem>();
+                            .HasMany(e => e.Items)
+                            .WithMany(e => e.ItemLists)
+                            .UsingEntity<UserItem>();
+
         }
     }
 }

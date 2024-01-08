@@ -15,6 +15,6 @@ namespace CheckedAppProject.LOGIC.DTOs
         //public string Month { get; set; }
         public bool IsPublic { get; set; }
 
-        public List<ItemDTO> Items { get; set; }
+        public List<ItemDTO> ItemsDto { get; set; }
     }
 }

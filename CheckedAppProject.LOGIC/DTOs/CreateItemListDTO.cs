@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
+using CheckedAppProject.DATA.Entities;
 
 namespace CheckedAppProject.LOGIC.DTOs;
 
@@ -11,6 +12,7 @@ public class CreateItemListDTO
     public DateTime? Date { get; set; }
     public bool ItemListPublic { get; set; }
     public string ItemListDestination { get; set; }
+    public List<ItemDTO> ItemsDTO { get; set; }
 }
 
 

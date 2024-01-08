@@ -21,10 +21,10 @@ namespace CheckedAppProject.API.Controllers
             _itemListService = itemListService;
         }
 
-        [HttpGet]
-        public ActionResult<IEnumerable<ItemListDTO>> GetAll()
+        [HttpGet("getalllists")]
+        public async Task<ActionResult<IEnumerable<ItemListDTO>>> GetAllAsync()
         {
-            var itemListsDto = _itemListService.GetAll();
+            var itemListsDto = await _itemListService.GetAllAsync();
 
             if (itemListsDto is null)
             {
@@ -34,10 +34,23 @@ namespace CheckedAppProject.API.Controllers
             return Ok(itemListsDto);
         }
 
-        [HttpGet("{id}")]
-        public ActionResult<ItemListDTO> Get([FromRoute] int id)
+        [HttpGet("user/{userid}")]
+        public async Task<ActionResult<IEnumerable<ItemListDTO>>> GetAllByUserIdAsync([FromRoute] int userid)
         {
-            var itemList = _itemListService.GetById(id);
+            var itemListsDto = await _itemListService.GetAllByUserIdAsync(userid);
+
+            if (itemListsDto is null)
+            {
+                return NotFound();
+            }
+
+            return Ok(itemListsDto);
+        }
+
+        [HttpGet("getlist/{itemlistid}")]
+        public async Task<ActionResult<ItemListDTO>> GetList([FromRoute] int itemlistid)
+        {
+            var itemList = await _itemListService.GetByIdAsync(itemlistid);
 
             if (itemList is null)
             {
@@ -47,28 +60,67 @@ namespace CheckedAppProject.API.Controllers
             return Ok(itemList);
         }
 
-        [HttpPost]
-        public ActionResult CreateItemList([FromBody] CreateItemListDTO dto)
+        [HttpGet("city/{city}")]
+        public async Task<ActionResult<ItemListDTO>> GetByCityAsync([FromRoute] string city)
+        {
+            var itemList = await _itemListService.GetByCityAsync(city);
+
+            if (itemList is null)
+            {
+                return NotFound();
+            }
+
+            return Ok(itemList);
+        }
+
+        //[HttpGet("cityanddate/{city}/{date}")]
+        //public async Task<AcceptedResult<ItemListDTO>> GetByDateAndCity([FromRoute] string city, [FromRoute] DateTime date)
+        //{
+        //    var itemList = await _itemListService.GetByCityAndDateAsync(city, date);
+
+        //    if (itemList is null)
+        //    {
+        //        return NotFound();
+        //    }
+
+        //    return Ok(itemList);
+        //}
+
+        [HttpPost("addlist/{userid}")]
+        public async Task<ActionResult> AddList([FromBody] CreateItemListDTO dto, [FromRoute] int userid)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            var id = _itemListService.Create(dto);
+            await _itemListService.CreateAsync(dto, userid);
 
-            return Created($"api/itemList/{id}", null);
+            return Ok(new { Message = "Item List added successfully" });
+        }
+
+        [HttpPost("user/{userid}")]
+        public async Task<ActionResult> CopyItemListAsync([FromRoute] int itemListid, [FromRoute] int userid)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var copy = await _itemListService.CopyAsync(itemListid, userid);
+
+            return Ok(copy);
         }
 
         [HttpPut("{id}")]
-        public ActionResult UpdateItemList([FromRoute] int id, [FromBody] UpdateItemListDTO dto)
+        public async Task<ActionResult> UpdateItemListAsync([FromBody] UpdateItemListDTO dto, int id)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            var isUpdated = _itemListService.Update(id, dto);
+            var isUpdated = await _itemListService.UpdateAsync(dto, id);
 
             if (isUpdated)
             {
@@ -78,11 +130,10 @@ namespace CheckedAppProject.API.Controllers
             return NotFound();
         }
 
-
         [HttpDelete("{id}")]
-        public ActionResult Delete(int id)
+        public async Task<ActionResult> DeleteAsync(int id)
         {
-            var isDeleted = _itemListService.Delete(id);
+            var isDeleted = await _itemListService.DeleteAsync(id);
 
             if (isDeleted)
             {
@@ -91,31 +142,5 @@ namespace CheckedAppProject.API.Controllers
 
             return NotFound();
         }
-
-        //private readonly IAppLogger _logger ;
-        //public ItemListController(IAppLogger logger)
-        //{
-        //    _logger = logger;
-        //}
-
-        //public void AddList(string name) 
-        //{
-        //    try
-        //    {
-        //        _logger.LogToFileAndConsole("Successfuly added a list.");
-
-
-        //    }catch (Exception ex)
-        //    {
-        //        _logger.LogException(ex);
-        //    }
-        //}
-        //public List<Item> GetList() { return null; }
-        //public List<List<Item>> GetAllLists() { return null; }
-        //public void UpdateList(List<Item> list) { }
-        //public void DeleteList(string name) { }
-        //public void PublishList(string name) { }
-        //public void TakeDownList(string name) { }
-        //public List<string> GetAllListNames() { return null; }
     }
 }

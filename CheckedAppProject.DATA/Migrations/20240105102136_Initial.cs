@@ -52,7 +52,7 @@ namespace CheckedAppProject.DATA.Migrations
                     ItemListId = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     ItemListName = table.Column<string>(type: "text", nullable: true),
-                    Date = table.Column<DateTime>(type: "timestamp with time zone", nullable: true, defaultValueSql: "CURRENT_TIMESTAMP"),
+                    Date = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
                     ItemListPublic = table.Column<bool>(type: "boolean", nullable: false),
                     ItemListDestination = table.Column<string>(type: "text", nullable: true),
                     UserId = table.Column<int>(type: "integer", nullable: false)
@@ -78,7 +78,7 @@ namespace CheckedAppProject.DATA.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_UserItems", x => new { x.ItemListId, x.ItemId });
+                    table.PrimaryKey("PK_UserItems", x => new { x.ItemId, x.ItemListId });
                     table.ForeignKey(
                         name: "FK_UserItems_ItemLists_ItemListId",
                         column: x => x.ItemListId,
@@ -99,9 +99,9 @@ namespace CheckedAppProject.DATA.Migrations
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_UserItems_ItemId",
+                name: "IX_UserItems_ItemListId",
                 table: "UserItems",
-                column: "ItemId");
+                column: "ItemListId");
         }
 
         /// <inheritdoc />

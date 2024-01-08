@@ -143,7 +143,8 @@ namespace CheckedAppProject.DATA.Migrations
             modelBuilder.Entity("CheckedAppProject.DATA.Entities.UserItem", b =>
                 {
                     b.HasOne("CheckedAppProject.DATA.Entities.Item", "Item")
-                        .WithMany("UserItemList")
+
+                        .WithMany("UserItems")
                         .HasForeignKey("ItemId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -161,7 +162,8 @@ namespace CheckedAppProject.DATA.Migrations
 
             modelBuilder.Entity("CheckedAppProject.DATA.Entities.Item", b =>
                 {
-                    b.Navigation("UserItemList");
+
+                    b.Navigation("UserItems");
                 });
 
             modelBuilder.Entity("CheckedAppProject.DATA.Entities.ItemList", b =>

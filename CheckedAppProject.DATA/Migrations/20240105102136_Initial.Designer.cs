@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace CheckedAppProject.DATA.Migrations
 {
     [DbContext(typeof(UserItemContext))]
-    [Migration("20231220130456_Initial")]
+    [Migration("20240105102136_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
@@ -53,9 +53,7 @@ namespace CheckedAppProject.DATA.Migrations
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("ItemListId"));
 
                     b.Property<DateTime?>("Date")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("timestamp with time zone")
-                        .HasDefaultValueSql("CURRENT_TIMESTAMP");
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("ItemListDestination")
                         .HasColumnType("text");
@@ -118,18 +116,18 @@ namespace CheckedAppProject.DATA.Migrations
 
             modelBuilder.Entity("CheckedAppProject.DATA.Entities.UserItem", b =>
                 {
-                    b.Property<int>("ItemListId")
+                    b.Property<int>("ItemId")
                         .HasColumnType("integer");
 
-                    b.Property<int>("ItemId")
+                    b.Property<int>("ItemListId")
                         .HasColumnType("integer");
 
                     b.Property<string>("ItemState")
                         .HasColumnType("text");
 
-                    b.HasKey("ItemListId", "ItemId");
+                    b.HasKey("ItemId", "ItemListId");
 
-                    b.HasIndex("ItemId");
+                    b.HasIndex("ItemListId");
 
                     b.ToTable("UserItems");
                 });
@@ -148,13 +146,13 @@ namespace CheckedAppProject.DATA.Migrations
             modelBuilder.Entity("CheckedAppProject.DATA.Entities.UserItem", b =>
                 {
                     b.HasOne("CheckedAppProject.DATA.Entities.Item", "Item")
-                        .WithMany()
+                        .WithMany("UserItems")
                         .HasForeignKey("ItemId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("CheckedAppProject.DATA.Entities.ItemList", "ItemList")
-                        .WithMany()
+                        .WithMany("UserItems")
                         .HasForeignKey("ItemListId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -162,6 +160,16 @@ namespace CheckedAppProject.DATA.Migrations
                     b.Navigation("Item");
 
                     b.Navigation("ItemList");
+                });
+
+            modelBuilder.Entity("CheckedAppProject.DATA.Entities.Item", b =>
+                {
+                    b.Navigation("UserItems");
+                });
+
+            modelBuilder.Entity("CheckedAppProject.DATA.Entities.ItemList", b =>
+                {
+                    b.Navigation("UserItems");
                 });
 
             modelBuilder.Entity("CheckedAppProject.DATA.Entities.User", b =>
