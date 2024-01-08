@@ -19,10 +19,10 @@ builder.Services.AddDbContext<UserItemContext>(
     );
 
 //configuring serilog extension
-
+//tu trzeba zrobic warunek dla iMaca
     Log.Logger = new LoggerConfiguration()
     .WriteTo.Console()
-    .WriteTo.File($"{AppContext.BaseDirectory}/myapp.log", rollingInterval: RollingInterval.Day)
+    .WriteTo.File($"C:/Users/micha/source/repos/CheckedApp/CheckedApp.Project/Controllers/myapp.log", rollingInterval: RollingInterval.Day)
     .CreateLogger();
 
 var app = builder.Build();

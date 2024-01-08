@@ -1,6 +1,5 @@
 ﻿using CheckedAppProject.DATA.CheckedAppDbContext;
 using CheckedAppProject.DATA.Entities;
-using CheckedAppProject.LOGIC.Services.Logger;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Serilog;
@@ -40,7 +39,7 @@ namespace CheckedAppProject.API.Controllers
             _logger.LogInformation($"Added item: {newItem.ItemName}");
             return Ok(newItem);
         }
-        [HttpDelete("/ItemController/DeleteItem{id}")]
+        [HttpDelete("/ItemController/DeleteItem/{id}")]
         public IActionResult DeleteItem(int id) 
         {
             var itemToRemove = _dbContext.Items.Find(id);
@@ -58,7 +57,7 @@ namespace CheckedAppProject.API.Controllers
                 return NotFound();
             }
         }
-        [HttpPut("/ItemController/EditItemName{id}")]
+        [HttpPut("/ItemController/EditItemName/{id}")]
         public IActionResult EditItemName(int id, [FromBody] string name)
         {
             var itemToEdit = _dbContext.Items.Find(id);
