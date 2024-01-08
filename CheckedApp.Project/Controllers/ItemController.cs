@@ -1,11 +1,8 @@
 ﻿using CheckedAppProject.DATA.CheckedAppDbContext;
 using CheckedAppProject.DATA.Entities;
+using CheckedAppProject.LOGIC.DTOs;
+using CheckedAppProject.LOGIC.Services;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using Serilog;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace CheckedAppProject.API.Controllers
 {
@@ -13,10 +10,12 @@ namespace CheckedAppProject.API.Controllers
     {
         private readonly ILogger<ItemController> _logger;
         private readonly UserItemContext _dbContext;
-        public ItemController(ILogger<ItemController> logger, UserItemContext dbContext)
+        private readonly IItemService _itemService;
+        public ItemController(ILogger<ItemController> logger, UserItemContext dbContext, IItemService itemService)
         {
             _logger = logger;
             _dbContext = dbContext;
+            _itemService = itemService;
         }
         [HttpGet("/ItemController/GetAll")]
         public IActionResult GetAllItems()
@@ -26,19 +25,12 @@ namespace CheckedAppProject.API.Controllers
             return Ok(items);
         }
         [HttpPost("/ItemController/AddItem")]
-        public IActionResult AddItem(int id, string name, string? company)
+        public async Task <IActionResult> AddItem(ItemDTO dto)
         {
-            var newItem = new Item
-            {
-                ItemId = id,
-                ItemName = name,
-                ItemCompany = company
-            };
-            _dbContext.Items.Add(newItem);
-            _dbContext.SaveChanges();
+            var item = await _itemService.AddItemAsync(dto);
+            _logger.LogInformation($"Added item: {item}");
+            return Ok(new { Message = "Item created successfully" });
 
-            _logger.LogInformation($"Added item: {newItem.ItemName}");
-            return Ok(newItem);
         }
         [HttpDelete("/ItemController/DeleteItem/{id}")]
         public IActionResult DeleteItem(int id) 

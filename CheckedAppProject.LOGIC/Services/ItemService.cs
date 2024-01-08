@@ -1,6 +1,8 @@
 ﻿using AutoMapper;
 using CheckedAppProject.DATA.CheckedAppDbContext;
+using CheckedAppProject.DATA.DbServices.Repository;
 using CheckedAppProject.DATA.Entities;
+using CheckedAppProject.LOGIC.DTOs;
 using Microsoft.Extensions.Logging;
 
 
@@ -11,29 +13,20 @@ namespace CheckedAppProject.LOGIC.Services
         private readonly ILogger<ItemService> _logger;
         private readonly UserItemContext _userItemContext;
         private readonly IMapper _mapper;
+        private readonly IItemRepository _itemRepository;
 
-        public ItemService(UserItemContext userItemContext, IMapper mapper, ILogger<ItemService> logger)
+        public ItemService(UserItemContext userItemContext, IMapper mapper, ILogger<ItemService> logger, IItemRepository itemRepository)
         {
             _userItemContext = userItemContext ?? throw new ArgumentNullException(nameof(userItemContext));
             _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
+            _itemRepository = itemRepository ?? throw new ArgumentNullException(nameof(itemRepository));
         }
 
-        public async Task AddItemAsync(string name, string? company)
+        public async Task AddItemAsync(ItemDTO dto)
         {
-            var newItem = new Item
-            {
-                ItemName = name,
-                ItemCompany = company
-            };
-
-            try {
-            _userItemContext.Items.Add(newItem);
-            _logger.LogInformation($"added item:{name}");
-            } catch (Exception ex) { 
-                _logger.LogError(ex.ToString(),ex);
-            }
-            await _userItemContext.SaveChangesAsync();
+            var item = _mapper.Map<Item>(dto);
+            await _itemRepository.AddItemAsync(item);
         }
 
         public async Task DeleteItemAsync(string itemName, int itemListId)
