@@ -1,53 +1,87 @@
-﻿using Castle.Core.Logging;
+﻿using CheckedAppProject.DATA.CheckedAppDbContext;
 using CheckedAppProject.DATA.Entities;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 
 namespace CheckedAppProject.DATA.DbServices.Repository
 {
     public class ItemRepository : IItemRepository
     {
-        private List<Item> Items { get; set; }
-        
-        public ItemRepository()
+        private UserItemContext _userItemContext;
+        private readonly ILogger<ItemRepository> _logger;
+        public ItemRepository(UserItemContext userItemContext, ILogger<ItemRepository> logger)
         {
-            Items = new List<Item>();
-        }
-        public async Task AddItemAsync(string itemName, string itemCompany = null)
-        {
-            var newItem = new Item
-            {
-                ItemName = itemName,
-                ItemCompany = itemCompany
-            };
-
-            Items.Add(newItem);
-            await Task.CompletedTask;
+            _userItemContext = userItemContext;
+            _logger = logger;
         }
 
-        public async Task EditItemAsync(string itemName, string newItemName, string newItemCompany = null)
+        public async Task AddItemAsync(Item item)
         {
-            var itemToEdit = Items.FirstOrDefault(item => item.ItemName == itemName);
-
-            if (itemToEdit != null)
+            try
             {
-                itemToEdit.ItemName = newItemName;
-                itemToEdit.ItemCompany = newItemCompany;
+                _logger.LogInformation($"Added item: {item.ItemName} [{item.ItemCompany}]");
+
+                _userItemContext.Items.Add(item);
+                await _userItemContext.SaveChangesAsync();
             }
-            else
+            catch (Exception ex)
             {
-                throw new ArgumentException("Item not found");
+                _logger.LogError(ex, "Error while adding item to the database");
+                throw;
             }
-
-            await Task.CompletedTask;
         }
 
-        public async Task<List<Item>> GetAllItemListAsync()
+        public async Task<bool> EditItemAsync(Item itemData, int itemId)
         {
-            return await Task.FromResult(Items);
+            var dbItem = await _userItemContext.Items
+                 .FirstOrDefaultAsync(i => i.ItemId == itemId);
+            var previousName = dbItem.ItemName;
+            var previousCompany = dbItem.ItemCompany;
+
+            if (dbItem != null)
+            {
+                
+                dbItem.ItemName = itemData.ItemName ?? dbItem.ItemName;
+                dbItem.ItemCompany = itemData.ItemCompany ?? dbItem.ItemCompany;
+
+                await _userItemContext.SaveChangesAsync();
+                _logger.LogInformation($"Item changed: {previousName} {previousCompany} is now {itemData.ItemName} {itemData.ItemCompany}");
+                return true;
+            }
+            return false;
         }
 
-        public async Task<Item> GetItemAsync(string itemName)
+        public async Task<IEnumerable<Item>> GetAllItemsAsync()
         {
-            return await Task.FromResult(Items.FirstOrDefault(item => item.ItemName == itemName));
+            var items = await _userItemContext.Items.ToListAsync();
+
+            return items;
+        }
+
+        public async Task<Item> GetItemAsync(Func<IQueryable<Item>, IQueryable<Item>> customQuery)
+        {
+            var query = _userItemContext.Items.AsQueryable();
+            query = customQuery(query);
+
+            return await query
+                .Include(i => i.ItemName)
+                .FirstOrDefaultAsync();
+        }
+        public async Task<bool> DeleteItemAsync(Func<IQueryable<Item>, IQueryable<Item>> customQuery)
+        {
+            var query = _userItemContext.Items.AsQueryable();
+            query = customQuery(query);
+
+            var itemToDelete = await query.FirstOrDefaultAsync();
+
+            if (itemToDelete != null)
+            {
+                _userItemContext.Items.Remove(itemToDelete);
+                await _userItemContext.SaveChangesAsync();
+                _logger.LogInformation($"Deleted {itemToDelete.ItemName} with id:{itemToDelete.ItemId}");
+                return true;
+            }
+            return false;
         }
     }
 }

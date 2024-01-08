@@ -32,6 +32,10 @@ namespace CheckedAppProject.DATA.CheckedAppDbContext
                             .WithMany(e => e.ItemLists)
                             .UsingEntity<UserItem>();
 
+            modelBuilder.Entity<Item>()
+                .Property(p => p.ItemId)
+                .UseIdentityColumn();
+
         }
     }
 }

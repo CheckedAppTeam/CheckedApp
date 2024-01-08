@@ -1,16 +1,10 @@
-﻿using CheckedAppProject.DATA;
-using Microsoft.AspNetCore.Mvc;
-using CheckedAppProject.DATA.Entities;
-using CheckedAppProject.DATA.CheckedAppDbContext;
+﻿using Microsoft.AspNetCore.Mvc;
 using CheckedAppProject.LOGIC.DTOs;
-using AutoMapper;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.AspNetCore.JsonPatch;
 using CheckedAppProject.LOGIC.Services;
 
 namespace CheckedAppProject.API.Controllers
 {
-    [Route("api/itemlist")]
+    [Route("itemlist")]
     public class ItemListController : ControllerBase
     {
         private readonly IItemListService _itemListService;
