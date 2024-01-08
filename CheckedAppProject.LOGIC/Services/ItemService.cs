@@ -1,8 +1,8 @@
-﻿
-using AutoMapper;
+﻿using AutoMapper;
 using CheckedAppProject.DATA.CheckedAppDbContext;
 using CheckedAppProject.DATA.Entities;
 using Microsoft.Extensions.Logging;
+
 
 namespace CheckedAppProject.LOGIC.Services
 {
@@ -11,13 +11,15 @@ namespace CheckedAppProject.LOGIC.Services
         private readonly ILogger<ItemService> _logger;
         private readonly UserItemContext _userItemContext;
         private readonly IMapper _mapper;
+
         public ItemService(UserItemContext userItemContext, IMapper mapper, ILogger<ItemService> logger)
         {
-            _userItemContext = userItemContext;
-            _mapper = mapper;
-            _logger = logger;
+            _userItemContext = userItemContext ?? throw new ArgumentNullException(nameof(userItemContext));
+            _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
+            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
-        public void AddItem(string name, string? company)
+
+        public async Task AddItemAsync(string name, string? company)
         {
             var newItem = new Item
             {
@@ -25,37 +27,24 @@ namespace CheckedAppProject.LOGIC.Services
                 ItemCompany = company
             };
 
+            try {
             _userItemContext.Items.Add(newItem);
-            _userItemContext.SaveChanges();
+            _logger.LogInformation($"added item:{name}");
+            } catch (Exception ex) { 
+                _logger.LogError(ex.ToString(),ex);
+            }
+            await _userItemContext.SaveChangesAsync();
         }
 
-        public void DeleteItem(string itemName, int itemListId)
+        public async Task DeleteItemAsync(string itemName, int itemListId)
         {
             var userItem = _userItemContext.UserItems
-                .Where(ui => ui.Item.ItemName == itemName && ui.ItemListId == itemListId)
-                .FirstOrDefault();
+                .FirstOrDefault(ui => ui.Item.ItemName == itemName && ui.ItemListId == itemListId);
 
             if (userItem != null)
             {
                 _userItemContext.UserItems.Remove(userItem);
-                _userItemContext.SaveChanges();
-            }
-            else
-            {
-                _logger.LogInformation( "Item not found in the specified list");
-            }
-        }
-
-        public void EditName(string itemName)
-        {
-            var userItem = _userItemContext.UserItems
-                .Where(ui => ui.Item.ItemName == itemName)
-                .FirstOrDefault();
-
-            if (userItem != null)
-            {
-                userItem.Item.ItemName = $"{itemName}";
-                _userItemContext.SaveChanges();
+                await _userItemContext.SaveChangesAsync();
             }
             else
             {
@@ -63,11 +52,26 @@ namespace CheckedAppProject.LOGIC.Services
             }
         }
 
-        public void ToggleItemState(string itemName, string itemState)
+        public async Task EditNameAsync(string itemName)
         {
             var userItem = _userItemContext.UserItems
-                .Where(ui => ui.Item.ItemName == itemName)
-                .FirstOrDefault();
+                .FirstOrDefault(ui => ui.Item.ItemName == itemName);
+
+            if (userItem != null)
+            {
+                userItem.Item.ItemName = $"{itemName}";
+                await _userItemContext.SaveChangesAsync();
+            }
+            else
+            {
+                _logger.LogInformation("Item not found in the specified list");
+            }
+        }
+
+        public async Task ToggleItemStateAsync(string itemName, string itemState)
+        {
+            var userItem = _userItemContext.UserItems
+                .FirstOrDefault(ui => ui.Item.ItemName == itemName);
 
             if (userItem != null)
             {
@@ -80,11 +84,11 @@ namespace CheckedAppProject.LOGIC.Services
                         userItem.ItemState = "ToPack";
                         break;
                     default:
-                        _logger.LogInformation( "Invalid itemState. Use 'ToBuy' or 'ToPack'.");
-                        break;                
+                        _logger.LogInformation("Invalid itemState. Use 'ToBuy' or 'ToPack'.");
+                        break;
                 }
 
-                _userItemContext.SaveChanges();
+                await _userItemContext.SaveChangesAsync();
             }
             else
             {
