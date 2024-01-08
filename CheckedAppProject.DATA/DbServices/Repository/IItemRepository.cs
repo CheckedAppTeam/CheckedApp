@@ -5,8 +5,9 @@ namespace CheckedAppProject.DATA.DbServices.Repository
     public interface IItemRepository
     {
         Task AddItemAsync(Item item);
-        Task EditItemAsync(string itemName, string newItemName, string newItemCompany = null);
-        Task<List<Item>> GetAllItemListAsync();
-        Task<Item> GetItemAsync(string itemName);
+        Task<bool> DeleteItemAsync(Func<IQueryable<Item>, IQueryable<Item>> customQuery);
+        Task<bool> EditItemAsync(Item itemData, int itemId);
+        Task<IEnumerable<Item>> GetAllItemsAsync();
+        Task<Item> GetItemAsync(Func<IQueryable<Item>, IQueryable<Item>> customQuery);
     }
 }

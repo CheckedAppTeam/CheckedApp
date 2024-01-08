@@ -3,24 +3,28 @@ using CheckedAppProject.DATA.CheckedAppDbContext;
 using CheckedAppProject.DATA.DbServices.Repository;
 using CheckedAppProject.DATA.Entities;
 using CheckedAppProject.LOGIC.DTOs;
-using Microsoft.Extensions.Logging;
+using CheckedAppProject.LOGIC.AutoMapperProfiles;
 
 
 namespace CheckedAppProject.LOGIC.Services
 {
     public class ItemService : IItemService
     {
-        private readonly ILogger<ItemService> _logger;
-        private readonly UserItemContext _userItemContext;
         private readonly IMapper _mapper;
         private readonly IItemRepository _itemRepository;
 
-        public ItemService(UserItemContext userItemContext, IMapper mapper, ILogger<ItemService> logger, IItemRepository itemRepository)
+        public ItemService(IMapper mapper, IItemRepository itemRepository)
         {
-            _userItemContext = userItemContext ?? throw new ArgumentNullException(nameof(userItemContext));
-            _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
-            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
-            _itemRepository = itemRepository ?? throw new ArgumentNullException(nameof(itemRepository));
+            _mapper = mapper;
+            _itemRepository = itemRepository;
+        }
+        public async Task<IEnumerable<Item>> GetAllItemDtoAsync()
+        {
+            var items = await _itemRepository.GetAllItemsAsync();
+
+            //var itemsDtos = _mapper.Map<List<ItemDTO>>(items);
+
+            return items;
         }
 
         public async Task AddItemAsync(ItemDTO dto)
@@ -29,64 +33,45 @@ namespace CheckedAppProject.LOGIC.Services
             await _itemRepository.AddItemAsync(item);
         }
 
-        public async Task DeleteItemAsync(string itemName, int itemListId)
+        public async Task<bool> DeleteItemAsync(int itemId)
         {
-            var userItem = _userItemContext.UserItems
-                .FirstOrDefault(ui => ui.Item.ItemName == itemName && ui.ItemListId == itemListId);
+            return await _itemRepository.DeleteItemAsync(query => query.Where(u => u.ItemId == itemId));
 
-            if (userItem != null)
-            {
-                _userItemContext.UserItems.Remove(userItem);
-                await _userItemContext.SaveChangesAsync();
-            }
-            else
-            {
-                _logger.LogInformation("Item not found in the specified list");
-            }
         }
 
-        public async Task EditNameAsync(string itemName)
+        public async Task<bool> EditItemAsync(ItemDTO dto, int itemId)
         {
-            var userItem = _userItemContext.UserItems
-                .FirstOrDefault(ui => ui.Item.ItemName == itemName);
-
-            if (userItem != null)
-            {
-                userItem.Item.ItemName = $"{itemName}";
-                await _userItemContext.SaveChangesAsync();
-            }
-            else
-            {
-                _logger.LogInformation("Item not found in the specified list");
-            }
+            var item = _mapper.Map<Item>(dto);
+            return await _itemRepository.EditItemAsync(item, itemId);
         }
 
-        public async Task ToggleItemStateAsync(string itemName, string itemState)
-        {
-            var userItem = _userItemContext.UserItems
-                .FirstOrDefault(ui => ui.Item.ItemName == itemName);
+        //public async Task<bool> ToggleItemStateAsync(int itemId, string itemState)
+        //{
 
-            if (userItem != null)
-            {
-                switch (itemState.ToLower())
-                {
-                    case "tobuy":
-                        userItem.ItemState = "ToBuy";
-                        break;
-                    case "topack":
-                        userItem.ItemState = "ToPack";
-                        break;
-                    default:
-                        _logger.LogInformation("Invalid itemState. Use 'ToBuy' or 'ToPack'.");
-                        break;
-                }
+        //var userItem = _userItemContext.UserItems
+        //    .FirstOrDefault(ui => ui.Item.ItemName == itemName);
 
-                await _userItemContext.SaveChangesAsync();
-            }
-            else
-            {
-                _logger.LogInformation("Item not found in the specified list");
-            }
-        }
+        //if (userItem != null)
+        //{
+        //    switch (itemState.ToLower())
+        //    {
+        //        case "tobuy":
+        //            userItem.ItemState = "ToBuy";
+        //            break;
+        //        case "topack":
+        //            userItem.ItemState = "ToPack";
+        //            break;
+        //        default:
+        //            _logger.LogInformation("Invalid itemState. Use 'ToBuy' or 'ToPack'.");
+        //            break;
+        //    }
+
+        //    await _userItemContext.SaveChangesAsync();
+        //}
+        //else
+        //{
+        //    _logger.LogInformation("Item not found in the specified list");
+        //}
+        //}
     }
 }

@@ -1,4 +1,5 @@
 ﻿
+using AutoMapper;
 using CheckedAppProject.DATA.CheckedAppDbContext;
 using CheckedAppProject.DATA.DbServices.Repository;
 using CheckedAppProject.LOGIC.Services;
@@ -20,6 +21,8 @@ builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IItemListService, ItemListService>();
 builder.Services.AddScoped<IItemListRepository, ItemListRepository>();
+builder.Services.AddScoped<IItemService, ItemService>();
+builder.Services.AddScoped<IItemRepository, ItemRepository>();
 
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 builder.Services.AddSwaggerGen();
