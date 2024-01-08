@@ -2,16 +2,16 @@
 using AutoMapper;
 using CheckedAppProject.DATA.CheckedAppDbContext;
 using CheckedAppProject.DATA.Entities;
-using CheckedAppProject.LOGIC.Services.Logger;
+using Microsoft.Extensions.Logging;
 
 namespace CheckedAppProject.LOGIC.Services
 {
     public class ItemService : IItemService
     {
+        private readonly ILogger<ItemService> _logger;
         private readonly UserItemContext _userItemContext;
         private readonly IMapper _mapper;
-        private readonly IAppLogger _logger;
-        public ItemService(UserItemContext userItemContext, IMapper mapper, IAppLogger logger)
+        public ItemService(UserItemContext userItemContext, IMapper mapper, ILogger<ItemService> logger)
         {
             _userItemContext = userItemContext;
             _mapper = mapper;
@@ -42,7 +42,7 @@ namespace CheckedAppProject.LOGIC.Services
             }
             else
             {
-                _logger.LogException(new ArgumentException(), "Item not found in the specified list");
+                _logger.LogInformation( "Item not found in the specified list");
             }
         }
 
@@ -58,8 +58,8 @@ namespace CheckedAppProject.LOGIC.Services
                 _userItemContext.SaveChanges();
             }
             else
-            { 
-                _logger.LogException(new ArgumentException(), "Item not found ");
+            {
+                _logger.LogInformation("Item not found in the specified list");
             }
         }
 
@@ -80,7 +80,7 @@ namespace CheckedAppProject.LOGIC.Services
                         userItem.ItemState = "ToPack";
                         break;
                     default:
-                        _logger.LogException(new ArgumentException(), "Invalid itemState. Use 'ToBuy' or 'ToPack'.");
+                        _logger.LogInformation( "Invalid itemState. Use 'ToBuy' or 'ToPack'.");
                         break;                
                 }
 
@@ -88,7 +88,7 @@ namespace CheckedAppProject.LOGIC.Services
             }
             else
             {
-                _logger.LogException(new ArgumentException(), "Item not found ");
+                _logger.LogInformation("Item not found in the specified list");
             }
         }
     }

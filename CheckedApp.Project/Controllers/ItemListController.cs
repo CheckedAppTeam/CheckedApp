@@ -1,6 +1,5 @@
 ﻿using CheckedAppProject.DATA;
 using Microsoft.AspNetCore.Mvc;
-using CheckedAppProject.LOGIC.Services.Logger;
 using CheckedAppProject.DATA.Entities;
 using CheckedAppProject.DATA.CheckedAppDbContext;
 using CheckedAppProject.LOGIC.DTOs;

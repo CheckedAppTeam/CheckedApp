@@ -1,8 +1,8 @@
 ﻿using CheckedAppProject.DATA.CheckedAppDbContext;
 using CheckedAppProject.DATA.Entities;
-using CheckedAppProject.LOGIC.Services.Logger;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Serilog;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,20 +11,20 @@ namespace CheckedAppProject.API.Controllers
 {
     public class ItemController : ControllerBase
     {
-        private readonly IAppLogger _logger;
+        private readonly ILogger<ItemController> _logger;
         private readonly UserItemContext _dbContext;
-        public ItemController(IAppLogger logger, UserItemContext dbContext)
+        public ItemController(ILogger<ItemController> logger, UserItemContext dbContext)
         {
             _logger = logger;
             _dbContext = dbContext;
         }
-        [HttpGet]
+        [HttpGet("/ItemController/GetAll")]
         public IActionResult GetAllItems()
         {
             var items = _dbContext.Items.ToList();
             return Ok(items);
         }
-        [HttpPost]
+        [HttpPost("/ItemController/AddItem")]
         public IActionResult AddItem(int id, string name, string? company)
         {
             var newItem = new Item
@@ -36,10 +36,10 @@ namespace CheckedAppProject.API.Controllers
             _dbContext.Items.Add(newItem);
             _dbContext.SaveChanges();
 
-            _logger.LogToConsole($"Added item: {newItem.ItemName}");
+            _logger.LogInformation($"Added item: {newItem.ItemName}");
             return Ok(newItem);
         }
-        [HttpDelete("{id}")]
+        [HttpDelete("/ItemController/DeleteItem/{id}")]
         public IActionResult DeleteItem(int id) 
         {
             var itemToRemove = _dbContext.Items.Find(id);
@@ -47,17 +47,17 @@ namespace CheckedAppProject.API.Controllers
             {
                 _dbContext.Items.Remove(itemToRemove);
                 _dbContext.SaveChanges();
-
-                _logger.LogToConsole($"Deleted item: {itemToRemove.ItemName}");
+                
+                _logger.LogInformation($"Deleted item: {itemToRemove.ItemName}");
                 return Ok();
             }
             else
             {
-                _logger.LogException(null,$"Item with ID {id} not found");
+                _logger.LogInformation($"Item with ID {id} not found");
                 return NotFound();
             }
         }
-        [HttpPut("{id}")]
+        [HttpPut("/ItemController/EditItemName/{id}")]
         public IActionResult EditItemName(int id, [FromBody] string name)
         {
             var itemToEdit = _dbContext.Items.Find(id);
@@ -66,16 +66,16 @@ namespace CheckedAppProject.API.Controllers
                 itemToEdit.ItemName = name;
                 _dbContext.SaveChanges();
 
-                _logger.LogToConsole($"Edited item name: {itemToEdit.ItemName} to {name}");
+                _logger.LogInformation($"Edited item name: {itemToEdit.ItemName} to {name}");
                 return Ok(itemToEdit);
             }
             else
             {
-                _logger.LogException(null, $"Item with ID {id} not found");
+                _logger.LogInformation( $"Item with ID {id} not found");
                 return NotFound();
             }
         }
-        [HttpPut("EditItemCompanyName/{id}")]
+        [HttpPut("/ItemController/EditItemCompanyName/{id}")]
         public IActionResult EditItemCompanyName(int id, [FromBody] string newCompanyName)
         {
             var itemToEdit = _dbContext.Items.Find(id);
@@ -84,12 +84,12 @@ namespace CheckedAppProject.API.Controllers
                 itemToEdit.ItemCompany = newCompanyName;
                 _dbContext.SaveChanges();
 
-                _logger.LogToConsole($"Edited item company name for item ID {id} to {newCompanyName}");
+                _logger.LogInformation($"Edited item company name for item ID {id} to {newCompanyName}");
                 return Ok(itemToEdit);
             }
             else
             {
-                _logger.LogException(null, $"Item with ID {id} not found");
+                _logger.LogInformation( $"Item with ID {id} not found");
                 return NotFound();
             }
         }
