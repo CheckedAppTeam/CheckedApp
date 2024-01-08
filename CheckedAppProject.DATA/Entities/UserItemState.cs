@@ -1,6 +1,6 @@
 ﻿namespace CheckedAppProject.DATA.Entities
 {
-    public enum ItemState
+    public enum UserItemState
     {
         toBuy,
         toPack,

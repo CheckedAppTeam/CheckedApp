@@ -1,9 +1,7 @@
-﻿
-namespace CheckedAppProject.DATA.Entities
+﻿namespace CheckedAppProject.DATA.Entities
 {
-    public class UserItem
+    public class UserItemDTO
     {
-        public int UserItemId { get; set; }
         public ItemList ItemList { get; set; }
         public int ItemListId { get; set; }
         public Item Item { get; set; }
