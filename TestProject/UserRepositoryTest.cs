@@ -4,8 +4,6 @@ using CheckedAppProject.DATA.Entities;
 using Microsoft.EntityFrameworkCore;
 using Moq;
 
-
-
 [TestFixture]
 public class UserRepositoryTests
 {
@@ -22,7 +20,6 @@ public class UserRepositoryTests
     [Test]
     public async Task GetUserAsync_ShouldReturnUser_WhenCustomQueryProvided()
     {
-        // Arrange
         var expectedUser = new User { UserId = 1, UserName = "TestUser" };
         var mockDbSet = new Mock<DbSet<User>>();
         var data = new List<User> { expectedUser }.AsQueryable();
@@ -36,17 +33,14 @@ public class UserRepositoryTests
 
         Func<IQueryable<User>, IQueryable<User>> customQuery = q => q.Where(u => u.UserId == 1);
 
-        // Act
         var result = await _userRepository.GetUserAsync(customQuery);
 
-        // Assert
         Assert.That(result, Is.EqualTo(expectedUser));
     }
 
     [Test]
     public async Task GetAllUsersDataAsync_ShouldReturnAllUsersWithData()
     {
-        // Arrange
         var expectedUsers = new List<User>
         {
             new User { UserId = 1, UserName = "User1" },
@@ -61,17 +55,15 @@ public class UserRepositoryTests
 
         _mockContext.Setup(c => c.Users).Returns(mockDbSet.Object);
 
-        // Act
         var result = await _userRepository.GetAllUsersDataAsync();
 
-        // Assert
+        
         Assert.That(result, Is.EquivalentTo(expectedUsers));
     }
 
     [Test]
     public async Task DeleteUserAsync_ShouldReturnTrue_WhenUserExistsAndIsDeleted()
-    {
-        // Arrange
+    {      
         var userToDelete = new User { UserId = 1, UserName = "UserToDelete" };
 
         var mockDbSet = new Mock<DbSet<User>>();
@@ -84,10 +76,8 @@ public class UserRepositoryTests
 
         Func<IQueryable<User>, IQueryable<User>> customQuery = q => q.Where(u => u.UserId == 1);
 
-        // Act
         var result = await _userRepository.DeleteUserAsync(customQuery);
 
-        // Assert
         Assert.That(result, Is.True);
         _mockContext.Verify(c => c.SaveChangesAsync(default), Times.Once);
     }
