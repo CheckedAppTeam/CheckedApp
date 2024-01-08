@@ -15,6 +15,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestProject", "TestProject\
 		{D4168148-CBFE-4E61-BB45-B90A4ADA773A} = {D4168148-CBFE-4E61-BB45-B90A4ADA773A}
 		{DC6BF074-9E0A-40F4-AC59-883D6B0C0AF2} = {DC6BF074-9E0A-40F4-AC59-883D6B0C0AF2}
 	EndProjectSection
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Elementy rozwiązania", "Elementy rozwiązania", "{6410E725-5A2C-4534-9796-E596D77532AA}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

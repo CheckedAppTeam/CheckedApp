@@ -1,6 +1,5 @@
 ﻿using CheckedAppProject.DATA;
 using Microsoft.AspNetCore.Mvc;
-using CheckedAppProject.LOGIC.Services.Logger;
 using CheckedAppProject.DATA.Entities;
 using CheckedAppProject.DATA.CheckedAppDbContext;
 using CheckedAppProject.LOGIC.DTOs;
@@ -15,10 +14,12 @@ namespace CheckedAppProject.API.Controllers
     public class ItemListController : ControllerBase
     {
         private readonly IItemListService _itemListService;
+        private readonly ILogger<ItemListController> _logger;
 
-        public ItemListController(IItemListService itemListService)
+        public ItemListController(IItemListService itemListService, ILogger<ItemListController> logger)
         {
             _itemListService = itemListService;
+            _logger = logger;
         }
 
         [HttpGet("getalllists")]
@@ -28,6 +29,7 @@ namespace CheckedAppProject.API.Controllers
 
             if (itemListsDto is null)
             {
+                _logger.LogInformation("No Item List found");
                 return NotFound();
             }
 
@@ -41,6 +43,7 @@ namespace CheckedAppProject.API.Controllers
 
             if (itemListsDto is null)
             {
+                _logger.LogInformation("No Item List found");
                 return NotFound();
             }
 
@@ -54,6 +57,7 @@ namespace CheckedAppProject.API.Controllers
 
             if (itemList is null)
             {
+                _logger.LogInformation($"Item List with id {itemList} not found");
                 return NotFound();
             }
 
@@ -67,24 +71,25 @@ namespace CheckedAppProject.API.Controllers
 
             if (itemList is null)
             {
+                _logger.LogInformation("Item List not found");
                 return NotFound();
             }
 
             return Ok(itemList);
         }
 
-        //[HttpGet("cityanddate/{city}/{date}")]
-        //public async Task<AcceptedResult<ItemListDTO>> GetByDateAndCity([FromRoute] string city, [FromRoute] DateTime date)
-        //{
-        //    var itemList = await _itemListService.GetByCityAndDateAsync(city, date);
+        [HttpGet("cityanddate/{city}/{date}")]
+        public async Task<ActionResult<ItemListDTO>> GetByDateAndCity([FromRoute] string city, [FromRoute] DateTime date)
+        {
+            var itemList = await _itemListService.GetByMonthAndCity(date, city);
 
-        //    if (itemList is null)
-        //    {
-        //        return NotFound();
-        //    }
+            if (itemList is null)
+            {
+                return NotFound();
+            }
 
-        //    return Ok(itemList);
-        //}
+            return Ok(itemList);
+        }
 
         [HttpPost("addlist/{userid}")]
         public async Task<ActionResult> AddList([FromBody] CreateItemListDTO dto, [FromRoute] int userid)
@@ -96,10 +101,11 @@ namespace CheckedAppProject.API.Controllers
 
             await _itemListService.CreateAsync(dto, userid);
 
+            _logger.LogInformation($"ItemList {dto.ItemListName} is added");
             return Ok(new { Message = "Item List added successfully" });
         }
 
-        [HttpPost("user/{userid}")]
+        [HttpPost("user/{itemListid}/{userid}")]
         public async Task<ActionResult> CopyItemListAsync([FromRoute] int itemListid, [FromRoute] int userid)
         {
             if (!ModelState.IsValid)
@@ -109,6 +115,7 @@ namespace CheckedAppProject.API.Controllers
 
             var copy = await _itemListService.CopyAsync(itemListid, userid);
 
+            _logger.LogInformation($"Item List with id {itemListid} is copied");
             return Ok(copy);
         }
 
@@ -124,9 +131,11 @@ namespace CheckedAppProject.API.Controllers
 
             if (isUpdated)
             {
+                _logger.LogInformation($"Item List {dto.ItemListName} is created");
                 return NoContent();
             }
 
+            _logger.LogInformation($"Item List with id {id} is not found");
             return NotFound();
         }
 
@@ -137,9 +146,11 @@ namespace CheckedAppProject.API.Controllers
 
             if (isDeleted)
             {
+                _logger.LogInformation($"Item List with id {id} is deleted");
                 return NoContent();
             }
 
+            _logger.LogInformation($"Item List with id {id} is deleted");
             return NotFound();
         }
     }

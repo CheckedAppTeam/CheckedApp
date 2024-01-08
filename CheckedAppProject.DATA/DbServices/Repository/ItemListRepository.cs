@@ -77,6 +77,50 @@ public class ItemListRepository : IItemListRepository
         return true;
     }
 
+    public async Task<ItemList> CopyItemList(int itemListid, int userId)
+    {
+        var dbItemList = await _userItemContext.ItemLists.FirstOrDefaultAsync(il => il.ItemListId == itemListid);
+
+        if (dbItemList is null)
+        {
+            throw new Exception();
+        }
+
+        var copyItemList = new ItemList
+        {
+            Date = DateTime.UtcNow,
+            ItemListDestination = dbItemList.ItemListDestination ?? "Destination",
+            UserId = userId,
+            ItemListName = dbItemList.ItemListName ?? "ItemList",
+            UserItems = dbItemList.UserItems,
+            ItemListPublic = false
+        };
+
+        try
+        {
+            _userItemContext.ItemLists.Add(copyItemList);
+            await _userItemContext.SaveChangesAsync();
+        }
+        catch (Exception)
+        {
+            throw;
+        }
+
+        return copyItemList;
+
+    }
+
+    public async Task<IEnumerable<ItemList>> GetAllItemListsByCityAndMonthAsync(string city, DateTime date)
+    {
+        var itemLists = await _userItemContext
+            .ItemLists
+            .Include(il => il.Items)
+            .Where(il => il.ItemListDestination == city && il.Date.HasValue && il.Date.Value.Month == date.Month)
+            .ToListAsync();
+
+        return itemLists;
+    }
+
     public async Task<bool> DeleteAsync(Func<IQueryable<ItemList>, IQueryable<ItemList>> customQuery)
     {
         var query = _userItemContext.ItemLists.AsQueryable();

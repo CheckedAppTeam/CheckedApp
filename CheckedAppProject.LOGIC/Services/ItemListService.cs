@@ -33,25 +33,27 @@ namespace CheckedAppProject.LOGIC.Services
             return itemListDto;
         }
 
-        public async Task<ItemListDTO> GetByCityAsync(string city)
+        public async Task<IEnumerable<ItemListDTO>> GetByCityAsync(string city)
         {
             var itemList = await _itemListRepository.GetItemListAsync(query => query.Where(il => il.ItemListDestination == city));
 
             if (itemList == null) return null;
 
-            var itemListDto = _mapper.Map<ItemListDTO>(itemList);
+            var itemListDto = _mapper.Map<IEnumerable<ItemListDTO>>(itemList);
             return itemListDto;
         }
 
-        //public async Task<ItemListDTO> GetByMonthAndCity(DateTime date, string city)
-        //{
-        //    var itemList = await _itemListRepository.GetItemListAsync(query => query.Where(il => il.ItemListDestination == city && il.Date.ToString("MMM") == date.ToString("MMMM")));
+        public async Task<IEnumerable<ItemListDTO>> GetByMonthAndCity(DateTime date, string city)
+        {
+            var itemLists = await _itemListRepository.GetAllItemListsByCityAndMonthAsync(city, date);
 
-        //    if (itemList == null) return null;
+            if (itemLists == null) return null;
 
-        //    var itemListDto = _mapper.Map<ItemListDTO>(itemList);
-        //    return itemListDto;
-        //}
+            var itemListsDto = _mapper.Map<IEnumerable<ItemListDTO>>(itemLists);
+            return itemListsDto;
+        }
+
+
 
         public async Task<IEnumerable<ItemListDTO>> GetAllAsync()
         {
@@ -82,37 +84,7 @@ namespace CheckedAppProject.LOGIC.Services
 
         public async Task<ItemList> CopyAsync(int itemListid, int userId)
         {
-            var itemList = await _dbContext
-                .ItemLists
-                .Include(il => il.Items)
-                .FirstOrDefaultAsync(il => il.ItemListId == itemListid);
-
-            if (itemList != null)
-            {
-                var newItemList = _mapper.Map<CreateItemListDTO>(itemList);
-
-                var createCopy = CreateAsync(newItemList, userId);
-
-                var copyItemList = new ItemList
-                {
-                    Date = itemList.Date ?? DateTime.Now,
-                    ItemListDestination = itemList.ItemListDestination ?? "Destination",
-                    UserId = userId,
-                    ItemListName = itemList.ItemListName ?? "ItemList",
-                    Items = itemList.Items,
-                    ItemListPublic = false
-                };
-
-                await _dbContext.SaveChangesAsync();
-
-                return copyItemList;
-            }
-            else
-            {
-                throw new Exception("User or ItemList not found.");
-            }
-
-
+            return await _itemListRepository.CopyItemList(itemListid, userId);
         }
 
         public async Task<bool> UpdateAsync(UpdateItemListDTO dto, int id)

@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace CheckedAppProject.DATA.Migrations
 {
     [DbContext(typeof(UserItemContext))]
-    [Migration("20240105101306_Corrected")]
-    partial class Corrected
+    [Migration("20240108091334_Initial")]
+    partial class Initial
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -146,7 +146,7 @@ namespace CheckedAppProject.DATA.Migrations
             modelBuilder.Entity("CheckedAppProject.DATA.Entities.UserItem", b =>
                 {
                     b.HasOne("CheckedAppProject.DATA.Entities.Item", "Item")
-                        .WithMany("UserItemList")
+                        .WithMany("UserItems")
                         .HasForeignKey("ItemId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -164,7 +164,7 @@ namespace CheckedAppProject.DATA.Migrations
 
             modelBuilder.Entity("CheckedAppProject.DATA.Entities.Item", b =>
                 {
-                    b.Navigation("UserItemList");
+                    b.Navigation("UserItems");
                 });
 
             modelBuilder.Entity("CheckedAppProject.DATA.Entities.ItemList", b =>

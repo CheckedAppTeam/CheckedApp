@@ -21,8 +21,8 @@ namespace CheckedAppProject.LOGIC.AutoMapperProfiles
             //}))
             .ForMember(dest => dest.IsPublic, opt => opt.MapFrom(src => src.ItemListPublic));
 
-            CreateMap<Item, ItemDTO>();
-            CreateMap<ItemDTO, Item>();
+            CreateMap<UserItem, ItemDTO>();
+            CreateMap<ItemDTO, UserItem>();
 
             CreateMap<CreateItemListDTO, ItemList>()
              .ForAllMembers(opt => opt.UseDestinationValue());
