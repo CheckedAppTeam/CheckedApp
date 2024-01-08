@@ -1,12 +1,12 @@
 ﻿namespace CheckedAppProject.LOGIC.Services
-{
-    public interface IItemService
-    {
-       
-            void AddItem(string name, string? company);
-            void DeleteItem(string itemName, int itemListId);
-            void EditName(string itemName);
-            void ToggleItemState(string itemName, string itemState);
 
+    {
+        public interface IItemService
+        {
+            Task AddItemAsync(string name, string? company);
+            Task DeleteItemAsync(string itemName, int itemListId);
+            Task EditNameAsync(string itemName);
+            Task ToggleItemStateAsync(string itemName, string itemState);
+        }
     }
-}
+

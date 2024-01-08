@@ -27,12 +27,6 @@ builder.Services.AddDbContext<UserItemContext>(
     option => option.UseNpgsql(builder.Configuration["CheckedAppDbConnection"])
     );
 
-//configuring serilog extension
-//tu trzeba zrobic warunek dla iMaca
-//Log.Logger = new LoggerConfiguration()
-//    .WriteTo.Console()
-//    .WriteTo.File($"C:/Users/micha/source/repos/CheckedApp/CheckedApp.Project/Controllers/myapp.log", rollingInterval: RollingInterval.Minute)
-//    .CreateLogger();
 
 var app = builder.Build();
 
