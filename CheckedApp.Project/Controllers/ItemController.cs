@@ -22,6 +22,7 @@ namespace CheckedAppProject.API.Controllers
         public IActionResult GetAllItems()
         {
             var items = _dbContext.Items.ToList();
+
             return Ok(items);
         }
         [HttpPost("/ItemController/AddItem")]
