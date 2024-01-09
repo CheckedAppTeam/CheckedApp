@@ -16,7 +16,7 @@ namespace CheckedAppProject.API.Controllers
             _userItemService = userItemService;
         }
 
-        [HttpGet("UserItem/{id}")]
+        [HttpGet("/{id}")]
         public async Task<IActionResult> GetUserItem([FromRoute] int id)
         {
             if (!ModelState.IsValid) return BadRequest(ModelState);
@@ -26,7 +26,7 @@ namespace CheckedAppProject.API.Controllers
             return userData == null ? (NotFound(new { ErrorCode = 404, Message = "User item with this ID not found" })) : Ok(userData);
         }
 
-        [HttpGet("UserItem/ByDestination")]
+        [HttpGet("/ByDestination")]
         public async Task<IActionResult> GetAllUsersItemsByDestination([FromBody] string cityName)
         {
             if (!ModelState.IsValid) return BadRequest(ModelState);
@@ -37,7 +37,7 @@ namespace CheckedAppProject.API.Controllers
                 (NotFound(new { ErrorCode = 404, Message = "Items in this destination or such destination not found" })) : Ok(usersItemsByDestination);
         }
 
-        [HttpGet("UserItem/ByStateInItemList={id}")]
+        [HttpGet("/ByStateInItemList={id}")]
         public async Task<IActionResult> GetAllUsersItemsByStateInItemList([FromBody] UserItemState state, [FromRoute] int id)
         {
             if (!ModelState.IsValid) return BadRequest(ModelState);
@@ -47,7 +47,7 @@ namespace CheckedAppProject.API.Controllers
             return usersItemsByState == null ?
                 (NotFound(new { ErrorCode = 404, Message = "No list or items with this status found" })) : Ok(usersItemsByState);
         }
-        [HttpGet("UserItem/ByListId={id}")]
+        [HttpGet("/ByListId={id}")]
         public async Task<IActionResult> GetAllUsersItemsByListId([FromRoute] int id)
         {
             if (!ModelState.IsValid) return BadRequest(ModelState);
@@ -58,7 +58,7 @@ namespace CheckedAppProject.API.Controllers
                 (NotFound(new { ErrorCode = 404, Message = "No items in this list found or such list not found" })) : Ok(usersItemsByList);
         }
 
-        [HttpPost("UserItem")]
+        [HttpPost("")]
         public async Task<IActionResult> AddUserItem(AddUserItemDTO dto)
         {
             if (!ModelState.IsValid) return BadRequest(ModelState);
@@ -68,7 +68,7 @@ namespace CheckedAppProject.API.Controllers
             return Ok(new { Message = "UserItem created successfully" });
         }
 
-        [HttpPut("UserItem/{id}")]
+        [HttpPut("/{id}")]
         public async Task<IActionResult> EditUserItemStatus([FromBody] UserItemState state, [FromRoute] int id)
         {
             if (!ModelState.IsValid) return BadRequest(ModelState);
@@ -80,7 +80,7 @@ namespace CheckedAppProject.API.Controllers
                 : (Ok(new { Message = "Changes added successfully" }));
         }
 
-        [HttpDelete("UserItem/{id}")]
+        [HttpDelete("/{id}")]
         public async Task<IActionResult> DeleteUserItem([FromRoute] int id)
         {
             if (!ModelState.IsValid) return BadRequest(ModelState);

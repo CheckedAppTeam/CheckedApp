@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace CheckedAppProject.DATA.Migrations
 {
     [DbContext(typeof(UserItemContext))]
-    [Migration("20240108091334_Initial")]
-    partial class Initial
+    [Migration("20240109082712_UserItemFix")]
+    partial class UserItemFix
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -116,16 +116,24 @@ namespace CheckedAppProject.DATA.Migrations
 
             modelBuilder.Entity("CheckedAppProject.DATA.Entities.UserItem", b =>
                 {
+                    b.Property<int>("UserItemId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("UserItemId"));
+
                     b.Property<int>("ItemId")
                         .HasColumnType("integer");
 
                     b.Property<int>("ItemListId")
                         .HasColumnType("integer");
 
-                    b.Property<string>("ItemState")
-                        .HasColumnType("text");
+                    b.Property<int>("ItemState")
+                        .HasColumnType("integer");
 
-                    b.HasKey("ItemId", "ItemListId");
+                    b.HasKey("UserItemId");
+
+                    b.HasIndex("ItemId");
 
                     b.HasIndex("ItemListId");
 

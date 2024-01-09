@@ -8,6 +8,6 @@ namespace CheckedAppProject.DATA.DbServices.Repository
         Task<bool> DeleteUserItemAsync(Func<IQueryable<UserItem>, IQueryable<UserItem>> customQuery);
         Task<bool> EditUserItemData(UserItemState state, int userItemId);
         Task<List<UserItem>> GetAllUserItemAsync(Func<IQueryable<UserItem>, IQueryable<UserItem>> customQuery);
-        Task<UserItem> GetUserItemAsync(Func<IQueryable<UserItem>, IQueryable<UserItem>> customQuery);
+        Task<UserItem> GetUserItemRepositoryAsync(Func<IQueryable<UserItem>, IQueryable<UserItem>> customQuery);
     }
 }

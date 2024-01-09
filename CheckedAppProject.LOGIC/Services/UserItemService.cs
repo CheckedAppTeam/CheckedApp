@@ -19,7 +19,7 @@ namespace CheckedAppProject.LOGIC.Services
 
         public async Task<UserItemDTO> GetUserItemAsync(int userItemId)
         {
-            var userItemFromDb = await _userItemRepository.GetUserItemAsync(query => query.Where(u => u.UserItemId == userItemId));
+            var userItemFromDb = await _userItemRepository.GetUserItemRepositoryAsync(query => query.Where(u => u.UserItemId == userItemId));
 
             if (userItemFromDb == null) return null;
 

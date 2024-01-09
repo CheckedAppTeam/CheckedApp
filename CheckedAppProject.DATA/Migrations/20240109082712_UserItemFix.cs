@@ -7,7 +7,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace CheckedAppProject.DATA.Migrations
 {
     /// <inheritdoc />
-    public partial class Initial : Migration
+    public partial class UserItemFix : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -72,13 +72,15 @@ namespace CheckedAppProject.DATA.Migrations
                 name: "UserItems",
                 columns: table => new
                 {
+                    UserItemId = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     ItemListId = table.Column<int>(type: "integer", nullable: false),
                     ItemId = table.Column<int>(type: "integer", nullable: false),
-                    ItemState = table.Column<string>(type: "text", nullable: true)
+                    ItemState = table.Column<int>(type: "integer", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_UserItems", x => new { x.ItemId, x.ItemListId });
+                    table.PrimaryKey("PK_UserItems", x => x.UserItemId);
                     table.ForeignKey(
                         name: "FK_UserItems_ItemLists_ItemListId",
                         column: x => x.ItemListId,
@@ -97,6 +99,11 @@ namespace CheckedAppProject.DATA.Migrations
                 name: "IX_ItemLists_UserId",
                 table: "ItemLists",
                 column: "UserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_UserItems_ItemId",
+                table: "UserItems",
+                column: "ItemId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_UserItems_ItemListId",

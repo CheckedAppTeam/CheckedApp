@@ -13,7 +13,7 @@ namespace CheckedAppProject.DATA.DbServices.Repository
             _userItemContext = userItemContext;
         }
 
-        public async Task<UserItem?> GetUserItemAsync(Func<IQueryable<UserItem>, IQueryable<UserItem>> customQuery)
+        public async Task<UserItem?> GetUserItemRepositoryAsync(Func<IQueryable<UserItem>, IQueryable<UserItem>> customQuery)
         {
             var query = _userItemContext.UserItems.AsQueryable();
 

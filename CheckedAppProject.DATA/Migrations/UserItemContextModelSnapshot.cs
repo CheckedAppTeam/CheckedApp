@@ -113,16 +113,24 @@ namespace CheckedAppProject.DATA.Migrations
 
             modelBuilder.Entity("CheckedAppProject.DATA.Entities.UserItem", b =>
                 {
+                    b.Property<int>("UserItemId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("UserItemId"));
+
                     b.Property<int>("ItemId")
                         .HasColumnType("integer");
 
                     b.Property<int>("ItemListId")
                         .HasColumnType("integer");
 
-                    b.Property<string>("ItemState")
-                        .HasColumnType("text");
+                    b.Property<int>("ItemState")
+                        .HasColumnType("integer");
 
-                    b.HasKey("ItemId", "ItemListId");
+                    b.HasKey("UserItemId");
+
+                    b.HasIndex("ItemId");
 
                     b.HasIndex("ItemListId");
 
