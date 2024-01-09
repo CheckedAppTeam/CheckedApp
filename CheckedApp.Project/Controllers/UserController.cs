@@ -36,7 +36,7 @@ namespace CheckedAppProject.API.Controllers
         }
 
     [HttpPost("UserData")]
-        public async Task<IActionResult> AddUser(AddUserDTO dto)
+        public async Task<IActionResult> AddUser([FromBody] AddUserDTO dto)
         {
             if (!ModelState.IsValid) return BadRequest(ModelState);
 

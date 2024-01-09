@@ -16,9 +16,9 @@ namespace CheckedAppProject.LOGIC.Services
             _mapper = mapper;
             _userRepository = userRepository;
         }
-        public async Task<UserDataDTO> GetUserDataDtoAsync(int userId)
+        public async Task<UserDataDTO> GetUserDataDtoAsync(int id)
         {
-            var userFromDb = await _userRepository.GetUserAsync(query => query.Where(u => u.UserId == userId));
+            var userFromDb = await _userRepository.GetUserAsync(query => query.Where(u => u.UserId == id));
 
             if (userFromDb == null) return null;
 

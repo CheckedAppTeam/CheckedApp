@@ -48,7 +48,7 @@ namespace CheckedAppProject.DATA.DbServices.Repository
             }
             return false;
         }
-        public async Task<bool> EditUserData(User userData, int userId) // poprawione, tylko zmiany hasła i mail oddzielnie??
+        public async Task<bool> EditUserData(User userData, int userId)
         {
             var dbUser = await _userItemContext.Users
                .FirstOrDefaultAsync(u => u.UserId == userId);
