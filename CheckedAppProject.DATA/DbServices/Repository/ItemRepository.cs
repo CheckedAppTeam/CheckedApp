@@ -58,14 +58,13 @@ namespace CheckedAppProject.DATA.DbServices.Repository
             return items;
         }
 
-        public async Task<Item> GetItemAsync(Func<IQueryable<Item>, IQueryable<Item>> customQuery)
+        public async Task<Item> GetItemByIdAsync(int itemId)
         {
-            var query = _userItemContext.Items.AsQueryable();
-            query = customQuery(query);
-
-            return await query
-                .Include(i => i.ItemName)
+            var item = await _userItemContext.Items
+                .Where(i => i.ItemId == itemId)
                 .FirstOrDefaultAsync();
+
+            return item;
         }
         public async Task<bool> DeleteItemAsync(Func<IQueryable<Item>, IQueryable<Item>> customQuery)
         {

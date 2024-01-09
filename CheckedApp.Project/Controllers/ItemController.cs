@@ -21,6 +21,21 @@ namespace CheckedAppProject.API.Controllers
            var items = await _itemService.GetAllItemDtoAsync();
             return items == null ? NotFound(new { ErrorCode = 404, Message = "Item with this ID not found" }) : Ok(items);
         }
+       
+        [HttpGet("GetById/{id}")]
+        public async Task<IActionResult> GetItemById([FromRoute] int id)
+        {
+            var item = await _itemService.GetItemById(id);
+
+            if (item == null)
+            {
+                return NotFound(new { ErrorCode = 404, Message = $"Item with ID {id} not found" });
+            }
+
+            return Ok(item);
+        }
+
+        
         [HttpPost("AddItem")]
         public async Task <IActionResult> AddItem(ItemDTO dto)
         {
