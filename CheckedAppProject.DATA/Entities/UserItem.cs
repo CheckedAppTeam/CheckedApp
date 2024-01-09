@@ -8,6 +8,6 @@ namespace CheckedAppProject.DATA.Entities
         public int ItemListId { get; set; }
         public Item Item { get; set; }
         public int ItemId { get; set; }
-        public string ItemState { get; set; }
+        public UserItemState ItemState { get; set; }
     }
 }

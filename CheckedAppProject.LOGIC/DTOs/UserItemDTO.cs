@@ -2,10 +2,8 @@
 {
     public class UserItemDTO
     {
-        public ItemList ItemList { get; set; }
-        public int ItemListId { get; set; }
-        public Item Item { get; set; }
-        public int ItemId { get; set; }
-        public string ItemState { get; set; }
+        public string UserItemName { get; set; }
+        public UserItemState ItemState { get; set; }
+        public string UserItemListName { get; set; }
     }
 }

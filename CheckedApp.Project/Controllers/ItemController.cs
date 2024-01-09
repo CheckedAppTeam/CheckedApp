@@ -27,8 +27,8 @@ namespace CheckedAppProject.API.Controllers
         [HttpPost("/ItemController/AddItem")]
         public async Task <IActionResult> AddItem(ItemDTO dto)
         {
-            var item = await _itemService.AddItemAsync(dto);
-            _logger.LogInformation($"Added item: {item}");
+           
+            _logger.LogInformation($"Added item:");
             return Ok(new { Message = "Item created successfully" });
 
         }

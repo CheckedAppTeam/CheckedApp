@@ -68,18 +68,7 @@ namespace CheckedAppProject.LOGIC.Services
 
             if (userItem != null)
             {
-                switch (itemState.ToLower())
-                {
-                    case "tobuy":
-                        userItem.ItemState = "ToBuy";
-                        break;
-                    case "topack":
-                        userItem.ItemState = "ToPack";
-                        break;
-                    default:
-                        _logger.LogInformation("Invalid itemState. Use 'ToBuy' or 'ToPack'.");
-                        break;
-                }
+                
 
                 await _userItemContext.SaveChangesAsync();
             }

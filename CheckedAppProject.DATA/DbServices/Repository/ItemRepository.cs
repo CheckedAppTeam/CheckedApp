@@ -29,7 +29,7 @@ namespace CheckedAppProject.DATA.DbServices.Repository
 
         public async Task EditItemAsync(string itemName, string newItemName, string newItemCompany = null)
         {
-            var itemToEdit = Items.FirstOrDefault(item => item.ItemName == itemName);
+            var itemToEdit = _userItemContext.Items.FirstOrDefault(item => item.ItemName == itemName);
 
             if (itemToEdit != null)
             {
@@ -46,12 +46,12 @@ namespace CheckedAppProject.DATA.DbServices.Repository
 
         public async Task<List<Item>> GetAllItemListAsync()
         {
-            return await Task.FromResult(Items);
+            return null;
         }
 
         public async Task<Item> GetItemAsync(string itemName)
         {
-            return await Task.FromResult(Items.FirstOrDefault(item => item.ItemName == itemName));
+            return await Task.FromResult(_userItemContext.Items.FirstOrDefault(item => item.ItemName == itemName));
         }
     }
 }

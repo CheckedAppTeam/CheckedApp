@@ -11,7 +11,7 @@ namespace CheckedAppProject.API.Controllers
     {
         private readonly IUserItemService _userItemService;
 
-        public UserItemController(IUserItemService useritemService)
+        public UserItemController(IUserItemService userItemService)
         {
             _userItemService = userItemService;
         }
@@ -21,7 +21,7 @@ namespace CheckedAppProject.API.Controllers
         {
             if (!ModelState.IsValid) return BadRequest(ModelState);
 
-            var userData = await _userItemService.GetUserItemByIdAsync(id);
+            var userData = await _userItemService.GetUserItemAsync(id);
 
             return userData == null ? (NotFound(new { ErrorCode = 404, Message = "User item with this ID not found" })) : Ok(userData);
         }
@@ -31,7 +31,7 @@ namespace CheckedAppProject.API.Controllers
         {
             if (!ModelState.IsValid) return BadRequest(ModelState);
 
-            var usersItemsByDestination = await _userItemService.GetAllUserItemsByDestinationAsync();
+            var usersItemsByDestination = await _userItemService.GetAllUserItemsByDestinationAsync(cityName);
 
             return usersItemsByDestination == null ? 
                 (NotFound(new { ErrorCode = 404, Message = "Items in this destination or such destination not found" })) : Ok(usersItemsByDestination);
@@ -59,7 +59,7 @@ namespace CheckedAppProject.API.Controllers
         }
 
         [HttpPost("UserItem")]
-        public async Task<IActionResult> AddUserItem(UserItemDTO dto)
+        public async Task<IActionResult> AddUserItem(AddUserItemDTO dto)
         {
             if (!ModelState.IsValid) return BadRequest(ModelState);
 
@@ -68,7 +68,7 @@ namespace CheckedAppProject.API.Controllers
             return Ok(new { Message = "UserItem created successfully" });
         }
 
-        [HttpPut("UserData/{id}")]
+        [HttpPut("UserItem/{id}")]
         public async Task<IActionResult> EditUserItemStatus([FromBody] UserItemState state, [FromRoute] int id)
         {
             if (!ModelState.IsValid) return BadRequest(ModelState);
@@ -80,7 +80,7 @@ namespace CheckedAppProject.API.Controllers
                 : (Ok(new { Message = "Changes added successfully" }));
         }
 
-        [HttpDelete("UserData/{id}")]
+        [HttpDelete("UserItem/{id}")]
         public async Task<IActionResult> DeleteUserItem([FromRoute] int id)
         {
             if (!ModelState.IsValid) return BadRequest(ModelState);
