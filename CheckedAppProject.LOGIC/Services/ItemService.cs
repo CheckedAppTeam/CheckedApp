@@ -26,7 +26,11 @@ namespace CheckedAppProject.LOGIC.Services
 
             return items;
         }
-
+        public async Task<Item> GetItemById(int id)
+        {
+            var item = await _itemRepository.GetItemByIdAsync(id);
+            return item;
+        }
         public async Task AddItemAsync(ItemDTO dto)
         {
             var item = _mapper.Map<Item>(dto);
