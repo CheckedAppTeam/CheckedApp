@@ -6,7 +6,6 @@ namespace CheckedAppProject.LOGIC.Services
     {
         Task AddUserItemAsync(AddUserItemDTO userItemData);
         Task<bool> DeleteUserItemAsync(int userItemId);
-        Task<List<UserItemDTO>> GetAllUserItemsByDestinationAsync(string destination);
         Task<List<UserItemDTO>> GetAllUserItemsByListAsync(int id);
         Task<List<UserItemDTO>> GetAllUserItemsByStateInItemListAsync(UserItemState state, int id);
         Task<UserItemDTO> GetUserItemAsync(int userItemId);

@@ -23,6 +23,15 @@ public class ItemListRepository : IItemListRepository
 
         return itemLists;
     }
+    public async Task<string> GetItemListNameByIdAsync(int itemListId)
+    {
+        var itemList = await _userItemContext.ItemLists
+            .Where(i => i.ItemListId == itemListId)
+            .FirstOrDefaultAsync();
+        var itemListName = itemList.ItemListName;
+
+        return itemListName;
+    }
 
     public async Task<IEnumerable<ItemList>> GetAllByUserIdAsync(Func<IQueryable<ItemList>, IQueryable<ItemList>> customQuery)
     {

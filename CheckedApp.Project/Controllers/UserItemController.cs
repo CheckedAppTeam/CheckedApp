@@ -26,19 +26,8 @@ namespace CheckedAppProject.API.Controllers
             return userData == null ? (NotFound(new { ErrorCode = 404, Message = "User item with this ID not found" })) : Ok(userData);
         }
 
-        [HttpGet("/ByDestination")]
-        public async Task<IActionResult> GetAllUsersItemsByDestination([FromBody] string cityName)
-        {
-            if (!ModelState.IsValid) return BadRequest(ModelState);
-
-            var usersItemsByDestination = await _userItemService.GetAllUserItemsByDestinationAsync(cityName);
-
-            return usersItemsByDestination == null ? 
-                (NotFound(new { ErrorCode = 404, Message = "Items in this destination or such destination not found" })) : Ok(usersItemsByDestination);
-        }
-
-        [HttpGet("/ByStateInItemList={id}")]
-        public async Task<IActionResult> GetAllUsersItemsByStateInItemList([FromBody] UserItemState state, [FromRoute] int id)
+        [HttpGet("/ByState{state}InItemList{id}")]
+        public async Task<IActionResult> GetAllUsersItemsByStateInItemList([FromRoute] UserItemState state, [FromRoute] int id)
         {
             if (!ModelState.IsValid) return BadRequest(ModelState);
 

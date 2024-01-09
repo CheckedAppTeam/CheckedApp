@@ -3,6 +3,7 @@ using CheckedAppProject.DATA.CheckedAppDbContext;
 using CheckedAppProject.DATA.DbServices.Repository;
 using CheckedAppProject.DATA.Entities;
 using CheckedAppProject.LOGIC.DTOs;
+using System.Threading.Tasks;
 
 namespace CheckedAppProject.LOGIC.Services
 {
@@ -10,11 +11,15 @@ namespace CheckedAppProject.LOGIC.Services
     {
         private readonly IMapper _mapper;
         private readonly IUserItemRepository _userItemRepository;
+        private readonly IItemListRepository _itemListRepository;
+        private readonly IItemRepository _itemRepository;
 
-        public UserItemService(UserItemContext userItemContext, IMapper mapper, IUserItemRepository userItemRepository)
+        public UserItemService(UserItemContext userItemContext, IMapper mapper, IUserItemRepository userItemRepository, IItemRepository itemRepository, IItemListRepository itemListRepository)
         {
             _mapper = mapper;
             _userItemRepository = userItemRepository;
+            _itemRepository = itemRepository;
+            _itemListRepository = itemListRepository;
         }
 
         public async Task<UserItemDTO> GetUserItemAsync(int userItemId)
@@ -22,39 +27,61 @@ namespace CheckedAppProject.LOGIC.Services
             var userItemFromDb = await _userItemRepository.GetUserItemRepositoryAsync(query => query.Where(u => u.UserItemId == userItemId));
 
             if (userItemFromDb == null) return null;
-
-            var userItemDto = _mapper.Map<UserItemDTO>(userItemFromDb);
-            return userItemDto;
+            UserItemDTO userItemDTO = new UserItemDTO()
+            {
+                UserItemName = await _itemRepository.GetItemNameByIdAsync(userItemFromDb.UserItemId),
+                UserItemListName = await _itemListRepository.GetItemListNameByIdAsync(userItemFromDb.ItemListId),
+                ItemState = userItemFromDb.ItemState,
+            };
+            return userItemDTO;
         }
 
-        public async Task<List<UserItemDTO>> GetAllUserItemsByDestinationAsync(string destination)
+        public async Task<List<UserItemDTO>> GetAllUserItemsByStateInItemListAsync(UserItemState state, int itemListId)
         {
-            var userItemsFromDb = await _userItemRepository.GetAllUserItemAsync(query => query.Where(u => u.ItemList.ItemListDestination == destination));
+            var userItemList = await _userItemRepository.GetAllUserItemFromListAsync(itemListId);
 
-            if (userItemsFromDb == null) return null;
+            if (userItemList == null) return null;
 
-            var userItemDto = userItemsFromDb.Select(userItem => _mapper.Map<UserItemDTO>(userItem)).ToList();
-            return userItemDto;
-        }
+            var filteredUserItems = userItemList
+                .Where(ui => ui.ItemState == state)
+                .ToList();
 
-        public async Task<List<UserItemDTO>> GetAllUserItemsByStateInItemListAsync(UserItemState state, int id)
+            if (filteredUserItems == null) return null;
+
+            var convertedToDTO = filteredUserItems
+        .Select(async item => new UserItemDTO()
         {
-            var userItemsFromDb = await _userItemRepository.GetAllUserItemAsync(query => query.Where(u => u.UserItemId == id && u.ItemState == state));
+            UserItemName = await _itemRepository.GetItemNameByIdAsync(item.UserItemId),
+            ItemState = item.ItemState,
+            UserItemListName = await _itemListRepository.GetItemListNameByIdAsync(item.ItemListId),
+        })
+            .ToList();
 
-            if (userItemsFromDb == null) return null;
+            var userItemDTOArray = await Task.WhenAll(convertedToDTO);
+            var userItemDTOList = userItemDTOArray.ToList();
 
-            var userItemsDto = userItemsFromDb.Select(userItem => _mapper.Map<UserItemDTO>(userItem)).ToList();
-            return userItemsDto;
+            return userItemDTOList;
         }
-        public async Task<List<UserItemDTO>> GetAllUserItemsByListAsync(int id)
+        public async Task<List<UserItemDTO>> GetAllUserItemsByListAsync(int itemListId)
         {
-            var userItemsFromDb = await _userItemRepository.GetAllUserItemAsync(query => query.Where(u => u.ItemList.ItemListId == id));
+            var userItemList = await _userItemRepository.GetAllUserItemFromListAsync(itemListId);
+            if (userItemList == null) return null;
 
-            if (userItemsFromDb == null) return null;
+            var convertedToDTO = userItemList
+        .Select(async item => new UserItemDTO()
+        {
+            UserItemName = await _itemRepository.GetItemNameByIdAsync(item.UserItemId),
+            ItemState = item.ItemState,
+            UserItemListName = await _itemListRepository.GetItemListNameByIdAsync(item.ItemListId),
+        })
+            .ToList();
 
-            var userItemsDto = userItemsFromDb.Select(userItem => _mapper.Map<UserItemDTO>(userItem)).ToList();
-            return userItemsDto;
+            var userItemDTOArray = await Task.WhenAll(convertedToDTO);
+            var userItemDTOList = userItemDTOArray.ToList();
+
+            return userItemDTOList;
         }
+
         public async Task AddUserItemAsync(AddUserItemDTO userItemData)
         {
             {

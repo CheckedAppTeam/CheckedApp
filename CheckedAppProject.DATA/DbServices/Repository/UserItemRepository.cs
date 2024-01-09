@@ -76,5 +76,13 @@ namespace CheckedAppProject.DATA.DbServices.Repository
             return false;
         }
 
+        public async Task<List<UserItem?>> GetAllUserItemFromListAsync(int itemListId)
+        {
+            List<UserItem> userItemList = await _userItemContext.UserItems
+                .Where(ui => ui.ItemListId == itemListId).ToListAsync();
+
+            return userItemList;
+        }
+
     }
 }

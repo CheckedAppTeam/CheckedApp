@@ -12,7 +12,7 @@ public class UpdateItemListDTO
     public DateTime? Date { get; set; }
     public bool ItemListPublic { get; set; }
     public string ItemListDestination { get; set; }
-    public List<ItemDTO> ItemsDTO { get; set; }
+    public List<UserItemDTO> ItemsDTO { get; set; }
 }
 
 

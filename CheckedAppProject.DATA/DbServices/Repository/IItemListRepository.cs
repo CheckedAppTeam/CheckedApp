@@ -13,5 +13,6 @@ namespace CheckedAppProject.DATA.DbServices.Repository
         Task<ItemList> CopyItemList(int itemListid, int userId);
         Task<IEnumerable<ItemList>> GetAllItemListsByCityAndMonthAsync(string city, DateTime date);
         Task<IEnumerable<ItemList>> GetAllItemListsByCity(string city);
+        Task<string> GetItemListNameByIdAsync(int itemListId);
     }
 }

@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using CheckedAppProject.DATA.DbServices.Repository;
 using CheckedAppProject.DATA.Entities;
 using CheckedAppProject.LOGIC.DTOs;
 
@@ -6,8 +7,16 @@ namespace CheckedAppProject.LOGIC.AutoMapperProfiles
 {
     public class ItemListMappingProfile : Profile
     {
+        private readonly IItemRepository _itemRepository;
+        public ItemListMappingProfile(IItemRepository itemRepository)
+        {
+        _itemRepository = itemRepository;
+            
+        }
+
         public ItemListMappingProfile()
         {
+
             CreateMap<ItemList, ItemListDTO>()
             .ForMember(dest => dest.ItemListId, opt => opt.MapFrom(src => src.ItemListId))
             .ForMember(dest => dest.ListName, opt => opt.MapFrom(src => src.ItemListName))
@@ -21,7 +30,7 @@ namespace CheckedAppProject.LOGIC.AutoMapperProfiles
             CreateMap<ItemDTO, Item>();
 
             CreateMap<UserItem, UserItemDTO>()
-            .ForMember(dest => dest.UserItemName, opt => opt.MapFrom(src => src.Item.ItemName))
+            .ForMember(dest => dest.UserItemName, opt => opt.MapFrom(src => _itemRepository.GetItemNameByIdAsync(src.ItemId)))
             .ForMember(dest => dest.ItemState, opt => opt.MapFrom(src => src.ItemState))
             .ForMember(dest => dest.UserItemListName, opt => opt.MapFrom(src => src.ItemList.ItemListName));
 
