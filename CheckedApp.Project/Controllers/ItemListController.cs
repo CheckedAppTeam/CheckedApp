@@ -59,18 +59,19 @@ namespace CheckedAppProject.API.Controllers
         }
 
         [HttpGet("city/{city}")]
-        public async Task<ActionResult<ItemListDTO>> GetByCityAsync([FromRoute] string city)
+        public async Task<ActionResult<IEnumerable<ItemListDTO>>> GetByCityAsync([FromRoute] string city)
         {
-            var itemList = await _itemListService.GetByCityAsync(city);
+            var itemLists = await _itemListService.GetByCityAsync(city);
 
-            if (itemList is null)
+            if (itemLists is null)
             {
                 _logger.LogInformation("Item List not found");
                 return NotFound();
             }
 
-            return Ok(itemList);
+            return Ok(itemLists);
         }
+
 
         [HttpGet("cityanddate/{city}/{date}")]
         public async Task<ActionResult<ItemListDTO>> GetByDateAndCity([FromRoute] string city, [FromRoute] DateTime date)

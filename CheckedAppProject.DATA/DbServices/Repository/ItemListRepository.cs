@@ -110,6 +110,17 @@ public class ItemListRepository : IItemListRepository
 
     }
 
+    public async Task<IEnumerable<ItemList>> GetAllItemListsByCity(string city)
+    {
+        var itemLists = await _userItemContext
+            .ItemLists
+            .Include(il => il.Items)
+            .Where(il => il.ItemListDestination == city)
+            .ToListAsync();
+
+        return itemLists;
+    }
+
     public async Task<IEnumerable<ItemList>> GetAllItemListsByCityAndMonthAsync(string city, DateTime date)
     {
         var itemLists = await _userItemContext

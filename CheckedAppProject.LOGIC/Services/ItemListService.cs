@@ -35,12 +35,12 @@ namespace CheckedAppProject.LOGIC.Services
 
         public async Task<IEnumerable<ItemListDTO>> GetByCityAsync(string city)
         {
-            var itemList = await _itemListRepository.GetItemListAsync(query => query.Where(il => il.ItemListDestination == city));
+            var itemLists = await _itemListRepository.GetAllItemListsByCity(city);
 
-            if (itemList == null) return null;
+            if (itemLists == null) return null;
 
-            var itemListDto = _mapper.Map<IEnumerable<ItemListDTO>>(itemList);
-            return itemListDto;
+            var itemListsDto = _mapper.Map<IEnumerable<ItemListDTO>>(itemLists);
+            return itemListsDto;
         }
 
         public async Task<IEnumerable<ItemListDTO>> GetByMonthAndCity(DateTime date, string city)
