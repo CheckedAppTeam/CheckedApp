@@ -48,16 +48,15 @@ namespace CheckedAppProject.DATA.DbServices.Repository
             }
             return false;
         }
-        public async Task<bool> EditUserData(User userData, int userId)
+        public async Task<bool> EditUserData(User userData, string userId)
         {
             var dbUser = await _userItemContext.Users
-               .FirstOrDefaultAsync(u => u.UserId == userId);
+               .FirstOrDefaultAsync(u => u.Id == userId);
 
             if (dbUser != null)
             {
                 dbUser.UserName = userData.UserName ?? dbUser.UserName;
-                dbUser.UserSurname = userData.UserSurname ?? dbUser.UserSurname;
-                dbUser.Password = userData.Password ?? dbUser.Password;
+                dbUser.UserSurname = userData.UserSurname ?? dbUser.UserSurname;              
                 dbUser.UserAge = userData.UserAge != 0 ? userData.UserAge : dbUser.UserAge;
 
                 await _userItemContext.SaveChangesAsync();

@@ -20,7 +20,7 @@ public class UserRepositoryTests
     [Test]
     public async Task GetUserAsync_ShouldReturnUser_WhenCustomQueryProvided()
     {
-        var expectedUser = new User { UserId = 1, UserName = "TestUser" };
+        var expectedUser = new User { Id = "string", UserName = "TestUser" };
         var mockDbSet = new Mock<DbSet<User>>();
         var data = new List<User> { expectedUser }.AsQueryable();
 
@@ -31,7 +31,7 @@ public class UserRepositoryTests
 
         _mockContext.Setup(c => c.Users).Returns(mockDbSet.Object);
 
-        Func<IQueryable<User>, IQueryable<User>> customQuery = q => q.Where(u => u.UserId == 1);
+        Func<IQueryable<User>, IQueryable<User>> customQuery = q => q.Where(u => u.Id == "string");
 
         var result = await _userRepository.GetUserAsync(customQuery);
 
@@ -43,8 +43,8 @@ public class UserRepositoryTests
     {
         var expectedUsers = new List<User>
         {
-            new User { UserId = 1, UserName = "User1" },
-            new User { UserId = 2, UserName = "User2" }
+            new User { Id = "string", UserName = "User1" },
+            new User { Id = "string", UserName = "User2" }
         };
 
         var mockDbSet = new Mock<DbSet<User>>();
@@ -64,7 +64,7 @@ public class UserRepositoryTests
     [Test]
     public async Task DeleteUserAsync_ShouldReturnTrue_WhenUserExistsAndIsDeleted()
     {      
-        var userToDelete = new User { UserId = 1, UserName = "UserToDelete" };
+        var userToDelete = new User { Id = "string", UserName = "UserToDelete" };
 
         var mockDbSet = new Mock<DbSet<User>>();
         mockDbSet.As<IQueryable<User>>().Setup(m => m.Provider).Returns(() => new List<User> { userToDelete }.AsQueryable().Provider);
@@ -74,7 +74,7 @@ public class UserRepositoryTests
 
         _mockContext.Setup(c => c.Users).Returns(mockDbSet.Object);
 
-        Func<IQueryable<User>, IQueryable<User>> customQuery = q => q.Where(u => u.UserId == 1);
+        Func<IQueryable<User>, IQueryable<User>> customQuery = q => q.Where(u => u.Id == "string");
 
         var result = await _userRepository.DeleteUserAsync(customQuery);
 

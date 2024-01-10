@@ -16,9 +16,9 @@ namespace CheckedAppProject.LOGIC.Services
             _mapper = mapper;
             _userRepository = userRepository;
         }
-        public async Task<UserDataDTO> GetUserDataDtoAsync(int id)
+        public async Task<UserDataDTO> GetUserDataDtoAsync(string id)
         {
-            var userFromDb = await _userRepository.GetUserAsync(query => query.Where(u => u.UserId == id));
+            var userFromDb = await _userRepository.GetUserAsync(query => query.Where(u => u.Id == id));
 
             if (userFromDb == null) return null;
 
@@ -38,14 +38,12 @@ namespace CheckedAppProject.LOGIC.Services
         {
             var user = _mapper.Map<User>(dto);
             await _userRepository.AddUserAsync(user);
-
         }
-        public async Task<bool> DeleteUserDataAsync(int userId)
+        public async Task<bool> DeleteUserDataAsync(string userId)
         {
-            return await _userRepository.DeleteUserAsync(query => query.Where(u => u.UserId == userId));
-
+            return await _userRepository.DeleteUserAsync(query => query.Where(u => u.Id == userId));
         }
-        public async Task<bool> UpdateUser(UserUpdateDTO dto, int userId)
+        public async Task<bool> UpdateUser(UserUpdateDTO dto, string userId)
         {
             var user = _mapper.Map<User>(dto);
             return await _userRepository.EditUserData(user, userId);

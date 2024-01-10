@@ -1,10 +1,11 @@
-﻿
+﻿using Microsoft.AspNetCore.Identity;
 using AutoMapper;
 using CheckedAppProject.DATA.CheckedAppDbContext;
 using CheckedAppProject.DATA.DbServices.Repository;
 using CheckedAppProject.LOGIC.Services;
 using Microsoft.EntityFrameworkCore;
 using Serilog;
+using CheckedAppProject.DATA.Entities;
 
 var builder = WebApplication.CreateBuilder(args);
 var logger = new LoggerConfiguration()
@@ -32,6 +33,13 @@ builder.Services.AddDbContext<UserItemContext>(
     option => option.UseNpgsql(builder.Configuration["CheckedAppDbConnection"])
     );
 
+builder.Services.AddIdentity<User, IdentityRole>()
+    .AddEntityFrameworkStores<UserItemContext>()
+    .AddDefaultTokenProviders();
+builder.Services.AddControllersWithViews();
+builder.Services.AddAuthentication();
+builder.Services.AddAuthorization();
+
 var app = builder.Build();
 
 if (app.Environment.IsDevelopment())
@@ -39,9 +47,9 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
-
 app.UseHttpsRedirection();
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();

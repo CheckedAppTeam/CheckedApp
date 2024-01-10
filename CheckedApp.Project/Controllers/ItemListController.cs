@@ -31,7 +31,7 @@ namespace CheckedAppProject.API.Controllers
         }
 
         [HttpGet("user/{userid}")]
-        public async Task<ActionResult<IEnumerable<ItemListDTO>>> GetAllByUserIdAsync([FromRoute] int userid)
+        public async Task<ActionResult<IEnumerable<ItemListDTO>>> GetAllByUserIdAsync([FromRoute] string userid)
         {
             var itemListsDto = await _itemListService.GetAllByUserIdAsync(userid);
 
@@ -87,7 +87,7 @@ namespace CheckedAppProject.API.Controllers
         }
 
         [HttpPost("addlist/{userid}")]
-        public async Task<ActionResult> AddList([FromBody] CreateItemListDTO dto, [FromRoute] int userid)
+        public async Task<ActionResult> AddList([FromBody] CreateItemListDTO dto, [FromRoute] string userid)
         {
             if (!ModelState.IsValid)
             {
@@ -101,7 +101,7 @@ namespace CheckedAppProject.API.Controllers
         }
 
         [HttpPost("user/{itemListid}/{userid}")]
-        public async Task<ActionResult> CopyItemListAsync([FromRoute] int itemListid, [FromRoute] int userid)
+        public async Task<ActionResult> CopyItemListAsync([FromRoute] int itemListid, [FromRoute] string userid)
         {
             if (!ModelState.IsValid)
             {

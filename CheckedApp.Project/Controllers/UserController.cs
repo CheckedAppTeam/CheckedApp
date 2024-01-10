@@ -16,7 +16,7 @@ namespace CheckedAppProject.API.Controllers
         }
          
     [HttpGet("UserData/{id}")]
-        public async Task<IActionResult> GetUserData([FromRoute] int id)
+        public async Task<IActionResult> GetUserData([FromRoute] string id)
         {
             if (!ModelState.IsValid) return BadRequest(ModelState);
             
@@ -46,7 +46,7 @@ namespace CheckedAppProject.API.Controllers
         }
 
         [HttpPut("UserData/{id}")]
-        public async Task<IActionResult> EditUser([FromBody] UserUpdateDTO dto, [FromRoute] int id)
+        public async Task<IActionResult> EditUser([FromBody] UserUpdateDTO dto, [FromRoute] string id)
         {
             if (!ModelState.IsValid) return BadRequest(ModelState);
 
@@ -58,7 +58,7 @@ namespace CheckedAppProject.API.Controllers
         }
 
     [HttpDelete("UserData/{id}")]
-        public async Task<IActionResult> DeleteUser([FromRoute] int id)
+        public async Task<IActionResult> DeleteUser([FromRoute] string id)
         {
             if (!ModelState.IsValid) return BadRequest(ModelState);
 

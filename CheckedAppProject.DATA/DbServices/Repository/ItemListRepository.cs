@@ -86,7 +86,7 @@ public class ItemListRepository : IItemListRepository
         return true;
     }
 
-    public async Task<ItemList> CopyItemList(int itemListid, int userId)
+    public async Task<ItemList> CopyItemList(int itemListid, string userId)
     {
         var dbItemList = await _userItemContext.ItemLists.FirstOrDefaultAsync(il => il.ItemListId == itemListid);
 
@@ -99,7 +99,7 @@ public class ItemListRepository : IItemListRepository
         {
             Date = DateTime.UtcNow,
             ItemListDestination = dbItemList.ItemListDestination ?? "Destination",
-            UserId = userId,
+            Id = userId,
             ItemListName = dbItemList.ItemListName ?? "ItemList",
             UserItems = dbItemList.UserItems,
             ItemListPublic = false

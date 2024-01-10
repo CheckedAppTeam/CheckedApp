@@ -6,7 +6,7 @@ namespace CheckedAppProject.DATA.DbServices.Repository
     {
         Task AddUserAsync(User userData);
         Task<bool> DeleteUserAsync(Func<IQueryable<User>, IQueryable<User>> customQuery);
-        Task<bool> EditUserData(User userData, int userId);
+        Task<bool> EditUserData(User userData, string userId);
         Task<IEnumerable<User>> GetAllUsersDataAsync();
         Task<User> GetUserAsync(Func<IQueryable<User>, IQueryable<User>> customQuery);
     }
