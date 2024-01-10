@@ -1,20 +1,29 @@
 
-import axios from 'axios';
+//import axios from 'axios';
 import { useEffect, useState } from 'react';
 import './App.css';
-import { urlGetAllItems } from './endpoints';
+import { axios, itemEndpoints, userEndpoints } from './endpoints';
 
 function App() {
-  const [responseData, setResponseData] = useState(null);
+  const [itemResponseData, setItemResponseData] = useState(null);
+  const [allItemsResponseData, setAllitemsResponseData] = useState(null);
 
   useEffect(()=>{
-    axios.get(urlGetAllItems)
+    axios.get(itemEndpoints.getAllItems)
     .then(response=>{
-      setResponseData(response.data);
+      setItemResponseData(response.data);
       
     }).catch(error => {
       console.log(error);
-    })
+    });
+    const userId = 1; // Replace with the actual user ID
+    axios.get(userEndpoints.getUserData(userId))
+      .then(response => {
+        setAllitemsResponseData(response.data);
+      })
+      .catch(error => {
+        console.log(error);
+      });
   }, [])
   
   
@@ -24,15 +33,15 @@ function App() {
       <p>
         Communicatin'
       </p>
-      {responseData&&(
+      
         <div>
-          <h2>
             <pre>
-              {JSON.stringify(responseData,null,2)}
+              
+              <h2>{JSON.stringify(itemResponseData,null,2)}</h2>
+              <p>{JSON.stringify(allItemsResponseData,null,2)}</p>
             </pre>
-          </h2>
         </div>
-      )}
+      )
     </div>
   );
 }
