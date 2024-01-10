@@ -11,9 +11,19 @@ const itemEndpoints = {
 };
 
 const itemListEndpoints = {
-  getAllLists: `${baseURL}/ItemList/GetAllLists`,
-  // Define other endpoints for ItemListController
-};
+    getAllLists: `${baseURL}/ItemList/GetAllLists`,
+    getByUserId: (userid) => `${baseURL}/ItemList/User/${userid}`,
+    getList: (itemlistid) => `${baseURL}/ItemList/GetList/${itemlistid}`,
+    getByCity: (city) => `${baseURL}/ItemList/City/${city}`,
+    getByDateAndCity: (city, date) => `${baseURL}/ItemList/CityAndDate/${city}/${date}`,
+    addList: (userid) => `${baseURL}/ItemList/AddList/${userid}`,
+    copyItemList: (itemListid, userid) => `${baseURL}/ItemList/User/${itemListid}/${userid}`,
+    updateItemList: (id) => `${baseURL}/ItemList/EditListSpecification/${id}`,
+    deleteList: (id) => `${baseURL}/ItemList/DeleteList/${id}`,
+  };
+  
+  
+  
 
 const userEndpoints = {
   getUserData: (id) => `${baseURL}/User/UserData/${id}`,
