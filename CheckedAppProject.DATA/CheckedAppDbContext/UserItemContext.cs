@@ -12,7 +12,7 @@ namespace CheckedAppProject.DATA.CheckedAppDbContext
         public DbSet<Item> Items { get; set; }
         public DbSet<ItemList> ItemLists { get; set; }
         public DbSet<UserItem> UserItems { get; set; }
-
+        public DbSet<Role> Role { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<User>(eb =>
@@ -29,6 +29,10 @@ namespace CheckedAppProject.DATA.CheckedAppDbContext
                  .HasMany(e => e.Items)
                  .WithMany(e => e.ItemLists)
                  .UsingEntity<UserItem>();
+
+            modelBuilder.Entity<Role>()
+                 .Property(r => r.Name)
+                 .IsRequired();
         }
     }
 }

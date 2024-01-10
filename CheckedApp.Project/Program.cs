@@ -1,5 +1,6 @@
 ﻿
 using AutoMapper;
+using CheckedAppProject.DATA;
 using CheckedAppProject.DATA.CheckedAppDbContext;
 using CheckedAppProject.DATA.DbServices.Repository;
 using CheckedAppProject.LOGIC.Services;
@@ -44,6 +45,22 @@ app.UseHttpsRedirection();
 
 app.UseAuthorization();
 
+using (var serviceScope = app.Services.CreateScope())
+{
+    var services = serviceScope.ServiceProvider;
+
+    try
+    {
+        var context = services.GetRequiredService<UserItemContext>();
+        var seeder = new DatabaseSeeder(context);
+        seeder.Seed();
+    }
+    catch (Exception ex)
+    {
+        Console.WriteLine("An error occurred while seeding the database.");
+        Console.WriteLine(ex.Message);
+    }
+}
 app.MapControllers();
 
 app.Run();

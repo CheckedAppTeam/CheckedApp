@@ -1,4 +1,5 @@
-﻿using System.ComponentModel;
+﻿using CheckedAppProject.DATA.Entities;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 
 namespace CheckedAppProject.LOGIC.DTOs
@@ -17,9 +18,11 @@ namespace CheckedAppProject.LOGIC.DTOs
         [Required]
         [PasswordPropertyText]
         public string Password { get; set; }
+        [Required]
         [Range(0, 100)]
         public int UserAge { get; set; }
-        [MaxLength(10)]
-        public string UserSex { get; set; }
+        [Required]
+        public UserSex UserSex { get; set; }
+        public Role Role { get; set; }
     }
 }
