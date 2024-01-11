@@ -1,49 +1,38 @@
-
-//import axios from 'axios';
-import { useEffect, useState } from 'react';
-import './App.css';
-import { axios, itemEndpoints, userEndpoints, itemListEndpoints } from './endpoints';
+import { Route, Routes } from "react-router-dom";
+import { Link } from "react-router-dom";
+import { Home } from "./pages/Home";
+import { ItemList } from "./pages/ItemList";
+import { ItemLists } from "./pages/ItemLists";
+import { NotFound } from "./pages/NotFound";
+import { NewList } from "./pages/NewList";
+import { ItemListLayout } from "./pages/ItemListLayout";
 
 function App() {
-  const [itemResponseData, setItemResponseData] = useState(null);
-  const [allItemsResponseData, setAllitemsResponseData] = useState(null);
 
-  useEffect(()=>{
-    axios.get(itemEndpoints.getAllItems)
-    .then(response=>{
-      setItemResponseData(response.data);
-      
-    }).catch(error => {
-      console.log(error);
-    });
-    const userId = 1; // Replace with the actual user ID
-    axios.get(userEndpoints.getUserData(userId))
-      .then(response => {
-        setAllitemsResponseData(response.data);
-      })
-      .catch(error => {
-        console.log(error);
-      });
-  }, [])
-  
-  
   return (
-    <div className="App">
-      My react app
-      <p>
-        Communicatin'
-      </p>
-      
-        <div>
-            <pre>
-              
-              <h2>{JSON.stringify(itemResponseData,null,2)}</h2>
-              <p>{JSON.stringify(allItemsResponseData,null,2)}</p>
-            </pre>
-        </div>
-      )
-    </div>
-  );
+    <>
+    <nav>
+      <ul>
+        <li>
+          <Link to= '/'>Home</Link>
+        </li>
+        <li>
+          <Link to= '/ItemLists'>ItemLists</Link>
+        </li>
+      </ul>
+    </nav>
+  <Routes>
+    <Route path="/" element={<Home/>}/>
+    <Route path="/itemlists" element={<ItemListLayout/>}>
+      <Route index element={<ItemLists/>}/>
+      <Route path=":id" element={<ItemList/>}/>
+      <Route path="new" element={<NewList/>}/>
+    </Route>
+
+    <Route path="*" element={<NotFound/>} />
+  </Routes>
+  </>
+  )
 }
 
 export default App;
