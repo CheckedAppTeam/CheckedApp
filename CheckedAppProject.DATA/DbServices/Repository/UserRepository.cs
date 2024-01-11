@@ -13,9 +13,9 @@ namespace CheckedAppProject.DATA.DbServices.Repository
             _userItemContext = userItemContext;
         }
 
-        public async Task<User?> GetUserAsync(Func<IQueryable<User>, IQueryable<User>> customQuery)
+        public async Task<UserAccount?> GetUserAsync(Func<IQueryable<UserAccount>, IQueryable<UserAccount>> customQuery)
         {
-            var query = _userItemContext.Users.AsQueryable();
+            var query = _userItemContext.UsersApp.AsQueryable();
 
             query = customQuery(query);
 
@@ -23,18 +23,18 @@ namespace CheckedAppProject.DATA.DbServices.Repository
                 .Include(u => u.ItemList)
                 .FirstOrDefaultAsync();
         }
-        public async Task<IEnumerable<User>> GetAllUsersDataAsync()
+        public async Task<IEnumerable<UserAccount>> GetAllUsersDataAsync()
         {
             var users = await _userItemContext
-                .Users
+                .UsersApp
                 .Include(e => e.ItemList)
                 .ToListAsync();
 
             return users;
         }
-        public async Task<bool> DeleteUserAsync(Func<IQueryable<User>, IQueryable<User>> customQuery)
+        public async Task<bool> DeleteUserAsync(Func<IQueryable<UserAccount>, IQueryable<UserAccount>> customQuery)
         {
-            var query = _userItemContext.Users.AsQueryable();
+            var query = _userItemContext.UsersApp.AsQueryable();
 
             query = customQuery(query);
 
@@ -42,22 +42,21 @@ namespace CheckedAppProject.DATA.DbServices.Repository
 
             if (userToDelete != null)
             {
-                _userItemContext.Users.Remove(userToDelete);
+                _userItemContext.UsersApp.Remove(userToDelete);
                 await _userItemContext.SaveChangesAsync();
                 return true;
             }
             return false;
         }
-        public async Task<bool> EditUserData(User userData, int userId)
+        public async Task<bool> EditUserData(UserAccount userData, string userId)
         {
-            var dbUser = await _userItemContext.Users
-               .FirstOrDefaultAsync(u => u.UserId == userId);
+            var dbUser = await _userItemContext.UsersApp
+               .FirstOrDefaultAsync(u => u.AppUserId == userId);
 
             if (dbUser != null)
             {
-                dbUser.UserName = userData.UserName ?? dbUser.UserName;
+                dbUser.UserAccountName = userData.UserAccountName ?? dbUser.UserAccountName; // a co ze zmianą Name w Identity??
                 dbUser.UserSurname = userData.UserSurname ?? dbUser.UserSurname;
-                dbUser.Password = userData.Password ?? dbUser.Password;
                 dbUser.UserAge = userData.UserAge != 0 ? userData.UserAge : dbUser.UserAge;
 
                 await _userItemContext.SaveChangesAsync();
@@ -65,11 +64,11 @@ namespace CheckedAppProject.DATA.DbServices.Repository
             }
             return false;
         }
-        public async Task AddUserAsync(User userData)
+        public async Task AddUserAsync(UserAccount userData)
         {
             try
             {
-                _userItemContext.Users.Add(userData);
+                _userItemContext.UsersApp.Add(userData);
                 await _userItemContext.SaveChangesAsync();
             }
             catch (Exception)

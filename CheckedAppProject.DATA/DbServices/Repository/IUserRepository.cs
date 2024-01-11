@@ -4,10 +4,10 @@ namespace CheckedAppProject.DATA.DbServices.Repository
 {
     public interface IUserRepository
     {
-        Task AddUserAsync(User userData);
-        Task<bool> DeleteUserAsync(Func<IQueryable<User>, IQueryable<User>> customQuery);
-        Task<bool> EditUserData(User userData, int userId);
-        Task<IEnumerable<User>> GetAllUsersDataAsync();
-        Task<User> GetUserAsync(Func<IQueryable<User>, IQueryable<User>> customQuery);
+        Task AddUserAsync(UserAccount userData);
+        Task<bool> DeleteUserAsync(Func<IQueryable<UserAccount>, IQueryable<UserAccount>> customQuery);
+        Task<bool> EditUserData(UserAccount userData, string userId);
+        Task<IEnumerable<UserAccount>> GetAllUsersDataAsync();
+        Task<UserAccount> GetUserAsync(Func<IQueryable<UserAccount>, IQueryable<UserAccount>> customQuery);
     }
 }

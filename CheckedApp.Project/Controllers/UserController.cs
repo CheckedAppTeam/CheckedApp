@@ -1,5 +1,8 @@
-﻿using CheckedAppProject.LOGIC.DTOs;
+﻿using AutoMapper;
+using CheckedAppProject.DATA.Entities;
+using CheckedAppProject.LOGIC.DTOs;
 using CheckedAppProject.LOGIC.Services;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CheckedAppProject.API.Controllers
@@ -9,14 +12,18 @@ namespace CheckedAppProject.API.Controllers
     public class UserController : ControllerBase
     {
         private readonly IUserService _userService;
+        private readonly IMapper _mapper;
+        private readonly UserManager<AppUser> _userManager;
 
-        public UserController(IUserService userService)
+        public UserController(IUserService userService, IMapper mapper, UserManager<AppUser> userManager)
         {
             _userService = userService;
+            _mapper = mapper;
+            _userManager = userManager;
         }
          
     [HttpGet("UserData/{id}")]
-        public async Task<IActionResult> GetUserData([FromRoute] int id)
+        public async Task<IActionResult> GetUserData([FromRoute] string id)
         {
             if (!ModelState.IsValid) return BadRequest(ModelState);
             
@@ -40,13 +47,24 @@ namespace CheckedAppProject.API.Controllers
         {
             if (!ModelState.IsValid) return BadRequest(ModelState);
 
+            AppUser appUser = _mapper.Map<AppUser>(dto);
+            IdentityResult result = await _userManager.CreateAsync(appUser, dto.Password);
+
+            if (result.Succeeded)
+                return RedirectToAction("Index");
+            else
+            {
+                foreach (IdentityError error in result.Errors)
+                    ModelState.AddModelError("", error.Description);
+            }
+
             await _userService.AddUserAsync(dto);
 
             return Ok(new{ Message = "User created successfully" });
         }
 
         [HttpPut("UserData/EditUser/{id}")]
-        public async Task<IActionResult> EditUser([FromBody] UserUpdateDTO dto, [FromRoute] int id)
+        public async Task<IActionResult> EditUser([FromBody] UserUpdateDTO dto, [FromRoute] string id)
         {
             if (!ModelState.IsValid) return BadRequest(ModelState);
 
@@ -58,7 +76,7 @@ namespace CheckedAppProject.API.Controllers
         }
 
     [HttpDelete("UserData/DeleteUser/{id}")]
-        public async Task<IActionResult> DeleteUser([FromRoute] int id)
+        public async Task<IActionResult> DeleteUser([FromRoute] string id)
         {
             if (!ModelState.IsValid) return BadRequest(ModelState);
 

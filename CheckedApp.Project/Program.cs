@@ -2,7 +2,9 @@
 using AutoMapper;
 using CheckedAppProject.DATA.CheckedAppDbContext;
 using CheckedAppProject.DATA.DbServices.Repository;
+using CheckedAppProject.DATA.Entities;
 using CheckedAppProject.LOGIC.Services;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Serilog;
 
@@ -46,6 +48,12 @@ builder.Services.AddDbContext<UserItemContext>(
     option => option.UseNpgsql(builder.Configuration["CheckedAppDbConnection"])
     );
 
+builder.Services.AddIdentity<AppUser, IdentityRole>()
+    .AddEntityFrameworkStores<UserItemContext>();
+builder.Services.AddControllersWithViews();
+builder.Services.AddAuthentication();
+builder.Services.AddAuthorization();
+
 var app = builder.Build();
 
 if (app.Environment.IsDevelopment())
@@ -59,6 +67,7 @@ app.UseHttpsRedirection();
 app.UseCors();
 
 app.UseAuthorization();
+app.UseAuthentication();
 
 app.MapControllers();
 

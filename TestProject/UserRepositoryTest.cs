@@ -20,18 +20,18 @@ public class UserRepositoryTests
     [Test]
     public async Task GetUserAsync_ShouldReturnUser_WhenCustomQueryProvided()
     {
-        var expectedUser = new User { UserId = 1, UserName = "TestUser" };
-        var mockDbSet = new Mock<DbSet<User>>();
-        var data = new List<User> { expectedUser }.AsQueryable();
+        var expectedUser = new UserAccount { Id = 1, UserAccountName = "TestUser" };
+        var mockDbSet = new Mock<DbSet<UserAccount>>();
+        var data = new List<UserAccount> { expectedUser }.AsQueryable();
 
-        mockDbSet.As<IQueryable<User>>().Setup(m => m.Provider).Returns(data.Provider);
-        mockDbSet.As<IQueryable<User>>().Setup(m => m.Expression).Returns(data.Expression);
-        mockDbSet.As<IQueryable<User>>().Setup(m => m.ElementType).Returns(data.ElementType);
-        mockDbSet.As<IQueryable<User>>().Setup(m => m.GetEnumerator()).Returns(data.GetEnumerator());
+        mockDbSet.As<IQueryable<UserAccount>>().Setup(m => m.Provider).Returns(data.Provider);
+        mockDbSet.As<IQueryable<UserAccount>>().Setup(m => m.Expression).Returns(data.Expression);
+        mockDbSet.As<IQueryable<UserAccount>>().Setup(m => m.ElementType).Returns(data.ElementType);
+        mockDbSet.As<IQueryable<UserAccount>>().Setup(m => m.GetEnumerator()).Returns(data.GetEnumerator());
 
-        _mockContext.Setup(c => c.Users).Returns(mockDbSet.Object);
+        _mockContext.Setup(c => c.UsersApp).Returns(mockDbSet.Object);
 
-        Func<IQueryable<User>, IQueryable<User>> customQuery = q => q.Where(u => u.UserId == 1);
+        Func<IQueryable<UserAccount>, IQueryable<UserAccount>> customQuery = q => q.Where(u => u.Id == 1);
 
         var result = await _userRepository.GetUserAsync(customQuery);
 
@@ -41,19 +41,19 @@ public class UserRepositoryTests
     [Test]
     public async Task GetAllUsersDataAsync_ShouldReturnAllUsersWithData()
     {
-        var expectedUsers = new List<User>
+        var expectedUsers = new List<UserAccount>
         {
-            new User { UserId = 1, UserName = "User1" },
-            new User { UserId = 2, UserName = "User2" }
+            new UserAccount { Id = 1, UserAccountName = "User1" },
+            new UserAccount { Id = 2, UserAccountName = "User2" }
         };
 
-        var mockDbSet = new Mock<DbSet<User>>();
-        mockDbSet.As<IQueryable<User>>().Setup(m => m.Provider).Returns(() => expectedUsers.AsQueryable().Provider);
-        mockDbSet.As<IQueryable<User>>().Setup(m => m.Expression).Returns(() => expectedUsers.AsQueryable().Expression);
-        mockDbSet.As<IQueryable<User>>().Setup(m => m.ElementType).Returns(() => expectedUsers.AsQueryable().ElementType);
-        mockDbSet.As<IQueryable<User>>().Setup(m => m.GetEnumerator()).Returns(() => expectedUsers.AsQueryable().GetEnumerator());
+        var mockDbSet = new Mock<DbSet<UserAccount>>();
+        mockDbSet.As<IQueryable<UserAccount>>().Setup(m => m.Provider).Returns(() => expectedUsers.AsQueryable().Provider);
+        mockDbSet.As<IQueryable<UserAccount>>().Setup(m => m.Expression).Returns(() => expectedUsers.AsQueryable().Expression);
+        mockDbSet.As<IQueryable<UserAccount>>().Setup(m => m.ElementType).Returns(() => expectedUsers.AsQueryable().ElementType);
+        mockDbSet.As<IQueryable<UserAccount>>().Setup(m => m.GetEnumerator()).Returns(() => expectedUsers.AsQueryable().GetEnumerator());
 
-        _mockContext.Setup(c => c.Users).Returns(mockDbSet.Object);
+        _mockContext.Setup(c => c.UsersApp).Returns(mockDbSet.Object);
 
         var result = await _userRepository.GetAllUsersDataAsync();
 
@@ -64,17 +64,17 @@ public class UserRepositoryTests
     [Test]
     public async Task DeleteUserAsync_ShouldReturnTrue_WhenUserExistsAndIsDeleted()
     {      
-        var userToDelete = new User { UserId = 1, UserName = "UserToDelete" };
+        var userToDelete = new UserAccount { Id = 1, UserAccountName = "UserToDelete" };
 
-        var mockDbSet = new Mock<DbSet<User>>();
-        mockDbSet.As<IQueryable<User>>().Setup(m => m.Provider).Returns(() => new List<User> { userToDelete }.AsQueryable().Provider);
-        mockDbSet.As<IQueryable<User>>().Setup(m => m.Expression).Returns(() => new List<User> { userToDelete }.AsQueryable().Expression);
-        mockDbSet.As<IQueryable<User>>().Setup(m => m.ElementType).Returns(() => new List<User> { userToDelete }.AsQueryable().ElementType);
-        mockDbSet.As<IQueryable<User>>().Setup(m => m.GetEnumerator()).Returns(() => new List<User> { userToDelete }.AsQueryable().GetEnumerator());
+        var mockDbSet = new Mock<DbSet<UserAccount>>();
+        mockDbSet.As<IQueryable<UserAccount>>().Setup(m => m.Provider).Returns(() => new List<UserAccount> { userToDelete }.AsQueryable().Provider);
+        mockDbSet.As<IQueryable<UserAccount>>().Setup(m => m.Expression).Returns(() => new List<UserAccount> { userToDelete }.AsQueryable().Expression);
+        mockDbSet.As<IQueryable<UserAccount>>().Setup(m => m.ElementType).Returns(() => new List<UserAccount> { userToDelete }.AsQueryable().ElementType);
+        mockDbSet.As<IQueryable<UserAccount>>().Setup(m => m.GetEnumerator()).Returns(() => new List<UserAccount> { userToDelete }.AsQueryable().GetEnumerator());
 
-        _mockContext.Setup(c => c.Users).Returns(mockDbSet.Object);
+        _mockContext.Setup(c => c.UsersApp).Returns(mockDbSet.Object);
 
-        Func<IQueryable<User>, IQueryable<User>> customQuery = q => q.Where(u => u.UserId == 1);
+        Func<IQueryable<UserAccount>, IQueryable<UserAccount>> customQuery = q => q.Where(u => u.Id == 1);
 
         var result = await _userRepository.DeleteUserAsync(customQuery);
 
