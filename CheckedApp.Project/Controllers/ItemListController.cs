@@ -4,7 +4,7 @@ using CheckedAppProject.LOGIC.Services;
 
 namespace CheckedAppProject.API.Controllers
 {
-    [Route("itemlist")]
+    [Route("ItemList")]
     public class ItemListController : ControllerBase
     {
         private readonly IItemListService _itemListService;
@@ -16,7 +16,7 @@ namespace CheckedAppProject.API.Controllers
             _logger = logger;
         }
 
-        [HttpGet("getalllists")]
+        [HttpGet("GetAllLists")]
         public async Task<ActionResult<IEnumerable<ItemListDTO>>> GetAllAsync()
         {
             var itemListsDto = await _itemListService.GetAllAsync();
@@ -30,7 +30,7 @@ namespace CheckedAppProject.API.Controllers
             return Ok(itemListsDto);
         }
 
-        [HttpGet("user/{userid}")]
+        [HttpGet("User/{userid}")]
         public async Task<ActionResult<IEnumerable<ItemListDTO>>> GetAllByUserIdAsync([FromRoute] int userid)
         {
             var itemListsDto = await _itemListService.GetAllByUserIdAsync(userid);
@@ -44,7 +44,7 @@ namespace CheckedAppProject.API.Controllers
             return Ok(itemListsDto);
         }
 
-        [HttpGet("getlist/{itemlistid}")]
+        [HttpGet("Getlist/{itemlistid}")]
         public async Task<ActionResult<ItemListDTO>> GetList([FromRoute] int itemlistid)
         {
             var itemList = await _itemListService.GetByIdAsync(itemlistid);
@@ -58,7 +58,7 @@ namespace CheckedAppProject.API.Controllers
             return Ok(itemList);
         }
 
-        [HttpGet("city/{city}")]
+        [HttpGet("City/{city}")]
         public async Task<ActionResult<IEnumerable<ItemListDTO>>> GetByCityAsync([FromRoute] string city)
         {
             var itemLists = await _itemListService.GetByCityAsync(city);
@@ -73,7 +73,7 @@ namespace CheckedAppProject.API.Controllers
         }
 
 
-        [HttpGet("cityanddate/{city}/{date}")]
+        [HttpGet("CityAndDate/{city}/{date}")]
         public async Task<ActionResult<ItemListDTO>> GetByDateAndCity([FromRoute] string city, [FromRoute] DateTime date)
         {
             var itemList = await _itemListService.GetByMonthAndCity(date, city);
@@ -86,7 +86,7 @@ namespace CheckedAppProject.API.Controllers
             return Ok(itemList);
         }
 
-        [HttpPost("addlist/{userid}")]
+        [HttpPost("AddList/{userid}")]
         public async Task<ActionResult> AddList([FromBody] CreateItemListDTO dto, [FromRoute] int userid)
         {
             if (!ModelState.IsValid)
@@ -100,7 +100,7 @@ namespace CheckedAppProject.API.Controllers
             return Ok(new { Message = "Item List added successfully" });
         }
 
-        [HttpPost("user/{itemListid}/{userid}")]
+        [HttpPost("User/{itemListid}/{userid}")]
         public async Task<ActionResult> CopyItemListAsync([FromRoute] int itemListid, [FromRoute] int userid)
         {
             if (!ModelState.IsValid)
@@ -114,7 +114,7 @@ namespace CheckedAppProject.API.Controllers
             return Ok(copy);
         }
 
-        [HttpPut("{id}")]
+        [HttpPut("EditListSpecification/{id}")]
         public async Task<ActionResult> UpdateItemListAsync([FromBody] UpdateItemListDTO dto, int id)
         {
             if (!ModelState.IsValid)
@@ -134,7 +134,7 @@ namespace CheckedAppProject.API.Controllers
             return NotFound();
         }
 
-        [HttpDelete("{id}")]
+        [HttpDelete("DeleteList/{id}")]
         public async Task<ActionResult> DeleteAsync(int id)
         {
             var isDeleted = await _itemListService.DeleteAsync(id);

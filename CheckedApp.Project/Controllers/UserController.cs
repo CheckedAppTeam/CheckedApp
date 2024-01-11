@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace CheckedAppProject.API.Controllers
 {
     [ApiController]
-    [Route("/[controller]")]
+    [Route("User")]
     public class UserController : ControllerBase
     {
         private readonly IUserService _userService;
@@ -25,7 +25,7 @@ namespace CheckedAppProject.API.Controllers
             return userData == null ? (NotFound(new { ErrorCode = 404, Message = "User with this ID not found" })) : Ok(userData);
         }
 
-    [HttpGet("UserData/users")]
+    [HttpGet("UserData/AllUsers")]
         public async Task<IActionResult> GetAllUsersData()
         {
             if (!ModelState.IsValid) return BadRequest(ModelState);
@@ -35,7 +35,7 @@ namespace CheckedAppProject.API.Controllers
             return usersDatas == null ? (NotFound(new { ErrorCode = 404, Message = "User with this ID not found" })) : Ok(usersDatas);
         }
 
-    [HttpPost("UserData")]
+    [HttpPost("UserData/AddUser")]
         public async Task<IActionResult> AddUser([FromBody] AddUserDTO dto)
         {
             if (!ModelState.IsValid) return BadRequest(ModelState);
@@ -45,7 +45,7 @@ namespace CheckedAppProject.API.Controllers
             return Ok(new{ Message = "User created successfully" });
         }
 
-        [HttpPut("UserData/{id}")]
+        [HttpPut("UserData/EditUser/{id}")]
         public async Task<IActionResult> EditUser([FromBody] UserUpdateDTO dto, [FromRoute] int id)
         {
             if (!ModelState.IsValid) return BadRequest(ModelState);
@@ -57,7 +57,7 @@ namespace CheckedAppProject.API.Controllers
                 : (Ok(new { Message = "Changes added successfully" }));
         }
 
-    [HttpDelete("UserData/{id}")]
+    [HttpDelete("UserData/DeleteUser/{id}")]
         public async Task<IActionResult> DeleteUser([FromRoute] int id)
         {
             if (!ModelState.IsValid) return BadRequest(ModelState);
