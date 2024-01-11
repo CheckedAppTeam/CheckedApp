@@ -1,6 +1,6 @@
-import axios from 'axios';
+import axios from 'axios'
 
-const baseURL = process.env.REACT_APP_API_URL;
+const baseURL = process.env.REACT_APP_API_URL
 
 const itemEndpoints = {
   getAllItems: `${baseURL}/Item/GetAll`,
@@ -8,22 +8,21 @@ const itemEndpoints = {
   addItem: `${baseURL}/Item/AddItem`,
   deleteItem: (id) => `${baseURL}/Item/DeleteItem/${id}`,
   editItem: (id) => `${baseURL}/Item/EditItem/${id}`,
-};
+}
 
 const itemListEndpoints = {
-    getAllLists: `${baseURL}/ItemList/GetAllLists`,
-    getByUserId: (userid) => `${baseURL}/ItemList/User/${userid}`,
-    getList: (itemlistid) => `${baseURL}/ItemList/GetList/${itemlistid}`,
-    getByCity: (city) => `${baseURL}/ItemList/City/${city}`,
-    getByDateAndCity: (city, date) => `${baseURL}/ItemList/CityAndDate/${city}/${date}`,
-    addList: (userid) => `${baseURL}/ItemList/AddList/${userid}`,
-    copyItemList: (itemListid, userid) => `${baseURL}/ItemList/User/${itemListid}/${userid}`,
-    updateItemList: (id) => `${baseURL}/ItemList/EditListSpecification/${id}`,
-    deleteList: (id) => `${baseURL}/ItemList/DeleteList/${id}`,
-  };
-  
-  
-  
+  getAllLists: `${baseURL}/ItemList/GetAllLists`,
+  getByUserId: (userid) => `${baseURL}/ItemList/User/${userid}`,
+  getList: (itemlistid) => `${baseURL}/ItemList/GetList/${itemlistid}`,
+  getByCity: (city) => `${baseURL}/ItemList/City/${city}`,
+  getByDateAndCity: (city, date) =>
+    `${baseURL}/ItemList/CityAndDate/${city}/${date}`,
+  addList: (userid) => `${baseURL}/ItemList/AddList/${userid}`,
+  copyItemList: (itemListid, userid) =>
+    `${baseURL}/ItemList/User/${itemListid}/${userid}`,
+  updateItemList: (id) => `${baseURL}/ItemList/EditListSpecification/${id}`,
+  deleteList: (id) => `${baseURL}/ItemList/DeleteList/${id}`,
+}
 
 const userEndpoints = {
   getUserData: (id) => `${baseURL}/User/UserData/${id}`,
@@ -31,7 +30,7 @@ const userEndpoints = {
   addUser: `${baseURL}/User/UserData/AddUser`,
   editUser: (id) => `${baseURL}/User/UserData/EditUser/${id}`,
   deleteUser: (id) => `${baseURL}/User/UserData/DeleteUser/${id}`,
-};
+}
 
 const userItemEndpoints = {
   getUserItem: (id) => `${baseURL}/UserId/GetUserItem/${id}`,
@@ -41,7 +40,7 @@ const userItemEndpoints = {
   addUserItem: `${baseURL}/UserId/AddItemToList`,
   editUserItemStatus: (id) => `${baseURL}/UserId/EditItemOnList/${id}`,
   deleteUserItem: (id) => `${baseURL}/UserId/DeleteItemFromList/${id}`,
-};
+}
 
 export {
   axios,
@@ -49,4 +48,4 @@ export {
   itemListEndpoints,
   userEndpoints,
   userItemEndpoints,
-};
+}
