@@ -30,11 +30,22 @@ export function ItemLists() {
   return (
     <>
       <h1>Item Lists</h1>
+      {allItemListsResponseData && allItemListsResponseData.ownItemList && (
+  <div>
+{allItemListsResponseData.ownItemList.map((item, index) => (
+      <div key={index}>
+        <a href={`/itemLists/${item.listName}`}>
+          {item.listName}
+        </a>
+      </div>
+    ))}
+  </div>
+)}
       <div>
-        <pre>
+        {/* <pre> */}
           {/* <h2>{JSON.stringify(itemListResponseData,null,2)}</h2> */}
-          <p>{JSON.stringify(allItemListsResponseData, null, 2)}</p>
-        </pre>
+          {/* <p>{JSON.stringify(allItemListsResponseData, null, 2)}</p> */}
+        {/* </pre> */}
       </div>
     </>
   )

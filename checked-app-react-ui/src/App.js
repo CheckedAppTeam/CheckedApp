@@ -14,7 +14,7 @@ function App() {
       <Navbar />
       <Routes>
         <Route path='/' element={<Home />} />
-        <Route path='/itemlists' element={<ItemListLayout />}>
+        <Route path='/itemlists' >
           <Route index element={<ItemLists />} />
           <Route path=':id' element={<ItemList />} />
           <Route path='new' element={<NewList />} />
