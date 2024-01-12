@@ -1,11 +1,13 @@
 ﻿
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace CheckedAppProject.DATA.Entities
 {
     public class UserAccount
     {
         public AppUser AppUser { get; set; }
+        [ForeignKey("AppUser")]
         public string AppUserId { get; set; }
         [Key]
         public string UserId { get; set; }

@@ -17,7 +17,8 @@ namespace CheckedAppProject.LOGIC.AutoMapperProfiles
 
             CreateMap<AddUserDTO, AppUser>()
                 .ForMember(dest => dest.UserName, opt  => opt.MapFrom(src => src.UserName))
-                .ForMember(dest => dest.Email, opt => opt.MapFrom(src => src.UserEmail));
+                .ForMember(dest => dest.Email, opt => opt.MapFrom(src => src.UserEmail))
+                .ForMember(dest => dest.Id, opt => opt.Ignore());
 
             CreateMap<UserUpdateDTO, UserAccount>()
             .ForAllMembers(opt => opt.UseDestinationValue());

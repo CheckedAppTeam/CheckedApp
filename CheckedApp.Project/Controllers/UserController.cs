@@ -50,11 +50,11 @@ namespace CheckedAppProject.API.Controllers
             AppUser appUser = _mapper.Map<AppUser>(dto);
             IdentityResult result = await _userManager.CreateAsync(appUser, dto.Password);
 
-            //TUTAJ MUSZĘ PRZYPISAĆ ID APPUSERA DO USERACCOUNT USERID
-            //NIE WIDZI TUTAJ TEGO ID W DTO
-
             if (result.Succeeded)
+            {
+                dto.AppUserId = appUser.Id; //Tutaj przypisuję puste id z zapisanego appusera przez maper a nie z tego z DB z nadanym ID przez Identity. Jak dostać tego z DB 
                 return RedirectToAction("Index");
+            }
             else
             {
                 foreach (IdentityError error in result.Errors)
