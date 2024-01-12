@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace CheckedAppProject.DATA.Migrations
 {
     [DbContext(typeof(UserItemContext))]
-    [Migration("20240111142258_Initial")]
+    [Migration("20240112083920_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
@@ -52,9 +52,6 @@ namespace CheckedAppProject.DATA.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("ItemListId"));
 
-                    b.Property<string>("AppUserId")
-                        .HasColumnType("text");
-
                     b.Property<DateTime?>("Date")
                         .HasColumnType("timestamp with time zone");
 
@@ -67,16 +64,23 @@ namespace CheckedAppProject.DATA.Migrations
                     b.Property<bool>("ItemListPublic")
                         .HasColumnType("boolean");
 
+                    b.Property<string>("UserId")
+                        .HasColumnType("text");
+
                     b.HasKey("ItemListId");
 
-                    b.HasIndex("AppUserId");
+                    b.HasIndex("UserId");
 
                     b.ToTable("ItemLists");
                 });
 
             modelBuilder.Entity("CheckedAppProject.DATA.Entities.UserAccount", b =>
                 {
+                    b.Property<string>("UserId")
+                        .HasColumnType("text");
+
                     b.Property<string>("AppUserId")
+                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("UserAccountName")
@@ -87,15 +91,18 @@ namespace CheckedAppProject.DATA.Migrations
                     b.Property<int>("UserAge")
                         .HasColumnType("integer");
 
-                    b.Property<int>("UserSex")
-                        .HasColumnType("integer");
+                    b.Property<string>("UserSex")
+                        .HasColumnType("text");
 
                     b.Property<string>("UserSurname")
                         .IsRequired()
                         .HasMaxLength(200)
                         .HasColumnType("character varying(200)");
 
-                    b.HasKey("AppUserId");
+                    b.HasKey("UserId");
+
+                    b.HasIndex("AppUserId")
+                        .IsUnique();
 
                     b.ToTable("UsersApp");
                 });
@@ -311,7 +318,7 @@ namespace CheckedAppProject.DATA.Migrations
                 {
                     b.HasOne("CheckedAppProject.DATA.Entities.UserAccount", "UserAccount")
                         .WithMany("ItemList")
-                        .HasForeignKey("AppUserId");
+                        .HasForeignKey("UserId");
 
                     b.Navigation("UserAccount");
                 });

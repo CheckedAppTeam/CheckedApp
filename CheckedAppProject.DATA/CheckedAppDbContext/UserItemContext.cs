@@ -23,7 +23,7 @@ namespace CheckedAppProject.DATA.CheckedAppDbContext
                 eb.Property(u => u.UserSurname).IsRequired().HasMaxLength(200);
                 eb.HasMany(w => w.ItemList)
                 .WithOne(u => u.UserAccount)
-                .HasForeignKey(x => x.AppUserId);
+                .HasForeignKey(x => x.UserId);
                 eb.HasOne(u => u.AppUser)
                 .WithOne()
                 .HasForeignKey<UserAccount>(u => u.AppUserId)
@@ -34,6 +34,7 @@ namespace CheckedAppProject.DATA.CheckedAppDbContext
                  .HasMany(e => e.Items)
                  .WithMany(e => e.ItemLists)
                  .UsingEntity<UserItem>();
+
             modelBuilder.Entity<IdentityUserLogin<string>>().HasKey("LoginProvider", "ProviderKey");
             modelBuilder.Entity<IdentityUserRole<string>>().HasKey("UserId", "RoleId");
             modelBuilder.Entity<IdentityUserToken<string>>().HasKey("UserId", "LoginProvider", "Name");

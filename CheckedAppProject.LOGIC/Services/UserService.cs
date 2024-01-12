@@ -37,6 +37,7 @@ namespace CheckedAppProject.LOGIC.Services
         public async Task AddUserAsync(AddUserDTO dto)
         {
             var user = _mapper.Map<UserAccount>(dto);
+            user.AppUserId = "hahahahahahaha";
             await _userRepository.AddUserAsync(user);
 
         }

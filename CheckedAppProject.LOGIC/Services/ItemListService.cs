@@ -66,7 +66,7 @@ namespace CheckedAppProject.LOGIC.Services
 
         public async Task<IEnumerable<ItemListDTO>> GetAllByUserIdAsync(string userId)
         {
-            var itemLists = await _itemListRepository.GetAllByUserIdAsync(query => query.Where(il => il.AppUserId == userId));
+            var itemLists = await _itemListRepository.GetAllByUserIdAsync(query => query.Where(il => il.UserId == userId));
 
             var itemListsDto = _mapper.Map<IEnumerable<ItemListDTO>>(itemLists);
 
@@ -77,7 +77,7 @@ namespace CheckedAppProject.LOGIC.Services
         {
             var itemList = _mapper.Map<ItemList>(dto);
 
-            itemList.AppUserId = userId;
+            itemList.UserId = userId;
 
             await _itemListRepository.CreateItemList(itemList);
         }

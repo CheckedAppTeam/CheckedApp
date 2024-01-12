@@ -6,8 +6,9 @@ namespace CheckedAppProject.DATA.Entities
     public class UserAccount
     {
         public AppUser AppUser { get; set; }
-        [Key]
         public string AppUserId { get; set; }
+        [Key]
+        public string UserId { get; set; }
         public string UserAccountName { get; set; }
         public string UserSurname { get; set; }
         public int UserAge { get; set; }

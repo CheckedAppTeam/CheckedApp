@@ -7,6 +7,8 @@ namespace CheckedAppProject.LOGIC.DTOs
     public class AddUserDTO
     {
         [Required]
+        public string AppUserId { get; set; }
+        [Required]
         [MaxLength(30)]
         public string UserName { get; set; }
         [Required]

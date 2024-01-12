@@ -9,7 +9,7 @@ namespace CheckedAppProject.DATA.Entities
         public bool ItemListPublic { get; set; }
         public string ItemListDestination { get; set; }
         public UserAccount UserAccount { get; set; }
-        public string AppUserId { get; set; }
+        public string UserId { get; set; }
         public List<UserItem> UserItems { get; set; }
         public List<Item> Items { get; set; }
 

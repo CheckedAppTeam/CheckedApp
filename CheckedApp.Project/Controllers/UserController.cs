@@ -50,6 +50,9 @@ namespace CheckedAppProject.API.Controllers
             AppUser appUser = _mapper.Map<AppUser>(dto);
             IdentityResult result = await _userManager.CreateAsync(appUser, dto.Password);
 
+            //TUTAJ MUSZĘ PRZYPISAĆ ID APPUSERA DO USERACCOUNT USERID
+            //NIE WIDZI TUTAJ TEGO ID W DTO
+
             if (result.Succeeded)
                 return RedirectToAction("Index");
             else

@@ -99,7 +99,7 @@ public class ItemListRepository : IItemListRepository
         {
             Date = DateTime.UtcNow,
             ItemListDestination = dbItemList.ItemListDestination ?? "Destination",
-            AppUserId = userId,
+            UserId = userId,
             ItemListName = dbItemList.ItemListName ?? "ItemList",
             UserItems = dbItemList.UserItems,
             ItemListPublic = false

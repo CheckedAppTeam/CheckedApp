@@ -140,15 +140,16 @@ namespace CheckedAppProject.DATA.Migrations
                 name: "UsersApp",
                 columns: table => new
                 {
+                    UserId = table.Column<string>(type: "text", nullable: false),
                     AppUserId = table.Column<string>(type: "text", nullable: false),
                     UserAccountName = table.Column<string>(type: "character varying(200)", maxLength: 200, nullable: false),
                     UserSurname = table.Column<string>(type: "character varying(200)", maxLength: 200, nullable: false),
                     UserAge = table.Column<int>(type: "integer", nullable: false),
-                    UserSex = table.Column<int>(type: "integer", nullable: false)
+                    UserSex = table.Column<string>(type: "text", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_UsersApp", x => x.AppUserId);
+                    table.PrimaryKey("PK_UsersApp", x => x.UserId);
                     table.ForeignKey(
                         name: "FK_UsersApp_Users_AppUserId",
                         column: x => x.AppUserId,
@@ -167,16 +168,16 @@ namespace CheckedAppProject.DATA.Migrations
                     Date = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
                     ItemListPublic = table.Column<bool>(type: "boolean", nullable: false),
                     ItemListDestination = table.Column<string>(type: "text", nullable: true),
-                    AppUserId = table.Column<string>(type: "text", nullable: true)
+                    UserId = table.Column<string>(type: "text", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_ItemLists", x => x.ItemListId);
                     table.ForeignKey(
-                        name: "FK_ItemLists_UsersApp_AppUserId",
-                        column: x => x.AppUserId,
+                        name: "FK_ItemLists_UsersApp_UserId",
+                        column: x => x.UserId,
                         principalTable: "UsersApp",
-                        principalColumn: "AppUserId");
+                        principalColumn: "UserId");
                 });
 
             migrationBuilder.CreateTable(
@@ -207,9 +208,9 @@ namespace CheckedAppProject.DATA.Migrations
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_ItemLists_AppUserId",
+                name: "IX_ItemLists_UserId",
                 table: "ItemLists",
-                column: "AppUserId");
+                column: "UserId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_UserItems_ItemId",
@@ -220,6 +221,12 @@ namespace CheckedAppProject.DATA.Migrations
                 name: "IX_UserItems_ItemListId",
                 table: "UserItems",
                 column: "ItemListId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_UsersApp_AppUserId",
+                table: "UsersApp",
+                column: "AppUserId",
+                unique: true);
         }
 
         /// <inheritdoc />
