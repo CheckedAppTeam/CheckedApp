@@ -32,23 +32,25 @@ export function ItemLists() {
     <>
       <h1>Item Lists</h1>
       {allItemListsResponseData && allItemListsResponseData.ownItemList && (
-  <div className='item-lists'>
-{allItemListsResponseData.ownItemList.map((item, index) => (
-      <div className = 'item' key={index}>
-        <a href={`/itemLists/${item.listName}`}>
-          {item.listName}
-        </a>
-        <p>{item.travelDestination}</p>
-        <p>{item.travelDate}</p>
-        {item.isPublic ? <p className="public">public</p> : <p className="private">private</p>}
-      </div>
-    ))}
-  </div>
-)}
+        <div className='item-lists'>
+          {allItemListsResponseData.ownItemList.map((item, index) => (
+            <div className='item' key={index}>
+              <a href={`/itemLists/${item.listName}`}>{item.listName}</a>
+              <p>{item.travelDestination}</p>
+              <p>{item.travelDate}</p>
+              {item.isPublic ? (
+                <p className='public'>public</p>
+              ) : (
+                <p className='private'>private</p>
+              )}
+            </div>
+          ))}
+        </div>
+      )}
       <div>
         {/* <pre> */}
-          {/* <h2>{JSON.stringify(itemListResponseData,null,2)}</h2> */}
-          {/* <p>{JSON.stringify(allItemListsResponseData, null, 2)}</p> */}
+        {/* <h2>{JSON.stringify(itemListResponseData,null,2)}</h2> */}
+        {/* <p>{JSON.stringify(allItemListsResponseData, null, 2)}</p> */}
         {/* </pre> */}
       </div>
     </>
