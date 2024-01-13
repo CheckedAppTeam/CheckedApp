@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import axios from 'axios'
 import { itemListEndpoints } from '../endpoints'
 import { userEndpoints } from '../endpoints'
+import '../styles/itemLists.css'
 
 export function ItemLists() {
   const [itemListResponseData, setItemListResponseData] = useState(null)
@@ -31,12 +32,15 @@ export function ItemLists() {
     <>
       <h1>Item Lists</h1>
       {allItemListsResponseData && allItemListsResponseData.ownItemList && (
-  <div>
+  <div className='item-lists'>
 {allItemListsResponseData.ownItemList.map((item, index) => (
-      <div key={index}>
+      <div className = 'item' key={index}>
         <a href={`/itemLists/${item.listName}`}>
           {item.listName}
         </a>
+        <p>{item.travelDestination}</p>
+        <p>{item.travelDate}</p>
+        {item.isPublic ? <p className="public">public</p> : <p className="private">private</p>}
       </div>
     ))}
   </div>

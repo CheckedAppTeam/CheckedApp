@@ -10,10 +10,10 @@
     height: 6cqh;
 }
 :root {
-	--mainColor: #305c29;
-	--mainColorLight: #5767aa;
-	--secondaryColor: #eeeeeeaa;
-	--textColor: #eee;
+	--mainColor: #FF9B36;
+	--mainColorLight: #9B9BFF;
+	--secondaryColor: #434AF2;
+	--textColor: #FFF5EB;
 }
 
 header {
