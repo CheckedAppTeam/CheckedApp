@@ -43,4 +43,14 @@
       max-width: 100%; /* Full width on smaller screens */
     }
   }
+
+  .openModalBtn {
+    width: 200px;
+    height: 40px;
+    border: none;
+    border-radius: 6px;
+    background-color: #FF9B36;
+    color: #311ABB;
+    cursor: pointer;
+}
   
