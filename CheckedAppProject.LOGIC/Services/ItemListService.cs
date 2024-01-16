@@ -64,7 +64,7 @@ namespace CheckedAppProject.LOGIC.Services
             return itemListsDtos;
         }
 
-        public async Task<IEnumerable<ItemListDTO>> GetAllByUserIdAsync(int userId)
+        public async Task<IEnumerable<ItemListDTO>> GetAllByUserIdAsync(string userId)
         {
             var itemLists = await _itemListRepository.GetAllByUserIdAsync(query => query.Where(il => il.UserId == userId));
 
@@ -73,7 +73,7 @@ namespace CheckedAppProject.LOGIC.Services
             return itemListsDto;
         }
 
-        public async Task CreateAsync(CreateItemListDTO dto, int userId)
+        public async Task CreateAsync(CreateItemListDTO dto, string userId)
         {
             var itemList = _mapper.Map<ItemList>(dto);
 
@@ -82,7 +82,7 @@ namespace CheckedAppProject.LOGIC.Services
             await _itemListRepository.CreateItemList(itemList);
         }
 
-        public async Task<ItemList> CopyAsync(int itemListid, int userId)
+        public async Task<ItemList> CopyAsync(int itemListid, string userId)
         {
             return await _itemListRepository.CopyItemList(itemListid, userId);
         }

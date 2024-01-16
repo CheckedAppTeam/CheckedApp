@@ -9,15 +9,13 @@ namespace CheckedAppProject.LOGIC.AutoMapperProfiles
     {
         public UserMappingProfile()
         {
-            CreateMap<User, UserDataDTO>()
+            CreateMap<AppUser, UserDataDTO>()
                 .ForMember(dest => dest.OwnItemList, opt => opt.MapFrom(src => src.ItemList))
-                .ForMember(dest => dest.UserId, opt => opt.MapFrom(src => src.UserId));
+                .ForMember(dest => dest.UserId, opt => opt.MapFrom(src => src.Id));
+               
+            CreateMap<AddUserDTO, AppUser>();
 
-            CreateMap<AddUserDTO, User>();
-
-
-            CreateMap<UserUpdateDTO, User>()
-            .ForMember(dest => dest.UserLogged, opt => opt.Ignore())
+            CreateMap<UserUpdateDTO, AppUser>()
             .ForAllMembers(opt => opt.UseDestinationValue());
         }
     }
