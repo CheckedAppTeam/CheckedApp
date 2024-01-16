@@ -1,19 +1,19 @@
-import React, { useEffect } from "react";
-import { useMap } from "react-leaflet";
+import React, { useEffect } from 'react'
+import { useMap } from 'react-leaflet'
 
 const FlyToMarker = ({ position, zoomLevel }) => {
-  const map = useMap();
+  const map = useMap()
 
   useEffect(() => {
     if (position) {
-      const zoom = zoomLevel ?? map.getZoom();
+      const zoom = zoomLevel ?? map.getZoom()
       map.flyTo(position, zoom, {
-        duration: 1,
-      });
+        duration: 10,
+      })
     }
-  }, [map, position, zoomLevel]);
+  }, [map, position, zoomLevel])
 
-  return null;
-};
+  return null
+}
 
-export default FlyToMarker;
+export default FlyToMarker

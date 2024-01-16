@@ -1,6 +1,6 @@
 import React, { useRef } from 'react'
 import CheckedFullLogo from '../../assets/CheckedFullLogo.png'
-import { FaBars, FaTimes} from 'react-icons/fa'
+import { FaBars, FaTimes } from 'react-icons/fa'
 import '../../styles/main.css'
 
 function Navbar() {
@@ -18,8 +18,8 @@ function Navbar() {
         <a href='/'>Home</a>
         <a href='/ItemLists'>Item Lists</a>
         <a href='/hehe'>Items</a>
-        <a href='/Login'>Login</a>
         <a href='/Register'>Register</a>
+        <a href='/Login'>Login</a>
         <button className='nav-btn nav-close-btn' onClick={showNavBar}>
           <FaTimes />
         </button>
