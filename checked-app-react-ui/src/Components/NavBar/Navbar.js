@@ -18,8 +18,8 @@ function Navbar() {
         <a href='/'>Home</a>
         <a href='/ItemLists'>Item Lists</a>
         <a href='/hehe'>Items</a>
-        <a href='/log'>Login</a>
-        <a href='/reg'>Register</a>
+        <a href='/Login'>Login</a>
+        <a href='/Register'>Register</a>
         <button className='nav-btn nav-close-btn' onClick={showNavBar}>
           <FaTimes />
         </button>

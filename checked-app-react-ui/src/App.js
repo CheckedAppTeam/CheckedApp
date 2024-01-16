@@ -7,6 +7,7 @@ import { NotFound } from './pages/NotFound'
 import { NewList } from './pages/NewList'
 import { ItemListLayout } from './pages/ItemListLayout'
 import Navbar from './Components/NavBar/Navbar'
+import LoginSignup from './Components/UserAuthForm/LoginSignup'
 
 function App() {
   return (
@@ -21,6 +22,7 @@ function App() {
         </Route>
 
         <Route path='*' element={<NotFound />} />
+        <Route path='/Login' element={<LoginSignup />} />
       </Routes>
     </>
   )
