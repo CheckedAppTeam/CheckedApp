@@ -53,6 +53,7 @@ header div,
 nav {
 	display: flex;
 	align-items: center;
+	z-index: 9999;
 }
 
 @media only screen and (max-width: 1024px) {

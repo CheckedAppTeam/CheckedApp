@@ -1,6 +1,6 @@
 import React, { useRef } from 'react'
 import CheckedFullLogo from '../../assets/CheckedFullLogo.png'
-import { FaBars, FaTimes } from 'react-icons/fa'
+import { FaBars, FaTimes} from 'react-icons/fa'
 import '../../styles/main.css'
 
 function Navbar() {
