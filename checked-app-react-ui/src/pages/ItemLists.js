@@ -55,36 +55,19 @@ export function ItemLists() {
 
   return (
     <>
-      <h1>Item Lists</h1>
+      <h1>All Your Lists</h1>
       {! loading && <Loader/>}
       {allItemListsResponseData && allItemListsResponseData.ownItemList && (
   <div className='item-lists'>
-    {/* {loading ? showAllItemLists : <ReactBootStrap.Spinner animation="border" />} */}
     {allItemListsResponseData.ownItemList.map((itemList, index) => (
   <div className='item' key={index}>
-    {/* Use Link component for internal navigation */}
-    <button className='openModalBtn' onClick={() => {setOpenModal(true)}}>{itemList.listName}</button>
+    <h2 className='openModalClick' onClick={() => {setOpenModal(true)}}>{itemList.listName}</h2>
     {openModal && <ItemListModal closeModal={setOpenModal} itemListName={itemList.listName} itemListId={itemList.itemListId}/>}
-{/*     
-    <Link to={`/itemlists/${item.itemListId}`}>
-      {item.listName}
-    </Link> */}
     <p>{itemList.travelDestination}</p>
     <p>{formatDate(itemList.travelDate)}</p>
     {itemList.isPublic ? <p className="public">public</p> : <p className="private">private</p>}
   </div>
 ))}
-{/* {openModal && <ItemListModal closeModal={setOpenModal}/>} */}
-{/* {allItemListsResponseData.ownItemList.map((item, index) => (
-      <div className = 'item' key={index}>
-        <a href={`/itemLists/${item.itemListId}`}>
-          {item.listName}
-        </a>
-        <p>{item.travelDestination}</p>
-        <p>{formatDate(item.travelDate)}</p>
-        {item.isPublic ? <p className="public">public</p> : <p className="private">private</p>}
-      </div>
-    ))} */}
   </div>
 )}
       <div>

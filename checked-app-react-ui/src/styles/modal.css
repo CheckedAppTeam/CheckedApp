@@ -2,7 +2,7 @@
 .modalBackground {
     width: 100vw;
     height: 100vh;
-    background-color: rgba(199, 199, 254, 0.7);
+    background-color: rgba(199, 199, 254, 0.6);
     position: fixed;
     top: 0;
     left: 0;
@@ -12,8 +12,8 @@
   }
   
   .modalContainer {
-    width: 60%; /* Adjust the width of the modal */
-    max-width: 500px; /* Add a max-width to ensure it's not too wide on larger screens */
+    width: 60%;
+    max-width: 500px;
     border-radius: 12px;
     background-color: #434AF2;
     box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
