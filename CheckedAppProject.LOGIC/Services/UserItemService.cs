@@ -67,19 +67,15 @@ namespace CheckedAppProject.LOGIC.Services
             var userItemList = await _userItemRepository.GetAllUserItemFromListAsync(itemListId);
             if (userItemList == null) return null;
 
-            var convertedToDTO = userItemList
-        .Select(async item => new UserItemDTO()
-        {
-            UserItemName = await _itemRepository.GetItemNameByIdAsync(item.UserItemId),
-            ItemState = item.ItemState,
-            UserItemListName = await _itemListRepository.GetItemListNameByIdAsync(item.ItemListId),
-        })
-            .ToList();
+            var targetList = _mapper.Map<List<UserItemDTO>>(userItemList);
 
-            var userItemDTOArray = await Task.WhenAll(convertedToDTO);
-            var userItemDTOList = userItemDTOArray.ToList();
+            for (int i = 0; i < userItemList.Count; i++)
+            {
+                targetList[i].UserItemListName = await _itemListRepository.GetItemListNameByIdAsync(itemListId);
+                targetList[i].UserItemName = await _itemRepository.GetItemNameByIdAsync(userItemList[i].UserItemId);
+            }
 
-            return userItemDTOList;
+            return targetList;
         }
 
         public async Task AddUserItemAsync(AddUserItemDTO userItemData)

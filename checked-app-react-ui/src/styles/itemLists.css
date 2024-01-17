@@ -18,7 +18,7 @@ h1 {
   justify-content: space-between;
 }
 
-.item {
+.itemList {
   /* background-color: #FAE2CA; */
   background-image: linear-gradient(#FAE2CA, #FFF5EB);
   border-radius: 20px;
@@ -28,22 +28,22 @@ h1 {
   box-sizing: border-box;
 }
 
-.item a {
+.itemList a {
   font-size: 20px;
   font-weight: bold;
   text-decoration: none;
   display: block;
 }
 
-.item p {
+.itemList p {
   margin: 8px 0;
 }
 
-.item p.public {
+.itemList p.public {
   color: green;
 }
 
-.item p.private {
+.itemList p.private {
   color: red;
 }
 
@@ -54,26 +54,26 @@ h1 {
 }
 
 @media (max-width: 600px) {
-  .item {
+  .itemList {
     max-width: 100%;
     flex: 0 0 100%;
   }
 }
 
 @media (min-width: 601px) and (max-width: 900px) {
-  .item {
+  .itemList {
     flex: 0 0 calc(50% - 20px);
   }
 }
 
 @media (min-width: 901px) and (max-width: 1200px) {
-  .item {
+  .itemList {
     flex: 0 0 calc(33.33% - 20px);
   }
 }
 
 @media (min-width: 1201px) {
-  .item {
+  .itemList {
     flex: 0 0 calc(25% - 20px);
   }
 }

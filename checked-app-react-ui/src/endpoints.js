@@ -33,13 +33,13 @@ const userEndpoints = {
 }
 
 const userItemEndpoints = {
-  getUserItem: (id, userId) => `${baseURL}/${userId}/GetUserItem/${id}`,
-  getAllUsersItemsByStateInItemList: (state, id, userId) =>
-    `${baseURL}/${userId}/ByState/${state}/InItemList/${id}`,
-  getAllUsersItemsByListId: (id, userId) => `${baseURL}/${userId}/ByListId/${id}`,
-  addUserItem: (userId) => `${baseURL}/${userId}/AddItemToList`,
-  editUserItemStatus: (id, userId) => `${baseURL}/${userId}/EditItemOnList/${id}`,
-  deleteUserItem: (id, userId) => `${baseURL}/${userId}/DeleteItemFromList/${id}`,
+  getUserItem: (id) => `${baseURL}/UserId/GetUserItem/${id}`,
+  getAllUsersItemsByStateInItemList: (state, id) =>
+    `${baseURL}/UserId/ByState/${state}/InItemList/${id}`,
+  getAllUsersItemsByListId: (id) => `${baseURL}/UserId/ByListId/${id}`,
+  addUserItem: `${baseURL}/UserId/AddItemToList`,
+  editUserItemStatus: (id) => `${baseURL}/UserId/EditItemOnList/${id}`,
+  deleteUserItem: (id) => `${baseURL}/UserId/DeleteItemFromList/${id}`,
 }
 
 export {

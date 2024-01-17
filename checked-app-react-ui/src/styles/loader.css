@@ -1,42 +1,74 @@
+:root {
+	--circle: #C7C7FE;
+	--arrow: #434AF2;
+}
+
 .loader {
-    position: fixed;
+  position: fixed;
+  /* top: 50%;
+  left: 30%; */
+  transform: translate(-50%, -50%);
+  width: 120px;
+  height: 120px;
+  background: var(--circle);
+  border-radius: 50%;
+  animation: rotate 2s linear infinite;
+}
+
+.loader:before {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 30px;
+  height: 60px;
+  background: var(--arrow);
+  transform: skew(5deg, 60deg) translate(-50%, -5%);
+}
+
+.loader:after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: var(--circle);
+  transform: translate(-50%, -50%);
+}
+
+@keyframes rotate {
+  0% { transform: rotate(45deg) }
+  30%, 50%, 70% { transform: rotate(230deg) }
+  40%, 60%, 80% { transform: rotate(240deg) }
+  100% { transform: rotate(245deg) }
+}
+
+@media (max-width: 600px) {
+  .loader {
     top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: 120px;
-    height: 120px;
-    background: #C7C7FE;
-    border-radius: 50%;
-    animation: rotate 2s linear infinite;
+    left: 30%;
   }
-  
-  .loader:before {
-    content: "";
-    position: absolute;
-    left: 50%;
+}
+
+@media (min-width: 601px) and (max-width: 900px) {
+  .loader {
     top: 50%;
-    width: 30px;
-    height: 60px;
-    background: #434AF2;
-    transform: skew(5deg, 60deg) translate(-50%, -5%);
+    left: 40%;
   }
-  
-  .loader:after {
-    content: "";
-    position: absolute;
-    left: 50%;
+}
+
+@media (min-width: 901px) and (max-width: 1200px) {
+  .loader {
     top: 50%;
-    width: 12px;
-    height: 12px;
-    border-radius: 50%;
-    background: #C7C7FE;
-    transform: translate(-50%, -50%);
+    left: 42%;
   }
-  
-  @keyframes rotate {
-    0% { transform: rotate(45deg) }
-    30%, 50%, 70% { transform: rotate(230deg) }
-    40%, 60%, 80% { transform: rotate(240deg) }
-    100% { transform: rotate(245deg) }
+}
+
+@media (min-width: 1201px) {
+  .loader {
+    top: 50%;
+    left: 46%;
   }
-  
+}
