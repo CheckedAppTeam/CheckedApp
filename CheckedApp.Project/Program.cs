@@ -34,16 +34,17 @@ var configuration = provider.GetRequiredService<IConfiguration>();
 
 builder.Services.AddCors(options =>
 {
-    var frontendURL = configuration.GetValue<string>("frontend_url");
+    var frontendURL = configuration.GetValue<string>("http://localhost:3000");
 
     options.AddDefaultPolicy(builder =>
     {
-        builder.WithOrigins(frontendURL).AllowAnyMethod().AllowAnyHeader();
+        builder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader();
     });
 });
 
 builder.Services.AddDbContext<UserItemContext>(
-    option => option.UseNpgsql(builder.Configuration["CheckedAppDbConnection"])
+    option => option.UseNpgsql(builder.Configuration["CheckedAppDbConnection"]),
+    ServiceLifetime.Transient
     );
 
 var app = builder.Build();

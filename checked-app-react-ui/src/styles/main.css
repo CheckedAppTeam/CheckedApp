@@ -5,6 +5,7 @@
 	margin: 0;
 	box-sizing: border-box;
 	font-family: "Titillium Web", sans-serif;
+	/* background-color: #FFF5EB; */
 }
 .nav-Logo{
     height: 6cqh;
@@ -90,4 +91,7 @@ nav {
 	nav a {
 		font-size: 1.5rem;
 	}
+	/* .body {
+		background-color: #FFF5EB;
+	} */
 }
