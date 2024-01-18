@@ -38,7 +38,7 @@ const userItemEndpoints = {
     `${baseURL}/UserId/ByState/${state}/InItemList/${id}`,
   getAllUsersItemsByListId: (id) => `${baseURL}/UserId/ByListId/${id}`,
   addUserItem: `${baseURL}/UserId/AddItemToList`,
-  editUserItemStatus: (id) => `${baseURL}/UserId/EditItemOnList/${id}`,
+  editUserItem: (id) => `${baseURL}/UserId/EditItemOnList/${id}`,
   deleteUserItem: (id) => `${baseURL}/UserId/DeleteItemFromList/${id}`,
 }
 

@@ -4,17 +4,26 @@ import '../styles/modal.css'
 import axios from 'axios';
 import { userItemEndpoints } from '../endpoints';
 import Loader from '../spinners/Loader';
+import Checkbox from '@mui/material/Checkbox';
+import FormGroup from '@mui/material/FormGroup';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import FormControl from '@mui/material/FormControl';
+import FormLabel from '@mui/material/FormLabel';
+import { orange } from '@mui/material/colors';
+
+const label = { inputProps: { 'aria-label': 'Checkbox demo' } };
 
 
 function ItemListModal({ closeModal, itemListName, itemListId }) {
     const [allItemsByItemListId, setAllItemsByItemListId] = useState();
     const [loading, setLoading] = useState(false);
-    //userItemEndpoints.itemListId(itemListId, userId)
+    const [itemState, setItemState] = useState();
+
 
 
     const showAllItemsByItemListId = async () => {
         try {
-            const response = await axios.get(`https://localhost:7161/UserId/ByListId/${itemListId}`);
+            const response = await axios.get(userItemEndpoints.getAllUsersItemsByListId(itemListId));
             console.log('Response:', response);
             setAllItemsByItemListId(response.data);
             setLoading(true);
@@ -23,6 +32,17 @@ function ItemListModal({ closeModal, itemListName, itemListId }) {
         }
     };
 
+    // const editAllItemsByItemListId = async () => {
+    //     try {
+    //         const response = await axios.get(userItemEndpoints.editUserItem(userItemId));
+    //         console.log('Response:', response);
+    //         setAllItemsByItemListId(response.data);
+    //         setLoading(true);
+    //     } catch (error) {
+    //         console.error('Error:', error);
+    //     }
+    // };
+
     useEffect(() => {
         showAllItemsByItemListId();
     }, []);
@@ -30,9 +50,9 @@ function ItemListModal({ closeModal, itemListName, itemListId }) {
     return (
         <div className='modalBackground'>
             <div className='modalContainer'>
-                {/* <div className='titleCloseBtn'>
-            <button onClick={() => closeModal(false)}> X </button>
-            </div> */}
+                <div className='titleCloseBtn'>
+                    <button onClick={() => closeModal(false)}></button>
+                </div>
                 <div className='title'>
                     <h1>{itemListName}</h1>
                     {!loading && <Loader />}
@@ -43,14 +63,56 @@ function ItemListModal({ closeModal, itemListName, itemListId }) {
                         {allItemsByItemListId && allItemsByItemListId.map((item, index) => (
                             <div className='item' key={index}>
                                 {item.userItemName}
+                                <div className='editBtn'>
+                                    <button>
+                                        Edit
+                                    </button>
+                                </div>
+                                <FormControl component="fieldset">
+                                    <FormGroup aria-label="position" row>
+                                        <FormControlLabel
+                                            value="bottom"
+                                            control={<Checkbox
+                                                {...label}
+                                                defaultChecked
+                                                sx={{
+                                                    color: orange[800],
+                                                    '&.Mui-checked': {
+                                                        color: orange[600],
+                                                    },
+                                                }}
+                                            />}
+                                            label="Packed"
+                                            labelPlacement="bottom"
+                                        />
+                                        <FormControlLabel
+                                            value="bottom"
+                                            control={<Checkbox
+                                                {...label}
+                                                defaultChecked
+                                                sx={{
+                                                    color: orange[800],
+                                                    '&.Mui-checked': {
+                                                        color: orange[600],
+                                                    },
+                                                }}
+                                            />}
+                                            label="To buy"
+                                            labelPlacement="bottom"
+                                        />
+                                    </FormGroup>
+                                </FormControl>
                             </div>
                         ))}
                     </div>
                 </div>
                 <div className='footer'>
-                    <button onClick={() => closeModal(false)} id='cancelBtn'>
-                        Cancel
+                    <button id='AddBtn'>
+                        Add
                     </button>
+                    {/* <button onClick={() => closeModal(false)} id='cancelBtn'>
+                        Cancel
+                    </button> */}
                 </div>
             </div>
         </div>

@@ -19,8 +19,8 @@ h1 {
 }
 
 .itemList {
-  /* background-color: #FAE2CA; */
-  background-image: linear-gradient(#FAE2CA, #FFF5EB);
+  /* background-image: linear-gradient(#FAE2CA, #FFF5EB); */
+  background-color: #FAE2CA;
   border-radius: 20px;
   padding: 10px;
   margin: 10px;

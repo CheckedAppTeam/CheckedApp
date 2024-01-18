@@ -75,14 +75,6 @@ namespace CheckedAppProject.LOGIC.Services
                 targetList[i].UserItemName = await _itemRepository.GetItemNameByIdAsync(userItemList[i].UserItemId);
             }
 
-            //for (int i = 0; i < userItemList.Count; i++)
-            //{
-            //    targetList[i].UserItemListName(int i = 0; i < userItemList.Count; i++)
-            //{
-            //    targetList[i].UserItemListName = await _itemListRepository.GetItemListNameByIdAsync(itemListId);
-            //    targetList[i].UserItemName = await _itemRepository.GetItemNameByIdAsync(userItemList[i].UserItemId);
-            //}
-
             return targetList;
         }
 

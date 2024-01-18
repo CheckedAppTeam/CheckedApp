@@ -4,8 +4,6 @@ import { itemListEndpoints } from '../endpoints'
 import { userEndpoints } from '../endpoints'
 import '../styles/itemLists.css'
 import { Link } from 'react-router-dom'
-import '../axios/ItemListAxios.js'
-import { ItemListAxios } from '../axios/ItemListAxios.js'
 import "../styles/main.css";
 import Loader from '../spinners/Loader.js';
 import ItemListModal from '../Components/ItemListModal.js'
