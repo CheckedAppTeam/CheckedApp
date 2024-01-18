@@ -7,26 +7,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace CheckedAppProject.DATA.Migrations
 {
     /// <inheritdoc />
-    public partial class IdentityV8 : Migration
+    public partial class registerUser : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropForeignKey(
-                name: "FK_ItemLists_Users_UserId",
-                table: "ItemLists");
-
-            migrationBuilder.DropTable(
-                name: "Users");
-
-            migrationBuilder.AlterColumn<string>(
-                name: "UserId",
-                table: "ItemLists",
-                type: "text",
-                nullable: true,
-                oldClrType: typeof(int),
-                oldType: "integer");
-
             migrationBuilder.CreateTable(
                 name: "AspNetRoles",
                 columns: table => new
@@ -47,7 +32,7 @@ namespace CheckedAppProject.DATA.Migrations
                 {
                     Id = table.Column<string>(type: "text", nullable: false),
                     UserSurname = table.Column<string>(type: "character varying(200)", maxLength: 200, nullable: false),
-                    UserAge = table.Column<int>(type: "integer", nullable: false),
+                    UserAge = table.Column<int>(type: "integer", nullable: true),
                     UserSex = table.Column<string>(type: "text", nullable: true),
                     UserName = table.Column<string>(type: "character varying(200)", maxLength: 200, nullable: false),
                     NormalizedUserName = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true),
@@ -67,6 +52,20 @@ namespace CheckedAppProject.DATA.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_AspNetUsers", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Items",
+                columns: table => new
+                {
+                    ItemId = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    ItemName = table.Column<string>(type: "text", nullable: true),
+                    ItemCompany = table.Column<string>(type: "text", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Items", x => x.ItemId);
                 });
 
             migrationBuilder.CreateTable(
@@ -175,6 +174,55 @@ namespace CheckedAppProject.DATA.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "ItemLists",
+                columns: table => new
+                {
+                    ItemListId = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    ItemListName = table.Column<string>(type: "text", nullable: true),
+                    Date = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    ItemListPublic = table.Column<bool>(type: "boolean", nullable: false),
+                    ItemListDestination = table.Column<string>(type: "text", nullable: true),
+                    UserId = table.Column<string>(type: "text", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ItemLists", x => x.ItemListId);
+                    table.ForeignKey(
+                        name: "FK_ItemLists_AspNetUsers_UserId",
+                        column: x => x.UserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "UserItems",
+                columns: table => new
+                {
+                    UserItemId = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    ItemListId = table.Column<int>(type: "integer", nullable: false),
+                    ItemId = table.Column<int>(type: "integer", nullable: false),
+                    ItemState = table.Column<int>(type: "integer", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_UserItems", x => x.UserItemId);
+                    table.ForeignKey(
+                        name: "FK_UserItems_ItemLists_ItemListId",
+                        column: x => x.ItemListId,
+                        principalTable: "ItemLists",
+                        principalColumn: "ItemListId",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_UserItems_Items_ItemId",
+                        column: x => x.ItemId,
+                        principalTable: "Items",
+                        principalColumn: "ItemId",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
                 table: "AspNetRoleClaims",
@@ -207,21 +255,25 @@ namespace CheckedAppProject.DATA.Migrations
                 column: "NormalizedUserName",
                 unique: true);
 
-            migrationBuilder.AddForeignKey(
-                name: "FK_ItemLists_AspNetUsers_UserId",
+            migrationBuilder.CreateIndex(
+                name: "IX_ItemLists_UserId",
                 table: "ItemLists",
-                column: "UserId",
-                principalTable: "AspNetUsers",
-                principalColumn: "Id");
+                column: "UserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_UserItems_ItemId",
+                table: "UserItems",
+                column: "ItemId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_UserItems_ItemListId",
+                table: "UserItems",
+                column: "ItemListId");
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropForeignKey(
-                name: "FK_ItemLists_AspNetUsers_UserId",
-                table: "ItemLists");
-
             migrationBuilder.DropTable(
                 name: "AspNetRoleClaims");
 
@@ -238,47 +290,19 @@ namespace CheckedAppProject.DATA.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
+                name: "UserItems");
+
+            migrationBuilder.DropTable(
                 name: "AspNetRoles");
 
             migrationBuilder.DropTable(
+                name: "ItemLists");
+
+            migrationBuilder.DropTable(
+                name: "Items");
+
+            migrationBuilder.DropTable(
                 name: "AspNetUsers");
-
-            migrationBuilder.AlterColumn<int>(
-                name: "UserId",
-                table: "ItemLists",
-                type: "integer",
-                nullable: false,
-                defaultValue: 0,
-                oldClrType: typeof(string),
-                oldType: "text",
-                oldNullable: true);
-
-            migrationBuilder.CreateTable(
-                name: "Users",
-                columns: table => new
-                {
-                    UserId = table.Column<int>(type: "integer", nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    Password = table.Column<string>(type: "text", nullable: true),
-                    UserAge = table.Column<int>(type: "integer", nullable: false),
-                    UserEmail = table.Column<string>(type: "character varying(200)", maxLength: 200, nullable: false),
-                    UserLogged = table.Column<bool>(type: "boolean", nullable: false),
-                    UserName = table.Column<string>(type: "character varying(200)", maxLength: 200, nullable: false),
-                    UserSex = table.Column<string>(type: "text", nullable: true),
-                    UserSurname = table.Column<string>(type: "character varying(200)", maxLength: 200, nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Users", x => x.UserId);
-                });
-
-            migrationBuilder.AddForeignKey(
-                name: "FK_ItemLists_Users_UserId",
-                table: "ItemLists",
-                column: "UserId",
-                principalTable: "Users",
-                principalColumn: "UserId",
-                onDelete: ReferentialAction.Cascade);
         }
     }
 }

@@ -70,7 +70,7 @@ namespace CheckedAppProject.DATA.Migrations
                     b.Property<bool>("TwoFactorEnabled")
                         .HasColumnType("boolean");
 
-                    b.Property<int>("UserAge")
+                    b.Property<int?>("UserAge")
                         .HasColumnType("integer");
 
                     b.Property<string>("UserName")
@@ -82,7 +82,6 @@ namespace CheckedAppProject.DATA.Migrations
                         .HasColumnType("text");
 
                     b.Property<string>("UserSurname")
-                        .IsRequired()
                         .HasMaxLength(200)
                         .HasColumnType("character varying(200)");
 

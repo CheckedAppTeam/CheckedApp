@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace CheckedAppProject.DATA.Migrations
 {
     [DbContext(typeof(UserItemContext))]
-    [Migration("20240116211637_IdentityV8")]
-    partial class IdentityV8
+    [Migration("20240118192423_registerUserv2")]
+    partial class registerUserv2
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -73,7 +73,7 @@ namespace CheckedAppProject.DATA.Migrations
                     b.Property<bool>("TwoFactorEnabled")
                         .HasColumnType("boolean");
 
-                    b.Property<int>("UserAge")
+                    b.Property<int?>("UserAge")
                         .HasColumnType("integer");
 
                     b.Property<string>("UserName")
@@ -85,7 +85,6 @@ namespace CheckedAppProject.DATA.Migrations
                         .HasColumnType("text");
 
                     b.Property<string>("UserSurname")
-                        .IsRequired()
                         .HasMaxLength(200)
                         .HasColumnType("character varying(200)");
 

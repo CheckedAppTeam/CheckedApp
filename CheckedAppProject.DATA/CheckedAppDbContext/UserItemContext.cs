@@ -22,7 +22,7 @@ namespace CheckedAppProject.DATA.CheckedAppDbContext
             modelBuilder.Entity<AppUser>(eb =>
             {
                 eb.Property(u => u.UserName).IsRequired().HasMaxLength(200);
-                eb.Property(u => u.UserSurname).IsRequired().HasMaxLength(200);
+                eb.Property(u => u.UserSurname).HasMaxLength(200);
                 eb.HasMany(w => w.ItemList)
                 .WithOne(u => u.User)
                 .HasForeignKey(x => x.UserId);

@@ -2,13 +2,16 @@
 using CheckedAppProject.DATA.Entities;
 using CheckedAppProject.LOGIC.DTOs;
 using CheckedAppProject.LOGIC.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+
 
 namespace CheckedAppProject.API.Controllers
 {
     [ApiController]
     [Route("User")]
+    [Authorize]
 
     public class UserController : ControllerBase
     {
@@ -54,13 +57,14 @@ namespace CheckedAppProject.API.Controllers
                 Email = dto.UserEmail,
                 UserName = dto.UserName,
                 UserSurname = dto.UserSurname,
-                UserAge = dto.UserAge
+                UserAge = dto.UserAge,
+                UserSex = dto.UserSex,
             };
             var result = await _userManager.CreateAsync(identityUser, dto.Password);
             if (result.Succeeded)
             {
                 await _userItemContext.SaveChangesAsync();
-                return RedirectToAction("Index");
+                return Ok("Index");
             }
             {
                 foreach (var error in result.Errors)

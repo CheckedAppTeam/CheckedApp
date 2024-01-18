@@ -5,7 +5,7 @@ namespace CheckedAppProject.LOGIC.DTOs
     public class UserDataDTO
     {
         [Required]
-        public int UserId { get; set; }
+        public string UserId { get; set; }
         public List<ItemListDTO> OwnItemList { get; set; }
         [Required]
         [MaxLength(30)]
