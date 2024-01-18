@@ -36,8 +36,8 @@ export function ItemLists() {
     showItemListsById();
   }, []);
 
-  const openModalAtIndex = async(index, name) =>{
-    if(index !== null){
+  const openModalAtIndex = async (index, name) => {
+    if (index !== null) {
       setOpenModal(true)
     }
     setCurrentId(index)
@@ -47,31 +47,37 @@ export function ItemLists() {
 
   return (
     <>
-      {console.log(itemListEndpoints)}
-      <div className='body'>
-      <h1>All Your Lists</h1>
-      {!loading && <Loader />}
-      {allItemListsResponseData && allItemListsResponseData.ownItemList && (
-        <div className='item-lists'>
-          {allItemListsResponseData && allItemListsResponseData.ownItemList.map((itemList, index) => (
-            <div className='itemList' key={index}>
-              <h2 className='openModalClick' onClick={() => {openModalAtIndex(itemList.itemListId, itemList.listName)}}>{itemList.listName}</h2>
-              {/* {openModal && <ItemListModal closeModal={setOpenModal} itemListName={itemList.listName} itemListId={itemList.itemListId}/>} */}
-              <p>{itemList.travelDestination}</p>
-              <p>{formatDate(itemList.travelDate)}</p>
-              {itemList.isPublic ? <p className="public">public</p> : <p className="private">private</p>}
+      <div className='itemListBackground'>
+        {console.log(itemListEndpoints)}
+        <div className='body'>
+          <h1>All Your Lists</h1>
+          {!loading && <Loader />}
+          {allItemListsResponseData && allItemListsResponseData.ownItemList && (
+            <div className='item-lists'>
+              {allItemListsResponseData && allItemListsResponseData.ownItemList.map((itemList, index) => (
+                <div className='itemList' key={index}>
+                  <h2 className='openModalClick' onClick={() => { openModalAtIndex(itemList.itemListId, itemList.listName) }}>{itemList.listName}</h2>
+                  {/* {openModal && <ItemListModal closeModal={setOpenModal} itemListName={itemList.listName} itemListId={itemList.itemListId}/>} */}
+                  <p>{itemList.travelDestination}</p>
+                  <p>{formatDate(itemList.travelDate)}</p>
+                  {itemList.isPublic ? <p className="public">public</p> : <p className="private">private</p>}
+                </div>
+              ))}
             </div>
-          ))}
+          )}
+          <div className='footer'>
+            <div className='AddButton'>
+              <button>Add</button>
+            </div>
+          </div>
+          {openModal && <ItemListModal closeModal={setOpenModal} itemListName={currentListName} itemListId={currentId} />}
+          <div>
+            {/* <pre> */}
+            {/* <h2>{JSON.stringify(itemListResponseData,null,2)}</h2> */}
+            {/* <p>{JSON.stringify(allItemListsResponseData, null, 2)}</p> */}
+            {/* </pre> */}
+          </div>
         </div>
-      )}
-      {openModal && <ItemListModal closeModal={setOpenModal} itemListName={currentListName} itemListId={currentId}/>}
-
-      <div>
-        {/* <pre> */}
-        {/* <h2>{JSON.stringify(itemListResponseData,null,2)}</h2> */}
-        {/* <p>{JSON.stringify(allItemListsResponseData, null, 2)}</p> */}
-        {/* </pre> */}
-      </div>
       </div>
     </>
   )

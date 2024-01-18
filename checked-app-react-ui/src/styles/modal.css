@@ -25,7 +25,10 @@
     box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
     display: flex;
     flex-direction: column;
-    padding: 25px;
+    padding-top: 10px;
+    padding-bottom: 60px;
+    padding-left: 25px;
+    padding-right: 25px;
   }
   
   .modalContainer .title {
@@ -59,6 +62,10 @@
     text-align: center;
   }
   
+.modalContainer h1 {
+  font-size: 3rem;
+}
+
   .modalContainer .body button {
     justify-content: center;
     flex: 50%;
@@ -66,6 +73,7 @@
   }
 
   .modalContainer .footer {
+    margin-top: 20px;
     flex: 20%;
     display: flex;
     justify-content: center;
@@ -89,7 +97,7 @@
     border: 4px solid #C7C7FE;
   }
 
-  #AddBtn {
+  .modalContainer #AddBtn {
     background-color: #434AF2;
     border: 4px solid #C7C7FE;
   }

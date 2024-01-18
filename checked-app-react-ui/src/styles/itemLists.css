@@ -53,6 +53,29 @@ h1 {
   cursor: pointer;
 }
 
+.itemListBackground .footer {
+  position: relative;
+}
+
+.itemListBackground .footer button {
+  width: 30vw;
+  height: 100px;
+  border: none;
+  color: #311ABB;
+  border-radius: 8px;
+  font-size: 40px;
+  cursor: pointer;
+  background-color: #FF9B36;
+  border-radius: 20px;
+  text-align: center;
+  margin-top: 50px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  -ms-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
+}
+
 @media (max-width: 600px) {
   .itemList {
     max-width: 100%;

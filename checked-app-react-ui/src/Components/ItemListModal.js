@@ -61,13 +61,20 @@ function ItemListModal({ closeModal, itemListName, itemListId }) {
                     {console.log(allItemsByItemListId)}
                     <div className='items'>
                         {allItemsByItemListId && allItemsByItemListId.map((item, index) => (
+
                             <div className='item' key={index}>
-                                {item.userItemName}
+                                <div className='deleteBtn'>
+                                    <button>
+                                        Delete
+                                    </button>
+                                </div>
                                 <div className='editBtn'>
                                     <button>
                                         Edit
                                     </button>
                                 </div>
+                                {item.userItemName}
+
                                 <FormControl component="fieldset">
                                     <FormGroup aria-label="position" row>
                                         <FormControlLabel
