@@ -17,24 +17,33 @@ namespace CheckedAppProject.LOGIC.Services.Authentication
         public async Task<AuthResult> RegisterAsync(
             string email,
             string username,
-            string password
+            string password,
+            int userAge,
+            string userSurname,
+            string userSex
             )
 
         {
             var result = await _userManager.CreateAsync(
-                new AppUser { UserName = username, Email = email
+                new AppUser
+                {
+                    UserName = username,
+                    Email = email,
+                    UserSurname = userSurname,
+                    UserAge = userAge,
+                    UserSex = userSex
                 },
                 password);
 
             if (!result.Succeeded)
             {
-                return FailedRegistration(result, email, username);
+                return FailedRegistration(result, email, username, userSurname, userSex, userAge);
             }
 
             return new AuthResult(true, email, username, "");
         }
 
-        private static AuthResult FailedRegistration(IdentityResult result, string email, string username)
+        private static AuthResult FailedRegistration(IdentityResult result, string email, string username, string userSurname, string userSex, int userAge)
         {
             var authResult = new AuthResult(false, email, username, "");
 
@@ -67,7 +76,7 @@ namespace CheckedAppProject.LOGIC.Services.Authentication
 
         private static AuthResult InvalidEmail(string email)
         {
-            var result = new AuthResult(false, email, "", "");
+            var result = new AuthResult(false, email,"","");
             result.ErrorMessages.Add("Bad credentials", "Invalid email");
             return result;
         }

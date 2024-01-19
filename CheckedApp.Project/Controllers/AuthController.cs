@@ -26,7 +26,10 @@ namespace CheckedAppProject.API.Controllers
             var result = await _authenticationService.RegisterAsync(
                 request.Email,
                 request.Username,
-                request.Password
+                request.Password,
+                request.UserAge,
+                request.UserSurname,
+                request.UserSex
                 );
 
             if (!result.Success)

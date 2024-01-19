@@ -1,10 +1,14 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using CheckedAppProject.LOGIC.DTOs;
 using CheckedAppProject.LOGIC.Services;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 
 namespace CheckedAppProject.API.Controllers
 {
     [Route("ItemList")]
+    [ApiController]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public class ItemListController : ControllerBase
     {
         private readonly IItemListService _itemListService;
