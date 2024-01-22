@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Identity;
-using static System.Net.WebRequestMethods;
 
 namespace CheckedAppProject.DATA.Entities
 {
