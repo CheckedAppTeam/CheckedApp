@@ -1,10 +1,14 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using CheckedAppProject.LOGIC.DTOs;
 using CheckedAppProject.LOGIC.Services;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 
 namespace CheckedAppProject.API.Controllers
 {
     [Route("ItemList")]
+    [ApiController]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public class ItemListController : ControllerBase
     {
         private readonly IItemListService _itemListService;
@@ -31,7 +35,7 @@ namespace CheckedAppProject.API.Controllers
         }
 
         [HttpGet("User/{userid}")]
-        public async Task<ActionResult<IEnumerable<ItemListDTO>>> GetAllByUserIdAsync([FromRoute] int userid)
+        public async Task<ActionResult<IEnumerable<ItemListDTO>>> GetAllByUserIdAsync([FromRoute] string userid)
         {
             var itemListsDto = await _itemListService.GetAllByUserIdAsync(userid);
 
@@ -87,7 +91,7 @@ namespace CheckedAppProject.API.Controllers
         }
 
         [HttpPost("AddList/{userid}")]
-        public async Task<ActionResult> AddList([FromBody] CreateItemListDTO dto, [FromRoute] int userid)
+        public async Task<ActionResult> AddList([FromBody] CreateItemListDTO dto, [FromRoute] string userid)
         {
             if (!ModelState.IsValid)
             {
@@ -101,7 +105,7 @@ namespace CheckedAppProject.API.Controllers
         }
 
         [HttpPost("User/{itemListid}/{userid}")]
-        public async Task<ActionResult> CopyItemListAsync([FromRoute] int itemListid, [FromRoute] int userid)
+        public async Task<ActionResult> CopyItemListAsync([FromRoute] int itemListid, [FromRoute] string userid)
         {
             if (!ModelState.IsValid)
             {

@@ -3,6 +3,7 @@ using System;
 using CheckedAppProject.DATA.CheckedAppDbContext;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace CheckedAppProject.DATA.Migrations
 {
     [DbContext(typeof(UserItemContext))]
-    partial class UserItemContextModelSnapshot : ModelSnapshot
+    [Migration("20240118185108_registerUser")]
+    partial class registerUser
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -82,6 +85,7 @@ namespace CheckedAppProject.DATA.Migrations
                         .HasColumnType("text");
 
                     b.Property<string>("UserSurname")
+                        .IsRequired()
                         .HasMaxLength(200)
                         .HasColumnType("character varying(200)");
 
