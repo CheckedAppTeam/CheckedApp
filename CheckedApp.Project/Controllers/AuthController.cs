@@ -18,19 +18,7 @@ namespace CheckedAppProject.API.Controllers
         [HttpPost("Register")]
         public async Task<ActionResult<RegistrationResponse>> Register(RegistrationRequest request)
         {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-
-            var result = await _authenticationService.RegisterAsync(
-                request.Email,
-                request.Username,
-                request.Password,
-                request.UserAge,
-                request.UserSurname,
-                request.UserSex
-                );
+            var result = await _authenticationService.RegisterAsync(request.addUserDto);
 
             if (!result.Success)
             {
@@ -52,11 +40,6 @@ namespace CheckedAppProject.API.Controllers
         [HttpPost("Login")]
         public async Task<ActionResult<AuthResponse>> Authenticate([FromBody] AuthRequest request)
         {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-
             var result = await _authenticationService.LoginAsync(request.Email, request.Password);
 
             if (!result.Success)

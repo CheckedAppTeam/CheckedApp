@@ -1,4 +1,5 @@
 ﻿using CheckedAppProject.DATA.Entities;
+using CheckedAppProject.LOGIC.DTOs;
 using Microsoft.AspNetCore.Identity;
 
 namespace CheckedAppProject.LOGIC.Services.Authentication
@@ -14,38 +15,30 @@ namespace CheckedAppProject.LOGIC.Services.Authentication
             _tokenService = tokenService;
         }
 
-        public async Task<AuthResult> RegisterAsync(
-            string email,
-            string username,
-            string password,
-            int userAge,
-            string userSurname,
-            string userSex
-            )
-
+        public async Task<AuthResult> RegisterAsync(AddUserDTO addUserDto)
         {
             var result = await _userManager.CreateAsync(
                 new AppUser
                 {
-                    UserName = username,
-                    Email = email,
-                    UserSurname = userSurname,
-                    UserAge = userAge,
-                    UserSex = userSex
+                    UserName = addUserDto.UserName,
+                    Email = addUserDto.UserEmail,
+                    UserSurname = addUserDto.UserSurname,
+                    UserAge = addUserDto.UserAge,
+                    UserSex = addUserDto.UserSex
                 },
-                password);
+                addUserDto.Password);
 
             if (!result.Succeeded)
             {
-                return FailedRegistration(result, email, username, userSurname, userSex, userAge);
+                return FailedRegistration(result, addUserDto);
             }
 
-            return new AuthResult(true, email, username, "");
+            return new AuthResult(true, addUserDto.UserEmail, addUserDto.UserName, "");
         }
 
-        private static AuthResult FailedRegistration(IdentityResult result, string email, string username, string userSurname, string userSex, int userAge)
+        private static AuthResult FailedRegistration(IdentityResult result, AddUserDTO addUserDTO)
         {
-            var authResult = new AuthResult(false, email, username, "");
+            var authResult = new AuthResult(false, addUserDTO.UserEmail, addUserDTO.UserName, "");
 
             foreach (var error in result.Errors)
             {
@@ -76,7 +69,7 @@ namespace CheckedAppProject.LOGIC.Services.Authentication
 
         private static AuthResult InvalidEmail(string email)
         {
-            var result = new AuthResult(false, email,"","");
+            var result = new AuthResult(false, email, "", "");
             result.ErrorMessages.Add("Bad credentials", "Invalid email");
             return result;
         }

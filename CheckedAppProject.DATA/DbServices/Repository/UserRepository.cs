@@ -65,18 +65,5 @@ namespace CheckedAppProject.DATA.DbServices.Repository
             }
             return false;
         }
-        public async Task AddUserAsync(AppUser userData)
-        {
-            try
-            {
-                _userItemContext.Users.Add(userData);
-                await _userItemContext.SaveChangesAsync();
-            }
-            catch (Exception)
-            {
-                throw;
-            }
-
-        }
     }
 }

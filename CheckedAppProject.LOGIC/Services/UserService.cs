@@ -34,12 +34,6 @@ namespace CheckedAppProject.LOGIC.Services
             return usersDtos;
         }
 
-        public async Task AddUserAsync(AddUserDTO dto)
-        {
-            var user = _mapper.Map<AppUser>(dto);
-            await _userRepository.AddUserAsync(user);
-
-        }
         public async Task<bool> DeleteUserDataAsync(string userId)
         {
             return await _userRepository.DeleteUserAsync(query => query.Where(u => u.Id == userId));
