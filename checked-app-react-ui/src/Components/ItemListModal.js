@@ -10,6 +10,9 @@ import FormControlLabel from '@mui/material/FormControlLabel';
 import FormControl from '@mui/material/FormControl';
 import FormLabel from '@mui/material/FormLabel';
 import { orange } from '@mui/material/colors';
+import { IconButton } from '@mui/material';
+import DeleteIcon from '@mui/icons-material/Delete';
+
 
 const label = { inputProps: { 'aria-label': 'Checkbox demo' } };
 
@@ -32,17 +35,6 @@ function ItemListModal({ closeModal, itemListName, itemListId }) {
         }
     };
 
-    // const editAllItemsByItemListId = async () => {
-    //     try {
-    //         const response = await axios.get(userItemEndpoints.editUserItem(userItemId));
-    //         console.log('Response:', response);
-    //         setAllItemsByItemListId(response.data);
-    //         setLoading(true);
-    //     } catch (error) {
-    //         console.error('Error:', error);
-    //     }
-    // };
-
     useEffect(() => {
         showAllItemsByItemListId();
     }, []);
@@ -61,20 +53,19 @@ function ItemListModal({ closeModal, itemListName, itemListId }) {
                     {console.log(allItemsByItemListId)}
                     <div className='items'>
                         {allItemsByItemListId && allItemsByItemListId.map((item, index) => (
-
-                            <div className='item' key={index}>
-                                <div className='deleteBtn'>
-                                    <button>
-                                        Delete
-                                    </button>
-                                </div>
+                            <div className='item-container' key={index}>
+                                {console.log(item)}
+                                {/* <div className='deleteBtn'>
+                                    <button></button>
+                                </div> */}
+                                <IconButton aria-label="delete" size="small" color='white'>
+                                    <DeleteIcon className="deleteIcon" />
+                                </IconButton>
                                 <div className='editBtn'>
-                                    <button>
-                                        Edit
-                                    </button>
                                 </div>
-                                {item.userItemName}
-
+                                <div className='item'>
+                                    {item.userItemName}
+                                </div>
                                 <FormControl component="fieldset">
                                     <FormGroup aria-label="position" row>
                                         <FormControlLabel
@@ -106,6 +97,7 @@ function ItemListModal({ closeModal, itemListName, itemListId }) {
                                             />}
                                             label="To buy"
                                             labelPlacement="bottom"
+                                            label-color='white'
                                         />
                                     </FormGroup>
                                 </FormControl>
