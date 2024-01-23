@@ -1,12 +1,14 @@
 import { useState, useEffect } from 'react'
 import axios from 'axios'
-import { itemListEndpoints } from '../endpoints'
 import { userEndpoints } from '../endpoints'
 import '../styles/itemLists.css'
 import { Link } from 'react-router-dom'
 import "../styles/main.css";
 import Loader from '../spinners/Loader.js';
 import ItemListModal from '../Components/ItemListModal.js'
+import jwt_decode from 'jwt-decode';
+import { itemListEndpoints } from '../endpoints';
+import { jwtDecode } from 'jwt-decode';
 
 export function ItemLists() {
   const [allItemListsResponseData, setAllitemListsResponseData] = useState(null)
@@ -14,29 +16,35 @@ export function ItemLists() {
   const [openModal, setOpenModal] = useState(false)
   const [currentId, setCurrentId] = useState()
   const [currentListName, setCurrentListName] = useState()
-  // const [openModalAtIndex, setOpenModalAtIndex] = useState()
 
-  const userId = 1
-
-  const showItemListsById = async () => {
-    try {
-      const data = await axios
-        .get(userEndpoints.getUserData(userId))
-        .then((res) => {
-          console.log(res);
-          setAllitemListsResponseData(res.data)
-        });
-      setLoading(true);
-    } catch (e) {
-      console.log(e);
-    }
-  }
+  const token = localStorage.getItem("token");
 
   useEffect(() => {
-    showItemListsById();
-  }, []);
+    const fetchData = async () => {
+      if (token) {
+        axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+  
+        try {
+          console.log(token)
+          const decodedToken = jwtDecode(token);
+          console.log('Decoded Token:', decodedToken);
+          const userId = decodedToken["http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier"]
+  
+          const data = await axios.get(userEndpoints.getUserData(userId));
+          console.log(data);
+          setAllitemListsResponseData(data.data);
+          setLoading(true);
+        } catch (error) {
+          console.error(error);
+        }
+      }
+    };
+  
+    fetchData();
+  }, [token]);
+  
 
-  const openModalAtIndex = async (index, name) => {
+  const openModalAtIndex = (index, name) => {
     if (index !== null) {
       setOpenModal(true)
     }

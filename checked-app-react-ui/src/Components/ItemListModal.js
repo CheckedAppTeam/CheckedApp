@@ -21,8 +21,7 @@ function ItemListModal({ closeModal, itemListName, itemListId }) {
     const [allItemsByItemListId, setAllItemsByItemListId] = useState();
     const [loading, setLoading] = useState(false);
     const [itemState, setItemState] = useState();
-
-
+    
 
     const showAllItemsByItemListId = async () => {
         try {

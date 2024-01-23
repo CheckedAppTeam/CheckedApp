@@ -7,7 +7,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace CheckedAppProject.DATA.Migrations
 {
     /// <inheritdoc />
-    public partial class registerUser : Migration
+    public partial class Initial : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -31,7 +31,7 @@ namespace CheckedAppProject.DATA.Migrations
                 columns: table => new
                 {
                     Id = table.Column<string>(type: "text", nullable: false),
-                    UserSurname = table.Column<string>(type: "character varying(200)", maxLength: 200, nullable: false),
+                    UserSurname = table.Column<string>(type: "character varying(200)", maxLength: 200, nullable: true),
                     UserAge = table.Column<int>(type: "integer", nullable: true),
                     UserSex = table.Column<string>(type: "text", nullable: true),
                     UserName = table.Column<string>(type: "character varying(200)", maxLength: 200, nullable: false),

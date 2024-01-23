@@ -23,9 +23,10 @@ function Login() {
       axios
         .post("https://localhost:7161/Auth/Login", loginPayload)
         .then((response) => {
-          const token = response.data.Token;
-  
+          const token = response.data.token;
+          console.log(response);
           localStorage.setItem("token", token);
+          console.log(token);
   
           if (token) {
             axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
