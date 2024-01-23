@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from './useAuth.js';
 import '../../styles/loginSignup.css'
 import email_icon from '../../assets/email.png'
 import person_icon from '../../assets/person.png'
@@ -9,6 +10,7 @@ import InputWithIcon from '../Reusables/InputWithIcon.js'
 
 function Login() {
     const navigate = useNavigate();
+    const { updateToken } = useAuth();
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
   
@@ -24,18 +26,24 @@ function Login() {
         .post("https://localhost:7161/Auth/Login", loginPayload)
         .then((response) => {
           const token = response.data.token;
-          console.log(response);
           localStorage.setItem("token", token);
-          console.log(token);
-  
           if (token) {
-            axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+            updateToken(token);
+            navigate("/user-home");
           }
-  
-          navigate("/");
         })
         .catch((err) => console.log(err));
     }
+
+  
+    //       if (token) {
+    //         axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+    //       }
+  
+    //       navigate("/");
+    //     })
+    //     .catch((err) => console.log(err));
+    // }
   
     function handleUserEmailChange(event) {
       console.log(event)

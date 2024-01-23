@@ -2,12 +2,13 @@ import { useState, useEffect } from 'react'
 import axios from 'axios'
 import { userEndpoints } from '../endpoints'
 import '../styles/itemLists.css'
-import { Link } from 'react-router-dom'
+import { Link } from 'react-router-dom' // do wywalenia??
 import "../styles/main.css";
 import Loader from '../spinners/Loader.js';
 import ItemListModal from '../Components/ItemListModal.js'
-import jwt_decode from 'jwt-decode';
+import jwt_decode from 'jwt-decode'; // to używane jest? będzie? kasujcie od razu?
 import { itemListEndpoints } from '../endpoints';
+import { useAuth } from '../Components/UserAuthForm/useAuth.js';
 import { jwtDecode } from 'jwt-decode';
 
 export function ItemLists() {
@@ -16,22 +17,19 @@ export function ItemLists() {
   const [openModal, setOpenModal] = useState(false)
   const [currentId, setCurrentId] = useState()
   const [currentListName, setCurrentListName] = useState()
+  const { token } = useAuth();
 
-  const token = localStorage.getItem("token");
+  // const token = localStorage.getItem("token");
 
   useEffect(() => {
     const fetchData = async () => {
       if (token) {
-        axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
-  
         try {
-          console.log(token)
           const decodedToken = jwtDecode(token);
-          console.log('Decoded Token:', decodedToken);
+          // console.log('Decoded Token:', decodedToken);
           const userId = decodedToken["http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier"]
-  
           const data = await axios.get(userEndpoints.getUserData(userId));
-          console.log(data);
+          // console.log(data);
           setAllitemListsResponseData(data.data);
           setLoading(true);
         } catch (error) {
