@@ -35,12 +35,10 @@ function Login() {
     }
   
     function handleUserEmailChange(event) {
-      console.log(event)
       setEmail(event.target.value);
     }
   
     function handlePasswordChange(event) {
-      console.log(event)
       setPassword(event.target.value);
     }
 

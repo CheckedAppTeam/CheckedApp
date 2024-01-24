@@ -9,20 +9,18 @@ export function UserHome() {
   const { token } = useAuth();
   const [user, setUser] = useState(null);
   const [packingLists, setPackingLists] = useState([]);
+  const [isEditing, setIsEditing] = useState(false);
 
   useEffect(() => {
     if (token) {
-      console.log(token)
         const decodedToken = jwtDecode(token);
-        console.log(decodedToken)
         const userId = decodedToken["http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier"]
         const userEmail = decodedToken["http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress"]
-        console.log(userEmail)
 
         axios.get(userEndpoints.getUserData(userId))
         .then(response => {
-            console.log(response.data);
           setUser({
+            userId: userId,
             firstName: response.data.userName,
             lastName: response.data.userSurname,
             age: response.data.userAge,
@@ -42,9 +40,23 @@ export function UserHome() {
     setUser({ ...user, [name]: value });
   };
 
+  const toggleEdit = () => {
+    setIsEditing(!isEditing);
+  };
+
   const saveChanges = () => {
-    // zrobić wysyłanie zmian na serwer
-    console.log('Zapisane zmiany:', user);
+    axios.put(userEndpoints.editUser(user.userId), {
+      userName: user.firstName,
+      userSurname: user.lastName,
+      userAge: user.age
+    })
+    .then(response => {
+      console.log('Changes saved', response);
+      setIsEditing(false);
+    })
+    .catch(error => {
+      console.error("Error while sending data", error);
+    });
   };
 
   if (!user) {
@@ -56,12 +68,26 @@ export function UserHome() {
       <div className='user-profile'>
         <h1>User Profile</h1>
         <div className='user-info'>
-          <input type="text" name="firstName" value={user.firstName} onChange={handleInputChange} />
-          <input type="text" name="lastName" value={user.lastName} onChange={handleInputChange} />
-          <input type="number" name="age" value={user.age} onChange={handleInputChange} />
-          <input type="text" name="gender" value={user.gender} onChange={handleInputChange} />
-          <input type="email" name="email" value={user.email} readOnly />
-          <button onClick={saveChanges}>Save changes</button>
+          {isEditing ? (
+            <>
+              <input type="text" name="firstName" value={user.firstName} onChange={handleInputChange} />
+              <input type="text" name="lastName" value={user.lastName} onChange={handleInputChange} />
+              <input type="number" name="age" value={user.age} onChange={handleInputChange} />
+            </>
+          ) : (
+            <>
+              <div>Name: {user.firstName}</div>
+              <div>Surname: {user.lastName}</div>
+              <div>Age: {user.age}</div>
+            </>
+          )}
+          <div>Gender: {user.gender}</div>
+          <div>Email: {user.email}</div>
+          {isEditing ? (
+            <button onClick={saveChanges}>Save</button>
+          ) : (
+            <button onClick={toggleEdit}>Edit</button>
+          )}
         </div>
         <div className='packing-lists'>
           <h2>Your packing lists</h2>
@@ -77,5 +103,5 @@ export function UserHome() {
         </div>
       </div>
     </>
-  );
+  )
 }
