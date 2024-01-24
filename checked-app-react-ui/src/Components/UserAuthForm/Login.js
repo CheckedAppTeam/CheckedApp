@@ -4,7 +4,6 @@ import { useNavigate } from "react-router-dom"
 import { useAuth } from '../../Contexts/AuthContext.js'
 import '../../styles/loginSignup.css'
 import email_icon from '../../assets/email.png'
-import person_icon from '../../assets/person.png'
 import password_icon from '../../assets/password.png'
 import InputWithIcon from '../Reusables/InputWithIcon.js'
 
@@ -29,7 +28,7 @@ function Login() {
           localStorage.setItem("token", token);
           if (token) {
             updateToken(token);
-            navigate("/");
+            navigate("/user-home");
           }
         })
         .catch((err) => console.log(err));
@@ -44,8 +43,6 @@ function Login() {
       console.log(event)
       setPassword(event.target.value);
     }
-  
-
 
   return (
     <div className='auth-container'>

@@ -12,6 +12,7 @@ export function UserHome() {
 
   useEffect(() => {
     if (token) {
+      console.log(token)
         const decodedToken = jwtDecode(token);
         console.log(decodedToken)
         const userId = decodedToken["http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier"]
@@ -31,7 +32,7 @@ export function UserHome() {
           setPackingLists(response.data.ownItemList);
         })
         .catch(error => {
-          console.error("Błąd podczas pobierania danych użytkownika:", error);
+          console.error("Error while getting user", error);
         });
     }
   }, [token]);

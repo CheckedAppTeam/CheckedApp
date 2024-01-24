@@ -28,8 +28,8 @@ function Navbar() {
         <a href='/hehe'>Items</a>
         {!token && <a href='/Register'>Register</a>}
         {!token && <a href='/Login'>Login</a>}
-        {token && <a href='/UserHome'>User</a>}
-        {token && <button onClick={handleLogout}>Unlog</button>}
+        {token && <a href='/user-home'>User</a>}
+        {token && <a onClick={handleLogout}>Log out </a>}
         <button className='nav-btn nav-close-btn' onClick={showNavBar}>
           <FaTimes />
         </button>
