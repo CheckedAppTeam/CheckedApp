@@ -2,28 +2,38 @@ import React from 'react'
 import { useState, useEffect } from 'react'
 import '../styles/modal.css'
 import axios from 'axios';
-import { userItemEndpoints } from '../endpoints';
+import { itemEndpoints, userItemEndpoints } from '../endpoints';
 import Loader from '../spinners/Loader';
 import UserItem from './UserItem';
-import Checkbox from '@mui/material/Checkbox';
-import FormGroup from '@mui/material/FormGroup';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import FormControl from '@mui/material/FormControl';
-import FormLabel from '@mui/material/FormLabel';
-import { orange } from '@mui/material/colors';
-import { IconButton } from '@mui/material';
-import DeleteIcon from '@mui/icons-material/Delete';
-
-
-const label = { inputProps: { 'aria-label': 'Checkbox demo' } };
+import Select from 'react-select';
+import Button from '@mui/material/Button';
 
 
 function ItemListModal({ closeModal, itemListName, itemListId }) {
     const [allItemsByItemListId, setAllItemsByItemListId] = useState();
     const [loading, setLoading] = useState(false);
-    const [itemState, setItemState] = useState();
-    const [userItem, setUserItem] = useState();
-    
+    const [showSelect, setShowSelect] = useState(false);
+    const [allItems, setAllItems] = useState();
+    const [selestItem, setSelectItem] = useState();
+    const [inputValue, setInputValue] = useState('');
+    const [showAdd, setShowAdd] = useState(true);
+    const [showBack, setShowBack] = useState(false);
+    // const [itemState, setItemState] = useState();
+    // const [userItem, setUserItem] = useState();
+
+    const customStyles = {
+        option: (provided, state) => ({
+            ...provided,
+            borderBottom: '1px solid #ccc',
+            color: state.isSelected ? 'white' : 'black',
+            background: state.isSelected ? '#0088cc' : 'white',
+            zIndex: 9900,
+        }),
+        menu: (provided) => ({
+            ...provided,
+            zIndex: 9900,
+        }),
+    }
 
     const showAllItemsByItemListId = async () => {
         try {
@@ -36,9 +46,55 @@ function ItemListModal({ closeModal, itemListName, itemListId }) {
         }
     };
 
+    const showAllItems = async () => {
+        try {
+            const response = await axios.get(itemEndpoints.getAllItems);
+            console.log('Response:', response);
+            setAllItems(response.data || []);
+        } catch (error) {
+            console.error('Error:', error);
+        }
+    };
+
+    const handleAddClick = () => {
+        setShowSelect(true)
+        setShowAdd(false)
+        setShowBack(true)
+    };
+
     useEffect(() => {
         showAllItemsByItemListId();
+        showAllItems();
     }, []);
+
+    const handleBack = () => {
+        setShowAdd(true)
+        setShowSelect(false);
+        setShowBack(false)
+    }
+
+    // const filterItems = (input) => {
+    //     return allItems.filter((item) =>
+    //     item.itemName.toLowerCase().includes(input.toLowerCase())
+    //     )
+    //   }
+
+    const filterItems = (input) => {
+        return allItems
+            .filter((item) =>
+                item.itemName.toLowerCase().includes(input.toLowerCase())
+            )
+            .map((item) => ({
+                value: item.itemName,
+                label: item.itemName,
+            }));
+    };
+
+    const handleItemsSelect = (selectedOption) => {
+        setSelectItem({
+            itemName: selectedOption
+        })
+    }
 
     return (
         <div className='modalBackground'>
@@ -48,69 +104,49 @@ function ItemListModal({ closeModal, itemListName, itemListId }) {
                 </div>
                 <div className='title'>
                     <h1>{itemListName}</h1>
-                    {!loading && <Loader />}
+                    {console.log(allItems)}
                 </div>
                 <div className='body'>
-                    {console.log(allItemsByItemListId)}
-                    <div className='items'>
-                        {allItemsByItemListId && allItemsByItemListId.map((item, index) => (
-                            <div className='item-container' key={index}>
-                                {/* <UserItem item={item}/> */}
-                                {console.log(item)}
-                                <IconButton aria-label="delete" size="small" color='white'>
-                                    <DeleteIcon className="deleteIcon" />
-                                </IconButton>
-                                <div className='editBtn'>
-                                </div>
-                                <div className='item'>
-                                    {item.userItemName}
-                                </div>
-                                <FormControl component="fieldset">
-                                    <FormGroup aria-label="position" row>
-                                        <FormControlLabel
-                                            value="bottom"
-                                            control={<Checkbox
-                                                {...label}
-                                                defaultChecked
-                                                sx={{
-                                                    color: orange[800],
-                                                    '&.Mui-checked': {
-                                                        color: orange[600],
-                                                    },
-                                                }}
-                                            />}
-                                            label="Packed"
-                                            labelPlacement="bottom"
-                                        />
-                                        <FormControlLabel
-                                            value="bottom"
-                                            control={<Checkbox
-                                                {...label}
-                                                defaultChecked
-                                                sx={{
-                                                    color: orange[800],
-                                                    '&.Mui-checked': {
-                                                        color: orange[600],
-                                                    },
-                                                }}
-                                            />}
-                                            label="To buy"
-                                            labelPlacement="bottom"
-                                            label-color='white'
-                                        />
-                                    </FormGroup>
-                                </FormControl>
+                    {!loading ? (
+                        <Loader />
+                    ) : (
+                        <div className='itemsAndFooter'>
+                            <div className='items'>
+                                {allItemsByItemListId.map((item, index) => (
+                                    <div className='item-container' key={index}>
+                                        <UserItem item={item} />
+                                    </div>
+                                ))}
                             </div>
-                        ))}
-                    </div>
-                </div>
-                <div className='footer'>
-                    <button id='AddBtn'>
-                        Add
-                    </button>
-                    {/* <button onClick={() => closeModal(false)} id='cancelBtn'>
-                        Cancel
-                    </button> */}
+                            <div className='footer'>
+                                <div className='backBtn'>
+                                    {showBack && <Button onClick={handleBack} variant="contained" color="success">
+                                        Close
+                                    </Button>}
+                                </div>
+                                <div className='selectBtn'>
+                                    {showSelect && <Select
+                                        className='map-input'
+                                        value={null}
+                                        options={filterItems(inputValue)}
+                                        onChange={handleItemsSelect}
+                                        onInputChange={(value) => setInputValue(value)}
+                                        placeholder='Type to search...'
+                                        styles={customStyles}
+                                    />}
+                                </div>
+                                {/* {showInput && (
+                                <input
+                                    type="text"
+                                    placeholder="Type here..."
+                                />
+                            )} */}
+                                {showAdd && <Button id='AddBtn' onClick={handleAddClick}>
+                                    Add
+                                </Button>}
+                            </div>
+                        </div>
+                    )}
                 </div>
             </div>
         </div>

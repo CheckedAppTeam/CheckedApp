@@ -73,7 +73,7 @@ function Map() {
   const handleCountrySelect = (selectedOption) => {
     setSelectedCountry({
       geocode: selectedOption.geocode,
-      zoom: 6, // Adjust the zoom level as needed
+      zoom: 6,
     })
   }
 
