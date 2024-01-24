@@ -8,7 +8,7 @@ import Loader from '../spinners/Loader.js';
 import ItemListModal from '../Components/ItemListModal.js'
 import jwt_decode from 'jwt-decode'; // to używane jest? będzie? kasujcie od razu?
 import { itemListEndpoints } from '../endpoints';
-import { useAuth } from '../Components/UserAuthForm/useAuth.js';
+import { useAuth } from '../Contexts/AuthContext.js'
 import { jwtDecode } from 'jwt-decode';
 
 export function ItemLists() {

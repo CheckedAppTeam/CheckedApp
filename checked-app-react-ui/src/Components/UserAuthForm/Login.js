@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
-import axios from "axios";
-import { useNavigate } from "react-router-dom";
-import { useAuth } from './useAuth.js';
+import axios from "axios"
+import { useNavigate } from "react-router-dom"
+import { useAuth } from '../../Contexts/AuthContext.js'
 import '../../styles/loginSignup.css'
 import email_icon from '../../assets/email.png'
 import person_icon from '../../assets/person.png'
@@ -29,21 +29,11 @@ function Login() {
           localStorage.setItem("token", token);
           if (token) {
             updateToken(token);
-            navigate("/user-home");
+            navigate("/");
           }
         })
         .catch((err) => console.log(err));
     }
-
-  
-    //       if (token) {
-    //         axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
-    //       }
-  
-    //       navigate("/");
-    //     })
-    //     .catch((err) => console.log(err));
-    // }
   
     function handleUserEmailChange(event) {
       console.log(event)

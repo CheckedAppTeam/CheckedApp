@@ -10,10 +10,12 @@ import { ItemListLayout } from './pages/ItemListLayout'
 import Navbar from './Components/NavBar/Navbar'
 import Signup from './Components/UserAuthForm/Signup'
 import Login from './Components/UserAuthForm/Login'
+import { AuthProvider } from './Contexts/AuthContext.js';
 
 function App() {
   return (
     <>
+    <AuthProvider>
       <Navbar />
       <Routes>
         <Route path='/' element={<Home />} />
@@ -28,6 +30,7 @@ function App() {
         <Route path='/Register' element={<Signup />} />
         <Route path='/Login' element={<Login/>} />
       </Routes>
+      </AuthProvider>
     </>
   )
 }
