@@ -18,9 +18,26 @@ function Signup() {
     terms: false,
   })
 
+  const [passwordStrength, setPasswordStrength] = useState(0)
+  const [isPasswordFocused, setIsPasswordFocused] = useState(false);
+
+
+
   const handleChange = (e) => {
-    const { name, value, type, checked } = e.target
-    setFormData((prevData) => ({}))
+    const { name, value } = e.target
+    setFormData((prevData) => ({ ...prevData, [name]: value }))
+
+    const requirements = [
+      value.length >= 8,
+      /\d/.test(value),
+      /[!@#$%^&*(),.?":{}|<>]/.test(value),
+    ]
+
+    const strength = requirements.reduce(
+      (count, requirement) => count + requirement,
+      0
+    )
+    setPasswordStrength(strength)
   }
 
   const calculateAge = () => {
@@ -45,14 +62,20 @@ function Signup() {
   }
 
   const isFormValid = () => {
-    // Check if all required fields are filled
     return Object.values(formData).every((value) => Boolean(value))
   }
 
+  const handlePasswordFocus = () => {
+    setIsPasswordFocused(true);
+  }
+  
+  const handlePasswordBlur = () => {
+    setIsPasswordFocused(false);
+  }
   return (
     <div className='auth-container'>
       <div className='container'>
-        <form onSubmit={handleSubmit} onChange={handleChange}>
+        <form onSubmit={handleSubmit} >
           <div className='row'>
             <h4>Account</h4>
             <InputWithIcon
@@ -72,13 +95,50 @@ function Signup() {
               type='email'
             />
             <InputWithIcon
+              onChange={handleChange}
               placeholder='Password'
               imagePath={password_icon}
               name='password'
               type='password'
+              onBlur={handlePasswordBlur}
+              onFocus={handlePasswordFocus}
             />
           </div>
           <div className='row'>
+            <h4>Password Strength</h4>
+            <progress
+              value={passwordStrength}
+              max='3'
+              className={
+                passwordStrength === 0
+                  ? 'weak'
+                  : passwordStrength === 1
+                    ? 'acceptable'
+                    : passwordStrength === 2
+                      ? 'good'
+                      : 'strong'
+              }
+              style={{
+                width: '100%',
+                height: '5px',
+              }}
+            />
+
+            <div
+              style={{
+                display: 'flex',
+                justifyContent: 'space-between',
+                fontSize: '12px',
+              }}
+            >
+              <span>Weak</span>
+              <span>Acceptable</span>
+              <span>Good</span>
+              <span>Strong</span>
+            </div>
+          </div>
+          <div className='row'>
+            <br></br>
             You already have an account? <a href='/Login'>Login</a>
           </div>
           <br></br>

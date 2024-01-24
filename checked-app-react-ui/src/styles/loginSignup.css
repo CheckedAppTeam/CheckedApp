@@ -149,13 +149,18 @@ select option {
 }
 .input-group-icon .input-icon {
   position: absolute;
-  top: 0;
+  top: 0em;
   left: 0;
   width: 3.4em;
   height: 3.4em;
-  line-height: 3.4em;
+  line-height: .4em;
   text-align: center;
   pointer-events: none;
+}
+.input-group-icon .input-icon img {
+  position: absolute;
+  top: 0.8em;
+  left: 1em;
 }
 .input-group-icon .input-icon:after {
   position: absolute;
@@ -226,4 +231,20 @@ select option {
     width: 100%;
     padding-right: 0;
   }
+}
+
+.weak {
+  background-color: red;
+}
+
+.acceptable {
+  background-color: orange;
+}
+
+.good {
+  background-color: yellow;
+}
+
+.strong {
+  background-color: green;
 }

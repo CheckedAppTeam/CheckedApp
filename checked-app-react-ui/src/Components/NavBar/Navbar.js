@@ -17,7 +17,6 @@ function Navbar() {
       <nav ref={navRef}>
         <a href='/'>Home</a>
         <a href='/ItemLists'>Item Lists</a>
-        <a href='/hehe'>Items</a>
         <a href='/Register'>Register</a>
         <a href='/Login'>Login</a>
         <button className='nav-btn nav-close-btn' onClick={showNavBar}>
