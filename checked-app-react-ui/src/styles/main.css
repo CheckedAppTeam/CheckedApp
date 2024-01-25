@@ -57,6 +57,7 @@ nav {
 	z-index: 9999;
 }
 
+
 @media only screen and (max-width: 1024px) {
 	header .nav-btn {
 		visibility: visible;
@@ -105,8 +106,10 @@ nav {
 	  }
 	  
 	  .user-profile h1 {
-		color: var(--secondaryColor);
 		text-align: center;
+		margin-top: 1vh;
+		color: #311abb;
+		font-size: 7vw;
 	  }
 	  
 	  .user-info, .packing-lists {
@@ -165,3 +168,5 @@ nav {
 		border-color: var(--mainColor);
 		box-shadow: 0 0 5px rgba(255,155,54,.5);
 	  }
+
+

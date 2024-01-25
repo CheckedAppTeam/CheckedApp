@@ -8,7 +8,6 @@ export function Home() {
 
   return (
     <div className='map-container'>
-      <h1>Home</h1>
       <Map />
     </div>
   )

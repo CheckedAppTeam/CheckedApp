@@ -89,7 +89,7 @@ function Map() {
   return (
     <div>
       <div className='country-list'>
-        <h2>Select Country</h2>
+        <h1 style={{margin:"0% auto"}}>Select Country</h1>
         <Select
           className='map-input'
           value={null}

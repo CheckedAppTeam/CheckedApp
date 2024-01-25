@@ -78,18 +78,23 @@ export function UserHome() {
         <div className='user-info'>
           {isEditing ? (
             <>
+            <label for="firstName">Name</label>
               <input
                 type='text'
                 name='firstName'
                 value={user.firstName}
                 onChange={handleInputChange}
               />
+            <label for="lastName">Surname</label>
+
               <input
                 type='text'
                 name='lastName'
                 value={user.lastName}
                 onChange={handleInputChange}
               />
+            <label for="age">Age</label>
+
               <input
                 type='number'
                 name='age'
