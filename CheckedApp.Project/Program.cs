@@ -1,8 +1,8 @@
-﻿using CheckedAppProject.API.Configuration;
+﻿using CheckedAppProject.API.StartConfiguration;
 
 var builder = WebApplication.CreateBuilder(args);
 
-StartupConfiguration.ConfigureLogging(builder);
+LoggingConfiguration.ConfigureLogging(builder);
 StartupConfiguration.ConfigureServices(builder);
 
 var app = builder.Build();
