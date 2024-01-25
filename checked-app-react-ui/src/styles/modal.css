@@ -49,8 +49,10 @@
 
 .footer {
   display: flex;
-  flex-direction: column;
+  /* flex-direction: column; */
   align-items: center;
+  flex-direction: row;
+  justify-content: space-between;
   /* position: absolute; */
   bottom: 0;
   left: 0;
@@ -119,7 +121,7 @@
   display: flex;
   justify-content: center;
   align-items: flex-start;
-  flex-direction: column;
+  flex-direction: row;
   padding-bottom: 50px;
 }
 
@@ -149,7 +151,22 @@
   margin-bottom: 40px;
 } */
 
+#selectButtons{
+  display: flex;
+  flex-direction: row;
+}
+
 #backBtn {
+  display: flex;
+  align-items: center;
+}
+
+#addBtn {
+  display: flex;
+  align-items: center;
+}
+
+#AddItemBtn{
   display: flex;
   align-items: center;
 }

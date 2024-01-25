@@ -14,10 +14,17 @@ function ItemListModal({ closeModal, itemListName, itemListId }) {
     const [loading, setLoading] = useState(false);
     const [showSelect, setShowSelect] = useState(false);
     const [allItems, setAllItems] = useState();
-    const [selestItem, setSelectItem] = useState();
+    const [selectedItem, setSelectItem] = useState();
     const [inputValue, setInputValue] = useState('');
-    const [showAdd, setShowAdd] = useState(true);
+    const [showAdd, setShowAdd] = useState(false);
     const [showBack, setShowBack] = useState(false);
+    const [showItemAdd, setShowItemAdd] = useState(true);
+    const [userItemDTO, setUserItemDTO] = useState({
+        itemListId: itemListId,
+        itemId: 0,
+        itemState: 0
+    })
+
     // const [itemState, setItemState] = useState();
     // const [userItem, setUserItem] = useState();
 
@@ -56,10 +63,24 @@ function ItemListModal({ closeModal, itemListName, itemListId }) {
         }
     };
 
+    // const sendUserItem = async () => {
+    //     try {
+    //         await axios.post(userItemEndpoints.addUserItem, userItemDTO);
+    //         setUserItemDTO({
+    //             itemListId: itemListId,
+    //             itemId: 0,
+    //             itemState: 0
+    //         });
+    //     } catch (error) {
+    //         console.error('Error:', error);
+    //     }
+    // }
+
     const handleAddClick = () => {
         setShowSelect(true)
-        setShowAdd(false)
+        setShowItemAdd(false)
         setShowBack(true)
+        setShowAdd(true)
     };
 
     useEffect(() => {
@@ -68,16 +89,11 @@ function ItemListModal({ closeModal, itemListName, itemListId }) {
     }, []);
 
     const handleBack = () => {
-        setShowAdd(true)
+        setShowItemAdd(true)
         setShowSelect(false);
         setShowBack(false)
+        setShowAdd(false)
     }
-
-    // const filterItems = (input) => {
-    //     return allItems.filter((item) =>
-    //     item.itemName.toLowerCase().includes(input.toLowerCase())
-    //     )
-    //   }
 
     const filterItems = (input) => {
         return allItems
@@ -88,6 +104,33 @@ function ItemListModal({ closeModal, itemListName, itemListId }) {
                 value: item.itemName,
                 label: item.itemName,
             }));
+    };
+
+    const handleAdd = async () => {
+        setShowItemAdd(true);
+        setShowSelect(false);
+        setShowBack(false);
+        setShowAdd(false);
+    console.log(inputValue)
+        const matchingItem = allItems.find((item) => inputValue === item.itemName);
+    console.log(matchingItem)
+        if (matchingItem) {
+            try {
+                await axios.post(userItemEndpoints.addUserItem, {
+                    itemListId: itemListId,
+                    itemId: matchingItem.itemId,
+                    itemState: 0,
+                });
+    
+                setUserItemDTO({
+                    itemListId: itemListId,
+                    itemId: 0,
+                    itemState: 0,
+                });
+            } catch (error) {
+                console.error('Error:', error);
+            }
+        }
     };
 
     const handleItemsSelect = (selectedOption) => {
@@ -119,15 +162,24 @@ function ItemListModal({ closeModal, itemListName, itemListId }) {
                                 ))}
                             </div>
                             <div className='footer'>
-                                <div className='backBtn'>
-                                    {showBack && <Button onClick={handleBack} variant="contained" color="success">
-                                        Close
-                                    </Button>}
+                                <div className='selectButtons'>
+                                    <div className='backBtn'>
+                                        {showBack && <Button onClick={handleBack} variant="contained" color="success">
+                                            Close
+                                        </Button>}
+                                    </div>
+                                    <div className='addBtn'>
+                                        {showAdd && <Button onClick={handleAdd} variant="contained" color="success">
+                                            Add
+                                        </Button>}
+                                    </div>
                                 </div>
+                                {console.log(userItemDTO)}
                                 <div className='selectBtn'>
                                     {showSelect && <Select
                                         className='map-input'
-                                        value={null}
+                                        defaultValue={inputValue}
+                                        // value={null}
                                         options={filterItems(inputValue)}
                                         onChange={handleItemsSelect}
                                         onInputChange={(value) => setInputValue(value)}
@@ -141,7 +193,8 @@ function ItemListModal({ closeModal, itemListName, itemListId }) {
                                     placeholder="Type here..."
                                 />
                             )} */}
-                                {showAdd && <Button id='AddBtn' onClick={handleAddClick}>
+
+                                {showItemAdd && <Button id='AddItemBtn' onClick={handleAddClick}>
                                     Add
                                 </Button>}
                             </div>
