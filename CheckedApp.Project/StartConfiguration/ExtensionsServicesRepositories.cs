@@ -1,10 +1,7 @@
 ﻿using CheckedAppProject.DATA.DbServices.Repository;
 using CheckedAppProject.LOGIC.Services;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.IdentityModel.Tokens;
-using System.Text;
 
-namespace CheckedAppProject.API.Configuration
+namespace CheckedAppProject.API.StartConfiguration
 {
     public static class ExtensionsServicesRepositories
     {
@@ -15,14 +12,12 @@ namespace CheckedAppProject.API.Configuration
             services.AddScoped<IItemListService, ItemListService>();
             services.AddScoped<IItemService, ItemService>();
         }
-
         public static void AddAppRepositories(this IServiceCollection services)
         {
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<IUserItemRepository, UserItemRepository>();
             services.AddScoped<IItemListRepository, ItemListRepository>();
             services.AddScoped<IItemRepository, ItemRepository>();
-
         }
     }
 }

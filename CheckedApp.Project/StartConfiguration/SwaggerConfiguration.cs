@@ -1,9 +1,8 @@
-﻿using Microsoft.CodeAnalysis.Options;
-using Microsoft.Extensions.Options;
+﻿using Microsoft.Extensions.Options;
 using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.SwaggerGen;
 
-namespace CheckedAppProject.API.Configuration.Swagger
+namespace CheckedAppProject.API.StartConfiguration
 {
     public class SwaggerConfiguration : IConfigureOptions<SwaggerGenOptions>
     {
