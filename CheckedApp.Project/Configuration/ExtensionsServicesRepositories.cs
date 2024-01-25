@@ -1,8 +1,6 @@
 ﻿using CheckedAppProject.DATA.DbServices.Repository;
 using CheckedAppProject.LOGIC.Services;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.IdentityModel.Tokens;
-using System.Text;
+
 
 namespace CheckedAppProject.API.Configuration
 {
