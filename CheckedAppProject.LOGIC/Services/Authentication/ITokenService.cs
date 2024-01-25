@@ -4,6 +4,6 @@ namespace CheckedAppProject.LOGIC.Services.Authentication
 {
     public interface ITokenService
     {
-        string CreateToken(AppUser user);
+        Task<string> CreateToken(AppUser user);
     }
 }

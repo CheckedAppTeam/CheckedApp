@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace CheckedAppProject.DATA.CheckedAppDbContext
 {
-    public class UserItemContext : IdentityDbContext<AppUser>
+    public class UserItemContext : IdentityDbContext<AppUser, IdentityRole, string>
     {
         public UserItemContext(DbContextOptions<UserItemContext> options) : base(options)
         {

@@ -62,7 +62,7 @@ namespace CheckedAppProject.LOGIC.Services.Authentication
                 return InvalidPassword(email, managedUser.UserName);
             }
 
-            var accessToken = _tokenService.CreateToken(managedUser);
+            var accessToken = await _tokenService.CreateToken(managedUser);
 
             return new AuthResult(true, managedUser.Email, managedUser.UserName, accessToken);
         }
