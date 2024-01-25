@@ -96,14 +96,16 @@ function ItemListModal({ closeModal, itemListName, itemListId }) {
     }
 
     const filterItems = (input) => {
-        return allItems
-            .filter((item) =>
-                item.itemName.toLowerCase().includes(input.toLowerCase())
-            )
-            .map((item) => ({
-                value: item.itemName,
-                label: item.itemName,
-            }));
+        if(input.length > 2){
+            return allItems
+                .filter((item) =>
+                    item.itemName.toLowerCase().includes(input.toLowerCase())
+                )
+                .map((item) => ({
+                    value: item.itemName,
+                    label: item.itemName,
+                }));
+        }
     };
 
     const handleAdd = async () => {
