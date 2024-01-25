@@ -19,9 +19,7 @@ function Signup() {
   })
 
   const [passwordStrength, setPasswordStrength] = useState(0)
-  const [isPasswordFocused, setIsPasswordFocused] = useState(false);
-
-
+  const [isPasswordFocused, setIsPasswordFocused] = useState(false)
 
   const handleChange = (e) => {
     const { name, value } = e.target
@@ -66,16 +64,16 @@ function Signup() {
   }
 
   const handlePasswordFocus = () => {
-    setIsPasswordFocused(true);
+    setIsPasswordFocused(true)
   }
-  
+
   const handlePasswordBlur = () => {
-    setIsPasswordFocused(false);
+    setIsPasswordFocused(false)
   }
   return (
     <div className='auth-container'>
       <div className='container'>
-        <form onSubmit={handleSubmit} >
+        <form onSubmit={handleSubmit}>
           <div className='row'>
             <h4>Account</h4>
             <InputWithIcon

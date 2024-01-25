@@ -73,7 +73,7 @@ function Map() {
   const handleCountrySelect = (selectedOption) => {
     setSelectedCountry({
       geocode: selectedOption.geocode,
-      zoom: 6, 
+      zoom: 6,
     })
   }
 
@@ -94,7 +94,6 @@ function Map() {
           onChange={handleCountrySelect}
           onInputChange={(value) => setInputValue(value)}
           placeholder='Type to search...'
-          styles={customStyles}
         />
       </div>
       <MapContainer
@@ -115,7 +114,7 @@ function Map() {
           >
             <Popup>
               <FaMapMarker />
-              {country.label}
+              <a href={country.label}>{country.label}</a>
             </Popup>
           </Marker>
         ))}

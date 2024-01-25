@@ -6,13 +6,12 @@
   margin: 0;
   padding: 0;
 }
-.react-select__option {
-  color: black; /* Adjust color as needed */
-}
+
+
 
 .react-select__option--is-selected {
   color: white;
-  background-color: #0088cc; /* Adjust background color as needed */
+  background-color: #cc0000; 
 }
 
 .react-select__menu {
@@ -33,10 +32,9 @@
   padding: 1rem;
 }
 
-.map-input option{
-  background-color: #0088cc;
-}
+
 .map-container{
+  top:1000px;
   align-items: center; 
   min-width: 100%;
   padding: 4rem;
