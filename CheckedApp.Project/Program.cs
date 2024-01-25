@@ -1,5 +1,6 @@
 ﻿using CheckedAppProject.API.Configuration;
 using CheckedAppProject.API.Configuration.Swagger;
+using CheckedAppProject.DATA;
 using CheckedAppProject.DATA.CheckedAppDbContext;
 using CheckedAppProject.DATA.Entities;
 using CheckedAppProject.LOGIC.Services.Authentication;
@@ -82,13 +83,20 @@ builder.Services.AddIdentity<AppUser, IdentityRole>(options =>
     options.Password.RequireNonAlphanumeric = false;
     options.Password.RequireUppercase = false;
     options.Password.RequireLowercase = false;
-}).AddEntityFrameworkStores<UserItemContext>();
+})
+    .AddEntityFrameworkStores<UserItemContext>();
 
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<ITokenService, TokenService>();
 builder.Services.AddControllersWithViews();
 
 var app = builder.Build();
+using (var scope = app.Services.CreateScope())
+{
+    var userManager = scope.ServiceProvider.GetRequiredService<UserManager<AppUser>>();
+    var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
+    await DbInitializer.InitializeAsync(userManager, roleManager);
+}
 
 if (app.Environment.IsDevelopment())
 {

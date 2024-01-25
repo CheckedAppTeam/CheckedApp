@@ -39,11 +39,14 @@ function Map() {
       borderBottom: '1px solid #ccc',
       color: state.isSelected ? 'white' : 'black',
       background: state.isSelected ? '#0088cc' : 'white',
+      margin: '0 auto', // Center the option horizontally
       zIndex: 9900,
     }),
     menu: (provided) => ({
       ...provided,
+      width: '97%', // Set the width of the menu to 50% of the screen
       zIndex: 9900,
+      top: '3rem',
     }),
   }
 
@@ -94,6 +97,7 @@ function Map() {
           onChange={handleCountrySelect}
           onInputChange={(value) => setInputValue(value)}
           placeholder='Type to search...'
+          styles={customStyles}
         />
       </div>
       <MapContainer

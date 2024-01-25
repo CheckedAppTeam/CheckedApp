@@ -12,12 +12,19 @@ namespace CheckedAppProject.LOGIC.Services.Authentication
     public class TokenService : ITokenService
     {
         private const int ExpirationMinutes = 30;
+        private readonly UserManager<AppUser> _userManager;
 
-        public string CreateToken(AppUser user)
+        public TokenService(UserManager<AppUser> userManager)
         {
+            _userManager = userManager;
+        }
+
+        public async Task<string> CreateToken(AppUser user)
+        {
+            var roles = await _userManager.GetRolesAsync(user);
             var expiration = DateTime.UtcNow.AddMinutes(ExpirationMinutes);
             var token = CreateJwtToken(
-                CreateClaims(user),
+                CreateClaims(user, roles),
                 CreateSigningCredentials(),
                 expiration
             );
@@ -27,15 +34,15 @@ namespace CheckedAppProject.LOGIC.Services.Authentication
 
         private JwtSecurityToken CreateJwtToken(List<Claim> claims, SigningCredentials credentials,
             DateTime expiration) =>
-            new(
-                "CheckedApp",
-                "CheckedApp",
-                claims,
+            new JwtSecurityToken(
+                issuer: "CheckedApp",
+                audience: "CheckedApp",
+                claims: claims,
                 expires: expiration,
                 signingCredentials: credentials
             );
 
-        private List<Claim> CreateClaims(IdentityUser user)
+        private List<Claim> CreateClaims(AppUser user, IList<string> roles)
         {
             try
             {
@@ -48,6 +55,11 @@ namespace CheckedAppProject.LOGIC.Services.Authentication
                 new Claim(ClaimTypes.Name, user.UserName),
                 new Claim(ClaimTypes.Email, user.Email)
             };
+
+                foreach (var role in roles)
+                {
+                    claims.Add(new Claim(ClaimTypes.Role, role));
+                }
                 return claims;
             }
             catch (Exception e)

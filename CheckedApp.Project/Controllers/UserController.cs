@@ -45,7 +45,7 @@ namespace CheckedAppProject.API.Controllers
                 (NotFound(new { ErrorCode = 404, Message = "User with this ID not found" }))
                 : (Ok(new { Message = "Changes added successfully" }));
         }
-
+        [Authorize(Roles = "Admin")]
         [HttpDelete("UserData/DeleteUser/{id}")]
         public async Task<IActionResult> DeleteUser([FromRoute] string id)
         {
