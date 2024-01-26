@@ -1,9 +1,9 @@
 import React from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
-const InputWithIcon = ({ placeholder, imagePath, type, onChange }) => (
+const InputWithIcon = ({ placeholder, imagePath, type, onChange, name }) => (
   <div className='input-group input-group-icon'>
-    <input type={type} placeholder={placeholder} onChange={onChange} />
+    <input type={type} placeholder={placeholder} onChange={onChange} name={name} />
     <div className='input-icon'>
       {imagePath ? <img src={imagePath} alt={placeholder} /> : <></>}
     </div>

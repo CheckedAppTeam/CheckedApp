@@ -27,9 +27,10 @@ const itemListEndpoints = {
 const userEndpoints = {
   getUserData: (id) => `${baseURL}/User/UserData/${id}`,
   getAllUsersData: `${baseURL}/User/UserData/AllUsers`,
-  addUser: `${baseURL}/User/UserData/AddUser`,
+  addUser: `${baseURL}/Auth/Register`,
   editUser: (id) => `${baseURL}/User/UserData/EditUser/${id}`,
   deleteUser: (id) => `${baseURL}/User/UserData/DeleteUser/${id}`,
+  logUser: `${baseURL}/Auth/Login`
 }
 
 const userItemEndpoints = {

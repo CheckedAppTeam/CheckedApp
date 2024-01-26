@@ -6,6 +6,8 @@ import '../../styles/loginSignup.css'
 import email_icon from '../../assets/email.png'
 import password_icon from '../../assets/password.png'
 import InputWithIcon from '../Reusables/InputWithIcon.js'
+import { userEndpoints } from '../../endpoints'
+
 
 function Login() {
   const navigate = useNavigate()
@@ -20,9 +22,9 @@ function Login() {
       Email: email,
       Password: password,
     }
-
+//'https://localhost:7161/Auth/Login'
     axios
-      .post('https://localhost:7161/Auth/Login', loginPayload)
+      .post(userEndpoints.logUser, loginPayload)
       .then((response) => {
         const token = response.data.token
         localStorage.setItem('token', token)

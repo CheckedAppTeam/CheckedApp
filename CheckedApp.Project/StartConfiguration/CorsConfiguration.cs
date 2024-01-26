@@ -4,17 +4,20 @@
     {
         public static void ConfigureCors(WebApplicationBuilder builder)
         {
-            var frontendURL = builder.Configuration.GetValue<string>("http://localhost:3000");
-            builder.Services.AddCors(options =>
-            {
-                options.AddDefaultPolicy(builder =>
+            var frontendURL = builder.Configuration.GetValue<string>("AllowedOrigins:FrontendURL");
+
+            if (frontendURL != null ) { 
+                builder.Services.AddCors(options =>
                 {
-                    builder
-                    .AllowAnyOrigin()
-                    .AllowAnyMethod()
-                    .AllowAnyHeader();
+                    options.AddDefaultPolicy(builder =>
+                    {
+                        builder
+                            .WithOrigins(frontendURL) 
+                            .AllowAnyMethod()
+                            .AllowAnyHeader();
+                    });
                 });
-            });
+            }
         }
     }
 }

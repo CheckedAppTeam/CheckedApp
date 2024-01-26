@@ -1,29 +1,30 @@
 import React, { useState } from 'react'
+import axios from 'axios'
+import { useNavigate } from 'react-router-dom'
 import '../../styles/loginSignup.css'
 import email_icon from '../../assets/email.png'
 import person_icon from '../../assets/person.png'
 import password_icon from '../../assets/password.png'
 import InputWithIcon from '../Reusables/InputWithIcon.js'
+import terms_pdf from '../../assets/TermsOfService.pdf'
+import { userEndpoints } from '../../endpoints'
 
 function Signup() {
-  const [formData, setFormData] = useState({
-    firstName: '',
-    lastName: '',
-    email: '',
-    password: '',
-    day: '',
-    month: '',
-    year: '',
-    gender: '',
-    terms: false,
-  })
+  const [UserName, setUserName] = useState('')
+  const [UserSurname, setUserSurname] = useState('')
+  const [UserEmail, setUserEmail] = useState('')
+  const [password, setPassword] = useState('')
+  const [UserAge, setUserAge] = useState('')
+  const [gender, setGender] = useState('')
+  const [terms, setTerms] = useState(false)
 
   const [passwordStrength, setPasswordStrength] = useState(0)
-  const [isPasswordFocused, setIsPasswordFocused] = useState(false)
+  const [error, setError] = useState('')
+  const navigate = useNavigate()
 
-  const handleChange = (e) => {
-    const { name, value } = e.target
-    setFormData((prevData) => ({ ...prevData, [name]: value }))
+  const handlePasswordChange = (e) => {
+    const { value } = e.target
+    setPassword(value)
 
     const requirements = [
       value.length >= 8,
@@ -38,38 +39,46 @@ function Signup() {
     setPasswordStrength(strength)
   }
 
-  const calculateAge = () => {
-    const { day, month, year } = formData
-    const birthDate = new Date(`${year}-${month}-${day}`)
-    const currentDate = new Date()
-    const age = Math.floor(
-      (currentDate - birthDate) / (365.25 * 24 * 60 * 60 * 1000)
-    )
-    return age
-  }
-
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault()
-    const age = calculateAge()
-    const userData = {
-      ...formData,
-      age,
+
+    if (!isFormValid()) {
+      setError('Please fill in all required fields.')
+      return error
     }
-    const jsonString = JSON.stringify(userData, null, 2)
-    console.log(jsonString)
+
+    let addUserDto = {
+      userName: UserName,
+      userSurname: UserSurname,
+      userEmail: UserEmail,
+      password: password,
+      userAge: Number(UserAge),
+      userSex: gender,
+    }
+
+    axios
+      .post(userEndpoints.addUser, { addUserDto: addUserDto })
+      .then(() => {
+        navigate('/login')
+      })
+      .catch((error) => {
+        console.error(error)
+        setError('Registration failed. Please try again.')
+      })
   }
 
   const isFormValid = () => {
-    return Object.values(formData).every((value) => Boolean(value))
+    return (
+      UserName &&
+      UserSurname &&
+      UserEmail &&
+      password &&
+      UserAge &&
+      gender &&
+      terms === true
+    )
   }
 
-  const handlePasswordFocus = () => {
-    setIsPasswordFocused(true)
-  }
-
-  const handlePasswordBlur = () => {
-    setIsPasswordFocused(false)
-  }
   return (
     <div className='auth-container'>
       <div className='container'>
@@ -79,27 +88,32 @@ function Signup() {
             <InputWithIcon
               placeholder='First Name'
               imagePath={person_icon}
-              name='firstName'
+              name='UserName'
+              value={UserName}
+              onChange={(e) => setUserName(e.target.value)}
             />
             <InputWithIcon
               placeholder='Last Name'
               imagePath={person_icon}
-              name='lastName'
+              name='UserSurname'
+              value={UserSurname}
+              onChange={(e) => setUserSurname(e.target.value)}
             />
             <InputWithIcon
               placeholder='Email Address'
               imagePath={email_icon}
-              name='email'
-              type='email'
+              name='UserEmail'
+              type='UserEmail'
+              value={UserEmail}
+              onChange={(e) => setUserEmail(e.target.value)}
             />
             <InputWithIcon
-              onChange={handleChange}
+              onChange={handlePasswordChange}
               placeholder='Password'
               imagePath={password_icon}
               name='password'
               type='password'
-              onBlur={handlePasswordBlur}
-              onFocus={handlePasswordFocus}
+              value={password}
             />
           </div>
           <div className='row'>
@@ -144,14 +158,14 @@ function Signup() {
             <div className='col-half'>
               <h4>Date of Birth</h4>
               <div className='input-group'>
-                <div className='col-third'>
-                  <input placeholder='DD' name='day' />
-                </div>
-                <div className='col-third'>
-                  <input placeholder='MM' name='month' />
-                </div>
-                <div className='col-third'>
-                  <input placeholder='YYYY' name='year' />
+                <div className='col-half'>
+                  <input
+                    placeholder='Age'
+                    type='number'
+                    name='age'
+                    onChange={(e) => setUserAge(e.target.value)}
+                    style={{ width: '150%' }}
+                  />
                 </div>
               </div>
             </div>
@@ -163,6 +177,7 @@ function Signup() {
                   type='radio'
                   name='gender'
                   value='male'
+                  onChange={() => setGender('Male')}
                 />
                 <label htmlFor='gender-male'>Male</label>
                 <input
@@ -170,6 +185,7 @@ function Signup() {
                   type='radio'
                   name='gender'
                   value='female'
+                  onChange={() => setGender('Female')}
                 />
                 <label htmlFor='gender-female'>Female</label>
               </div>
@@ -179,10 +195,18 @@ function Signup() {
           <div className='row'>
             <h4>Terms and Conditions</h4>
             <div className='input-group'>
-              <input id='terms' type='checkbox' name='terms' />
+              <input
+                id='terms'
+                type='checkbox'
+                name='terms'
+                onChange={() => setTerms(true)}
+              />
               <label htmlFor='terms'>
+                <a href={terms_pdf} target='_blank' rel='noopener noreferrer'>
+                  Terms
+                </a>{' '}
                 I accept the terms and conditions for signing up to this
-                service, and hereby confirm I have read the privacy policy.
+                service, and also confirm I have read the privacy policy.
               </label>
             </div>
           </div>

@@ -74,7 +74,7 @@ export function UserHome() {
   return (
     <>
       <div className='user-profile'>
-        <h1>User Profile</h1>
+        <h1>My Profile</h1>
         <div className='user-info'>
           {isEditing ? (
             <>
