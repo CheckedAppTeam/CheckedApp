@@ -126,15 +126,16 @@ function ItemListModal({ closeModal, itemListName, itemListId }) {
         console.log(itemListId)
         console.log(matchingItem.itemId)
         if (matchingItem) {
-            setUserItemDTO({
+            const userItemDTO = {
                 itemListId: itemListId,
                 itemId: matchingItem.itemId,
                 itemState: 0,
-            });
+            }
             console.log(userItemDTO)
             try {
                 await axios.post(userItemEndpoints.addUserItem, userItemDTO);
-                setAllItemsByItemListId(...allItemsByItemListId, matchingItem);
+                setUserItemDTO(userItemDTO)
+                setAllItemsByItemListId([...allItemsByItemListId, matchingItem]);
             } catch (error) {
                 console.error('Error:', error);
             }

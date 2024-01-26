@@ -36,10 +36,7 @@ namespace CheckedAppProject.LOGIC.AutoMapperProfiles
 
             CreateMap<UserItemDTO, UserItem>();
             CreateMap<AddUserItemDTO, UserItem>();
-            CreateMap<UserItem, AddUserItemDTO>()
-            .ForMember(dest => dest.ItemListId, opt => opt.MapFrom(src => src.ItemListId))
-            .ForMember(dest => dest.ItemId, opt => opt.MapFrom(src => src.ItemId))
-            .ForMember(dest => dest.ItemState, opt => opt.MapFrom(src => src.ItemState));
+            CreateMap<UserItem, AddUserItemDTO>();
 
             CreateMap<CreateItemListDTO, ItemList>()
              .ForAllMembers(opt => opt.UseDestinationValue());
