@@ -2,8 +2,8 @@
 {
     public enum UserItemState
     {
-        toBuy,
         toPack,
+        toBuy,
         toBuyAndPack
     }
 }
