@@ -10,17 +10,17 @@ import Button from '@mui/material/Button';
 
 
 function ItemListModal({ closeModal, itemListName, itemListId }) {
-    const [allItemsByItemListId, setAllItemsByItemListId] = useState();
+    const [allItemsByItemListId, setAllItemsByItemListId] = useState([]);
     const [loading, setLoading] = useState(false);
     const [showSelect, setShowSelect] = useState(false);
-    const [allItems, setAllItems] = useState();
+    const [allItems, setAllItems] = useState([]);
     const [selectedItem, setSelectItem] = useState();
     const [inputValue, setInputValue] = useState('');
     const [showAdd, setShowAdd] = useState(false);
     const [showBack, setShowBack] = useState(false);
     const [showItemAdd, setShowItemAdd] = useState(true);
     const [userItemDTO, setUserItemDTO] = useState({
-        itemListId: itemListId,
+        itemListId: 0,
         itemId: 0,
         itemState: 0
     })
@@ -96,7 +96,7 @@ function ItemListModal({ closeModal, itemListName, itemListId }) {
     }
 
     const filterItems = (input) => {
-        if(input.length > 2){
+        if (input.length > 2) {
             return allItems
                 .filter((item) =>
                     item.itemName.toLowerCase().includes(input.toLowerCase())
@@ -108,38 +108,41 @@ function ItemListModal({ closeModal, itemListName, itemListId }) {
         }
     };
 
-    const handleAdd = async () => {
-        setShowItemAdd(true);
-        setShowSelect(false);
-        setShowBack(false);
-        setShowAdd(false);
-    console.log(inputValue)
-        const matchingItem = allItems.find((item) => inputValue === item.itemName);
-    console.log(matchingItem)
-        if (matchingItem) {
-            try {
-                await axios.post(userItemEndpoints.addUserItem, {
-                    itemListId: itemListId,
-                    itemId: matchingItem.itemId,
-                    itemState: 0,
-                });
-    
-                setUserItemDTO({
-                    itemListId: itemListId,
-                    itemId: 0,
-                    itemState: 0,
-                });
-            } catch (error) {
-                console.error('Error:', error);
-            }
-        }
-    };
-
     const handleItemsSelect = (selectedOption) => {
         setSelectItem({
             itemName: selectedOption
         })
     }
+
+    const handleAdd = async () => {
+        setShowItemAdd(true);
+        setShowSelect(false);
+        setShowBack(false);
+        setShowAdd(false);
+    
+        console.log(selectedItem.itemName.value)
+        const matchingItem = allItems.find((item) => selectedItem.itemName.value.toLowerCase() === item.itemName.toLowerCase());
+        console.log(matchingItem)
+        console.log(itemListId)
+        console.log(matchingItem.itemId)
+        if (matchingItem) {
+            setUserItemDTO({
+                itemListId: itemListId,
+                itemId: matchingItem.itemId,
+                itemState: 0,
+            });
+            console.log(userItemDTO)
+            try {
+                await axios.post(userItemEndpoints.addUserItem, userItemDTO);
+                setAllItemsByItemListId(...allItemsByItemListId, matchingItem);
+            } catch (error) {
+                console.error('Error:', error);
+            }
+        }
+    };
+    
+
+
 
     return (
         <div className='modalBackground'>
@@ -164,18 +167,6 @@ function ItemListModal({ closeModal, itemListName, itemListId }) {
                                 ))}
                             </div>
                             <div className='footer'>
-                                <div className='selectButtons'>
-                                    <div className='backBtn'>
-                                        {showBack && <Button onClick={handleBack} variant="contained" color="success">
-                                            Close
-                                        </Button>}
-                                    </div>
-                                    <div className='addBtn'>
-                                        {showAdd && <Button onClick={handleAdd} variant="contained" color="success">
-                                            Add
-                                        </Button>}
-                                    </div>
-                                </div>
                                 {console.log(userItemDTO)}
                                 <div className='selectBtn'>
                                     {showSelect && <Select
@@ -188,6 +179,18 @@ function ItemListModal({ closeModal, itemListName, itemListId }) {
                                         placeholder='Type to search...'
                                         styles={customStyles}
                                     />}
+                                </div>
+                                <div className='selectButtons'>
+                                    <div className='backBtn'>
+                                        {showBack && <Button onClick={handleBack} variant="contained" color="success">
+                                            Close
+                                        </Button>}
+                                    </div>
+                                    <div className='addBtn'>
+                                        {showAdd && <Button onClick={handleAdd} variant="contained" color="success">
+                                            Add
+                                        </Button>}
+                                    </div>
                                 </div>
                                 {/* {showInput && (
                                 <input
