@@ -1,6 +1,7 @@
 ﻿using CheckedAppProject.DATA.Entities;
 using CheckedAppProject.LOGIC.DTOs;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 
 namespace CheckedAppProject.LOGIC.Services.Authentication
 {
@@ -33,12 +34,12 @@ namespace CheckedAppProject.LOGIC.Services.Authentication
                 return FailedRegistration(result, addUserDto);
             }
 
-            return new AuthResult(true, addUserDto.UserEmail, addUserDto.UserName, "");
+            return new AuthResult(true, addUserDto.UserEmail, addUserDto.UserName, "", "");
         }
 
         private static AuthResult FailedRegistration(IdentityResult result, AddUserDTO addUserDTO)
         {
-            var authResult = new AuthResult(false, addUserDTO.UserEmail, addUserDTO.UserName, "");
+            var authResult = new AuthResult(false, addUserDTO.UserEmail, addUserDTO.UserName, "", "");
 
             foreach (var error in result.Errors)
             {
@@ -63,20 +64,40 @@ namespace CheckedAppProject.LOGIC.Services.Authentication
             }
 
             var accessToken = await _tokenService.CreateToken(managedUser);
+            var refreshToken = await _tokenService.GenerateRefreshToken(managedUser);
 
-            return new AuthResult(true, managedUser.Email, managedUser.UserName, accessToken);
+            return new AuthResult(true, managedUser.Email, managedUser.UserName, accessToken, refreshToken);
+        }
+
+        public async Task<AuthResult> RefreshTokenAsync(string refreshToken)
+        {
+            var user = await _userManager.Users
+                .SingleOrDefaultAsync(u => u.RefreshToken == refreshToken && u.RefreshTokenExpiryTime > DateTime.UtcNow);
+
+            if (user == null)
+            {
+                return new AuthResult(false, "", "", "", "")
+                {
+                    ErrorMessages = { { "RefreshToken", "Invalid or expired refresh token" } }
+                };
+            }
+
+            var newAccessToken = await _tokenService.CreateToken(user);
+            var newRefreshToken = await _tokenService.GenerateRefreshToken(user);
+
+            return new AuthResult(true, user.Email, user.UserName, newAccessToken, newRefreshToken);
         }
 
         private static AuthResult InvalidEmail(string email)
         {
-            var result = new AuthResult(false, email, "", "");
+            var result = new AuthResult(false, email, "", "", "");
             result.ErrorMessages.Add("Bad credentials", "Invalid email");
             return result;
         }
 
         private static AuthResult InvalidPassword(string email, string userName)
         {
-            var result = new AuthResult(false, email, userName, "");
+            var result = new AuthResult(false, email, userName, "", "");
             result.ErrorMessages.Add("Bad credentials", "Invalid password");
             return result;
         }
