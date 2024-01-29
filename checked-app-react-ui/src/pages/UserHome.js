@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import axios from 'axios'
 import { useAuth } from '../Contexts/AuthContext.js'
-import '../styles/main.css'
+import '../styles/userProfile.css'
 import { jwtDecode } from 'jwt-decode'
 import { userEndpoints } from '../endpoints'
 

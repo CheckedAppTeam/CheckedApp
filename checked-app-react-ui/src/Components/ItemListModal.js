@@ -1,119 +1,221 @@
 import React from 'react'
 import { useState, useEffect } from 'react'
 import '../styles/modal.css'
-import axios from 'axios'
-import { userItemEndpoints } from '../endpoints'
-import Loader from '../spinners/Loader'
-import Checkbox from '@mui/material/Checkbox'
-import FormGroup from '@mui/material/FormGroup'
-import FormControlLabel from '@mui/material/FormControlLabel'
-import FormControl from '@mui/material/FormControl'
-import FormLabel from '@mui/material/FormLabel'
-import { orange } from '@mui/material/colors'
-import { IconButton } from '@mui/material'
-import DeleteIcon from '@mui/icons-material/Delete'
+import axios from 'axios';
+import { itemEndpoints, userItemEndpoints } from '../endpoints';
+import Loader from '../spinners/Loader';
+import UserItem from './UserItem';
+import Select from 'react-select';
+import Button from '@mui/material/Button';
 
-const label = { inputProps: { 'aria-label': 'Checkbox demo' } }
 
 function ItemListModal({ closeModal, itemListName, itemListId }) {
-  const [allItemsByItemListId, setAllItemsByItemListId] = useState()
-  const [loading, setLoading] = useState(false)
-  const [itemState, setItemState] = useState()
+    const [allItemsByItemListId, setAllItemsByItemListId] = useState([]);
+    const [loading, setLoading] = useState(false);
+    const [showSelect, setShowSelect] = useState(false);
+    const [allItems, setAllItems] = useState([]);
+    const [selectedItem, setSelectItem] = useState();
+    const [inputValue, setInputValue] = useState('');
+    const [showAdd, setShowAdd] = useState(false);
+    const [showBack, setShowBack] = useState(false);
+    const [showItemAdd, setShowItemAdd] = useState(true);
+    const [userItemDTO, setUserItemDTO] = useState({
+        itemListId: 0,
+        itemId: 0,
+        itemState: 0
+    })
 
-  const showAllItemsByItemListId = async () => {
-    try {
-      const response = await axios.get(
-        userItemEndpoints.getAllUsersItemsByListId(itemListId)
-      )
-      console.log('Response:', response)
-      setAllItemsByItemListId(response.data)
-      setLoading(true)
-    } catch (error) {
-      console.error('Error:', error)
+    // const [itemState, setItemState] = useState();
+    // const [userItem, setUserItem] = useState();
+
+    const customStyles = {
+        option: (provided, state) => ({
+            ...provided,
+            borderBottom: '1px solid #ccc',
+            color: state.isSelected ? 'white' : 'black',
+            background: state.isSelected ? '#0088cc' : 'white',
+            zIndex: 9900,
+        }),
+        menu: (provided) => ({
+            ...provided,
+            zIndex: 9900,
+        }),
     }
-  }
 
-  useEffect(() => {
-    showAllItemsByItemListId()
-  }, [])
+    const showAllItemsByItemListId = async () => {
+        try {
+            const response = await axios.get(userItemEndpoints.getAllUsersItemsByListId(itemListId));
+            console.log('Response:', response);
+            setAllItemsByItemListId(response.data);
+            setLoading(true);
+        } catch (error) {
+            console.error('Error:', error);
+        }
+    };
 
-  return (
-    <div className='modalBackground'>
-      <div className='modalContainer'>
-        <div className='titleCloseBtn'>
-          <button onClick={() => closeModal(false)}></button>
-        </div>
-        <div className='title'>
-          <h1>{itemListName}</h1>
-          {!loading && <Loader />}
-        </div>
-        <div className='body'>
-          {console.log(allItemsByItemListId)}
-          <div className='items'>
-            {allItemsByItemListId &&
-              allItemsByItemListId.map((item, index) => (
-                <div className='item-container' key={index}>
-                  {console.log(item)}
-                  {/* <div className='deleteBtn'>
-                                    <button></button>
-                                </div> */}
-                  <IconButton aria-label='delete' size='small' color='white'>
-                    <DeleteIcon className='deleteIcon' />
-                  </IconButton>
-                  <div className='editBtn'></div>
-                  <div className='item'>{item.userItemName}</div>
-                  <FormControl component='fieldset'>
-                    <FormGroup aria-label='position' row>
-                      <FormControlLabel
-                        value='bottom'
-                        control={
-                          <Checkbox
-                            {...label}
-                            defaultChecked
-                            sx={{
-                              color: orange[800],
-                              '&.Mui-checked': {
-                                color: orange[600],
-                              },
-                            }}
-                          />
-                        }
-                        label='Packed'
-                        labelPlacement='bottom'
-                      />
-                      <FormControlLabel
-                        value='bottom'
-                        control={
-                          <Checkbox
-                            {...label}
-                            defaultChecked
-                            sx={{
-                              color: orange[800],
-                              '&.Mui-checked': {
-                                color: orange[600],
-                              },
-                            }}
-                          />
-                        }
-                        label='To buy'
-                        labelPlacement='bottom'
-                        label-color='white'
-                      />
-                    </FormGroup>
-                  </FormControl>
+    const showAllItems = async () => {
+        try {
+            const response = await axios.get(itemEndpoints.getAllItems);
+            console.log('Response:', response);
+            setAllItems(response.data || []);
+        } catch (error) {
+            console.error('Error:', error);
+        }
+    };
+
+    // const sendUserItem = async () => {
+    //     try {
+    //         await axios.post(userItemEndpoints.addUserItem, userItemDTO);
+    //         setUserItemDTO({
+    //             itemListId: itemListId,
+    //             itemId: 0,
+    //             itemState: 0
+    //         });
+    //     } catch (error) {
+    //         console.error('Error:', error);
+    //     }
+    // }
+
+    const handleAddClick = () => {
+        setShowSelect(true)
+        setShowItemAdd(false)
+        setShowBack(true)
+        setShowAdd(true)
+    };
+
+    useEffect(() => {
+        const currentToken = localStorage.getItem('token')
+        if (currentToken) {
+          axios.defaults.headers.common['Authorization'] = `Bearer ${currentToken}`
+        } else {
+          delete axios.defaults.headers.common['Authorization']
+        }
+        showAllItemsByItemListId();
+        showAllItems();
+    }, []);
+
+    const handleBack = () => {
+        setShowItemAdd(true)
+        setShowSelect(false);
+        setShowBack(false)
+        setShowAdd(false)
+    }
+
+    const filterItems = (input) => {
+        if (input.length > 2) {
+            return allItems
+                .filter((item) =>
+                    item.itemName.toLowerCase().includes(input.toLowerCase())
+                )
+                .map((item) => ({
+                    value: item.itemName,
+                    label: item.itemName,
+                }));
+        }
+    };
+
+    const handleItemsSelect = (selectedOption) => {
+        setSelectItem({
+            itemName: selectedOption
+        })
+    }
+
+    const handleAdd = async () => {
+        setShowItemAdd(true);
+        setShowSelect(false);
+        setShowBack(false);
+        setShowAdd(false);
+    
+        console.log(selectedItem.itemName.value)
+        const matchingItem = allItems.find((item) => selectedItem.itemName.value.toLowerCase() === item.itemName.toLowerCase());
+        console.log(matchingItem)
+        console.log(itemListId)
+        console.log(matchingItem.itemId)
+        if (matchingItem) {
+            const userItemDTO = {
+                itemListId: itemListId,
+                itemId: matchingItem.itemId,
+                itemState: 0,
+            }
+            console.log(userItemDTO)
+            try {
+                await axios.post(userItemEndpoints.addUserItem, userItemDTO);
+                setUserItemDTO(userItemDTO)
+                setAllItemsByItemListId([...allItemsByItemListId, matchingItem]);
+            } catch (error) {
+                console.error('Error:', error);
+            }
+        }
+    };
+    
+
+
+
+    return (
+        <div className='modalBackground'>
+            <div className='modalContainer'>
+                <div className='titleCloseBtn'>
+                    <button onClick={() => closeModal(false)}></button>
                 </div>
-              ))}
-          </div>
+                <div className='title'>
+                    <h1>{itemListName}</h1>
+                    {console.log(allItems)}
+                </div>
+                <div className='body'>
+                    {!loading ? (
+                        <Loader />
+                    ) : (
+                        <div className='itemsAndFooter'>
+                            <div className='items'>
+                                {allItemsByItemListId.map((item, index) => (
+                                    <div className='item-container' key={index}>
+                                        <UserItem item={item} />
+                                    </div>
+                                ))}
+                            </div>
+                            <div className='footer'>
+                                {console.log(userItemDTO)}
+                                <div className='selectBtn'>
+                                    {showSelect && <Select
+                                        className='map-input'
+                                        defaultValue={inputValue}
+                                        // value={null}
+                                        options={filterItems(inputValue)}
+                                        onChange={handleItemsSelect}
+                                        onInputChange={(value) => setInputValue(value)}
+                                        placeholder='Type to search...'
+                                        styles={customStyles}
+                                    />}
+                                </div>
+                                <div className='selectButtons'>
+                                    <div className='backBtn'>
+                                        {showBack && <Button onClick={handleBack} variant="contained" color="success">
+                                            Close
+                                        </Button>}
+                                    </div>
+                                    <div className='addBtn'>
+                                        {showAdd && <Button onClick={handleAdd} variant="contained" color="success">
+                                            Add
+                                        </Button>}
+                                    </div>
+                                </div>
+                                {/* {showInput && (
+                                <input
+                                    type="text"
+                                    placeholder="Type here..."
+                                />
+                            )} */}
+
+                                {showItemAdd && <Button id='AddItemBtn' onClick={handleAddClick}>
+                                    Add
+                                </Button>}
+                            </div>
+                        </div>
+                    )}
+                </div>
+            </div>
         </div>
-        <div className='footer'>
-          <button id='AddBtn'>Add</button>
-          {/* <button onClick={() => closeModal(false)} id='cancelBtn'>
-                        Cancel
-                    </button> */}
-        </div>
-      </div>
-    </div>
-  )
+    )
 }
 
 export default ItemListModal

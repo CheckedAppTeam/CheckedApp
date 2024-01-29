@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react'
 import axios from 'axios'
 import { userEndpoints } from '../endpoints'
 import '../styles/itemLists.css'
-import { Link } from 'react-router-dom' // do wywalenia??
+import { Link } from 'react-router-dom' 
 import '../styles/main.css'
 import Loader from '../spinners/Loader.js'
 import ItemListModal from '../Components/ItemListModal.js'
@@ -27,6 +27,8 @@ export function ItemLists() {
         try {
           const decodedToken = jwtDecode(token)
           // console.log('Decoded Token:', decodedToken);
+
+          //osobna metoda do authcontext
           const userId =
             decodedToken[
               'http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier'
@@ -53,7 +55,6 @@ export function ItemLists() {
   }
 
   return (
-    <>
       <div className='itemListBackground'>
         {console.log(itemListEndpoints)}
         <div className='body'>
@@ -104,7 +105,7 @@ export function ItemLists() {
           </div>
         </div>
       </div>
-    </>
+    
   )
 }
 

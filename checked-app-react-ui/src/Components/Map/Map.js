@@ -27,6 +27,7 @@ function Map() {
   const [selectedCountry, setSelectedCountry] = useState(null)
   const mapRef = useRef(null)
   const [inputValue, setInputValue] = useState('')
+  const [clickedPosition, setClickedPosition] = useState(null) // New state to store clicked position
 
   const CustomMarkerIcon = L.divIcon({
     className: 'custom-marker-icon',
@@ -34,20 +35,8 @@ function Map() {
   })
 
   const customStyles = {
-    option: (provided, state) => ({
-      ...provided,
-      borderBottom: '1px solid #ccc',
-      color: state.isSelected ? 'white' : 'black',
-      background: state.isSelected ? '#0088cc' : 'white',
-      margin: '0 auto', // Center the option horizontally
-      zIndex: 9900,
-    }),
-    menu: (provided) => ({
-      ...provided,
-      width: '97%', // Set the width of the menu to 50% of the screen
-      zIndex: 9900,
-      top: '3rem',
-    }),
+    option: 'custom-option',
+    menu: 'custom-menu',
   }
 
   useEffect(() => {
@@ -67,9 +56,19 @@ function Map() {
   }, [])
 
   useEffect(() => {
+    if (mapRef.current) {
+      mapRef.current.on('click', handleMapClick) // Attach click event handler to the map
+    }
+
     if (mapRef.current && selectedCountry) {
       const { geocode, zoom } = selectedCountry
       mapRef.current.flyTo(geocode, zoom)
+    }
+
+    return () => {
+      if (mapRef.current) {
+        mapRef.current.off('click', handleMapClick) // Detach the event handler on component unmount
+      }
     }
   }, [selectedCountry])
 
@@ -78,6 +77,13 @@ function Map() {
       geocode: selectedOption.geocode,
       zoom: 6,
     })
+  }
+
+  const handleMapClick = (event) => {
+    console.log('Map clicked:', event.latlng)
+
+    const { lat, lng } = event.latlng
+    setClickedPosition([lat, lng])
   }
 
   const filterCountries = (input) => {
@@ -89,7 +95,7 @@ function Map() {
   return (
     <div>
       <div className='country-list'>
-        <h1 style={{margin:"0% auto"}}>Select Country</h1>
+        <h1>Where do You wanna go?</h1>
         <Select
           className='map-input'
           value={null}
@@ -110,6 +116,14 @@ function Map() {
           attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
           url='https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png'
         />
+        {clickedPosition && (
+          <Marker position={clickedPosition} icon={CustomMarkerIcon}>
+            <Popup>
+              <FaMapMarker />
+              Clicked Marker
+            </Popup>
+          </Marker>
+        )}
         {countries.map((country, index) => (
           <Marker
             key={index}

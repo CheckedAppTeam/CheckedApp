@@ -21,7 +21,8 @@ export const AuthProvider = ({ children }) => {
     setToken(null)
     delete axios.defaults.headers.common['Authorization']
   }
-
+  //refresh token
+  
   useEffect(() => {
     const currentToken = localStorage.getItem('token')
     if (currentToken) {

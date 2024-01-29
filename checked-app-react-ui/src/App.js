@@ -11,14 +11,13 @@ import { AuthProvider } from './Contexts/AuthContext.js'
 
 function App() {
   return (
-    <>
       <AuthProvider>
         <Navbar />
         <Routes>
           <Route path='/' element={<Home />} />
           <Route path='/user-home' element={<UserHome />} />
           <Route path='/itemlists'>
-            <Route index element={<ItemLists />} />
+            <Route index element={<ItemLists />} />{/* zabezpieczyc private route */}
             <Route path='new' element={<NewList />} />
           </Route>
           <Route path='*' element={<NotFound />} />
@@ -26,7 +25,6 @@ function App() {
           <Route path='/Login' element={<Login />} />
         </Routes>
       </AuthProvider>
-    </>
   )
 }
 

@@ -7,7 +7,7 @@ import email_icon from '../../assets/email.png'
 import password_icon from '../../assets/password.png'
 import InputWithIcon from '../Reusables/InputWithIcon.js'
 import { userEndpoints } from '../../endpoints'
-
+import { Link }from "react-router-dom"
 
 function Login() {
   const navigate = useNavigate()
@@ -22,7 +22,10 @@ function Login() {
       Email: email,
       Password: password,
     }
-//'https://localhost:7161/Auth/Login'
+//axios in async await way
+
+
+
     axios
       .post(userEndpoints.logUser, loginPayload)
       .then((response) => {
@@ -33,16 +36,12 @@ function Login() {
           navigate('/user-home')
         }
       })
-      .catch((err) => console.log(err))
+      .catch((err) => console.error(err))
   }
 
-  function handleUserEmailChange(event) {
-    setEmail(event.target.value)
-  }
+  
 
-  function handlePasswordChange(event) {
-    setPassword(event.target.value)
-  }
+ 
 
   return (
     <div className='auth-container'>
@@ -57,7 +56,7 @@ function Login() {
               name='email'
               type='email'
               value={email}
-              onChange={handleUserEmailChange}
+              onChange={(event) =>setEmail(event.target.value)}
             />
             <InputWithIcon
               placeholder='Password'
@@ -65,15 +64,19 @@ function Login() {
               name='password'
               type='password'
               value={password}
-              onChange={handlePasswordChange}
+              onChange={(event)=> setPassword(event.target.value)}
             />
           </div>
+          {/* change href to link */}
           <div className='row'>
-            You don't have an account? <a href='/Login'>Register</a>
+            
+            You don't have an account? 
+            <Link to="/Register">Register</Link>
+            
           </div>
           <div className='row'>
             <div className='col-button'>
-              <button style={{ backgroundColor: 'white' }} type='submit'>
+              <button className='submit-button' type='submit'>
                 Submit
               </button>
             </div>
