@@ -214,6 +214,7 @@ select option {
     justify-content: flex-end;  /* Add this line to align to the right */
   }
   
+  
 .col-half:last-of-type {
   padding-right: 0;
 }
@@ -232,18 +233,23 @@ select option {
   }
 }
 
-.weak {
-  background-color: red;
-}
-
-.acceptable {
-  background-color: orange;
-}
-
-.good {
-  background-color: yellow;
-}
-
-.strong {
+.password-strength-bar{
+  color: #b9b9b9;
   background-color: green;
+  width: 100%;
+  height: 4px;
+}
+
+.password-strength-label{
+
+  display: flex;
+  justify-content: space-between;
+  font-size: 12px;
+}
+
+.age-input{
+  width: 100%;
+}
+#gender-female{
+  width: 50%;
 }

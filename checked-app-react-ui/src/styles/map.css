@@ -68,3 +68,17 @@
   box-shadow: 0 0 0px 5px #fff;
 }
 
+.custom-option {
+  border-bottom: 1px solid #ccc;
+  color: black;
+}
+
+.custom-option--is-selected {
+  color: white;
+  background-color: #0088cc;
+}
+
+.custom-menu {
+  width: 97%;
+  top: 3rem;
+}
