@@ -26,6 +26,7 @@ export function UserHome() {
       axios
         .get(userEndpoints.getUserData(userId))
         .then((response) => {
+          console.log(response);
           setUser({
             userId: userId,
             firstName: response.data.userName,
@@ -35,6 +36,25 @@ export function UserHome() {
             email: userEmail,
           })
           setPackingLists(response.data.ownItemList)
+        })
+        .catch((error) => {
+          console.error('Error while getting user', error)
+        })
+    } else 
+    {
+      axios
+        .get(userEndpoints.getUserData(1))
+        .then((response) => {
+          console.log(response);
+          // //setUser({
+          //   userId: userId,
+          //   firstName: response.data.userName,
+          //   lastName: response.data.userSurname,
+          //   age: response.data.userAge,
+          //   gender: response.data.userSex,
+          //   email: userEmail,
+          // })
+          // //setPackingLists(response.data.ownItemList)
         })
         .catch((error) => {
           console.error('Error while getting user', error)

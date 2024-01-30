@@ -37,14 +37,19 @@ export const AuthProvider = ({ children }) => {
   
   
   useEffect(() => {
+    console.log("dabadababdaba")
     const interceptor = axios.interceptors.response.use(
       response => response, 
       async error => {
         const originalRequest = error.config;
+        if (error.response != undefined) {
+          console.log("hello code")
         if (error.response.status === 401 && !originalRequest._retry) { 
+          console.log("w srodku potwora")
           originalRequest._retry = true;
-          try {
+          try { //TO FIX DO NOT SEND POST
             const response = await axios.post(userEndpoints.refreshToken, { refreshToken });
+            console.log(response);
             const { token: newToken, refreshToken: newRefreshToken } = response.data;
             
             updateTokens(newToken, newRefreshToken);
@@ -60,6 +65,7 @@ export const AuthProvider = ({ children }) => {
         }
         return Promise.reject(error);
       }
+    }
     );
 
     return () => {

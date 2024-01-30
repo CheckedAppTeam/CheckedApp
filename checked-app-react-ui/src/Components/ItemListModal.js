@@ -45,7 +45,7 @@ function ItemListModal({ closeModal, itemListName, itemListId }) {
     const showAllItemsByItemListId = async () => {
         try {
             const response = await axios.get(userItemEndpoints.getAllUsersItemsByListId(itemListId));
-            console.log('Response:', response);
+           // console.log('Response:', response);
             setAllItemsByItemListId(response.data);
             setLoading(true);
         } catch (error) {
@@ -56,7 +56,7 @@ function ItemListModal({ closeModal, itemListName, itemListId }) {
     const showAllItems = async () => {
         try {
             const response = await axios.get(itemEndpoints.getAllItems);
-            console.log('Response:', response);
+            //console.log('Response:', response);
             setAllItems(response.data || []);
         } catch (error) {
             console.error('Error:', error);
@@ -126,18 +126,18 @@ function ItemListModal({ closeModal, itemListName, itemListId }) {
         setShowBack(false);
         setShowAdd(false);
     
-        console.log(selectedItem.itemName.value)
+        //console.log(selectedItem.itemName.value)
         const matchingItem = allItems.find((item) => selectedItem.itemName.value.toLowerCase() === item.itemName.toLowerCase());
-        console.log(matchingItem)
-        console.log(itemListId)
-        console.log(matchingItem.itemId)
+        //console.log(matchingItem)
+        //console.log(itemListId)
+        //console.log(matchingItem.itemId)
         if (matchingItem) {
             const userItemDTO = {
                 itemListId: itemListId,
                 itemId: matchingItem.itemId,
                 itemState: 0,
             }
-            console.log(userItemDTO)
+            //console.log(userItemDTO)
             try {
                 await axios.post(userItemEndpoints.addUserItem, userItemDTO);
                 setUserItemDTO(userItemDTO)

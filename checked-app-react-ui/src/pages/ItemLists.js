@@ -56,7 +56,7 @@ export function ItemLists() {
 
   return (
       <div className='itemListBackground'>
-        {console.log(itemListEndpoints)}
+        //{console.log(itemListEndpoints)}
         <div className='body'>
           <h1>All Your Lists</h1>
           {!loading && <Loader />}
