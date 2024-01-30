@@ -8,7 +8,7 @@ import { Link } from 'react-router-dom'
 
 function Navbar() {
   const navRef = useRef()
-  const { token, removeToken } = useAuth()
+  const { token, removeTokens } = useAuth()
   const navigate = useNavigate()
 
   const showNavBar = () => {
@@ -17,7 +17,7 @@ function Navbar() {
     }
   }
   const handleLogout = () => {
-    removeToken()
+    removeTokens()
     showNavBar()
     navigate('/')
   }

@@ -12,7 +12,7 @@ namespace CheckedAppProject.LOGIC.Services.Authentication
 {
     public class TokenService : ITokenService
     {
-        private const int ExpirationMinutes = 30;
+        private const int ExpirationMinutes = 2;
         private readonly UserManager<AppUser> _userManager;
 
         public TokenService(UserManager<AppUser> userManager)
@@ -82,7 +82,7 @@ namespace CheckedAppProject.LOGIC.Services.Authentication
         {
             var refreshToken = Convert.ToBase64String(RandomNumberGenerator.GetBytes(64));
             user.RefreshToken = refreshToken;
-            user.RefreshTokenExpiryTime = DateTime.UtcNow.AddDays(2);
+            user.RefreshTokenExpiryTime = DateTime.UtcNow.AddDays(7);
 
             await _userManager.UpdateAsync(user);
 
