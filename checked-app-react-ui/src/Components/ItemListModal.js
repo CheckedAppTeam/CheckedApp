@@ -76,7 +76,8 @@ function ItemListModal({ closeModal, itemListName, itemListId }) {
     //     }
     // }
 
-    const handleAddClick = () => {
+    const handleAddClick = (e) => {
+        e.preventDefault(); 
         setShowSelect(true)
         setShowItemAdd(false)
         setShowBack(true)
@@ -159,7 +160,6 @@ function ItemListModal({ closeModal, itemListName, itemListId }) {
                 </div>
                 <div className='title'>
                     <h1>{itemListName}</h1>
-                    {console.log(allItems)}
                 </div>
                 <div className='body'>
                     {!loading ? (
@@ -168,13 +168,13 @@ function ItemListModal({ closeModal, itemListName, itemListId }) {
                         <div className='itemsAndFooter'>
                             <div className='items'>
                                 {allItemsByItemListId.map((item, index) => (
-                                    <div className='item-container' key={index}>
-                                        <UserItem item={item} />
+                                    <div className='item-container' key={item.userItemId}>
+                                        {console.log(item)}
+                                        <UserItem item={item} onUserItemUpdate={showAllItemsByItemListId}/>
                                     </div>
                                 ))}
                             </div>
                             <div className='footer'>
-                                {console.log(userItemDTO)}
                                 <div className='selectBtn'>
                                     {showSelect && <Select
                                         className='map-input'
