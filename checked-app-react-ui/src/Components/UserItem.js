@@ -7,16 +7,49 @@ import { orange } from '@mui/material/colors';
 import { IconButton } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
 import '../styles/modal.css'
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { userItemEndpoints } from "../endpoints";
 import { axios } from "../endpoints";
 
 const label = { inputProps: { 'aria-label': 'Checkbox demo' } };
 
-function UserItem({ item, onUserItemUpdate }) {
-    const prevItemRef = useRef();
+function UserItem({ item }) {
+    const [state, setState] = useState(0);
+    const [id, setId] = useState();
 
-    const id = item.userItemId
+
+    const updateItemState = async () => {
+        if(id!==null){
+
+            try {
+                console.log(id)
+                const response = await axios.put(
+                    userItemEndpoints.editUserItem(id),
+                    state,
+                    { headers: { 'Content-Type': 'application/json' } }
+                );
+    
+                console.log('Update response:', response);
+                alert('Item state updated successfully');
+            } catch (error) {
+                console.error('Error updating item state:', error);
+            }
+
+        }
+    };
+
+    const handleCheckboxChange = (event, checkboxType) => {
+console.log(checkboxType)
+        if (checkboxType == 'packed') {
+            setState(2)
+        } else if (checkboxType == 'toBuy') {
+            setState(1)
+        }
+
+        updateItemState();
+
+    };
+
     async function deleteUserItem() {
         try {
             const response = await axios.delete(userItemEndpoints.deleteUserItem(id));
@@ -26,6 +59,14 @@ function UserItem({ item, onUserItemUpdate }) {
             console.error('Error deleting item:', error);
         }
     }
+
+    useEffect(() => {
+        setId(item.userItemId)
+        console.log(id)
+        console.log("UserItem received item:", item);
+        // onUserItemUpdate();
+        // prevItemRef.current = item;
+    }, [item]);
 
     const handleDelete = async (e) => {
         e.preventDefault()
@@ -37,19 +78,13 @@ function UserItem({ item, onUserItemUpdate }) {
         }
     }
 
-    useEffect(() => {
-        console.log("UserItem received item:", item);
-        onUserItemUpdate();
-        prevItemRef.current = item;
-    }, [item, onUserItemUpdate]);
+
     return (
         <>
-            {console.log(item)}
+            {/* {console.log(item)} */}
             <IconButton aria-label="delete" size="small" color='white'>
-                <DeleteIcon className="deleteIcon" onClick={(e) => handleDelete(e)}/>
+                <DeleteIcon className="deleteIcon" onClick={(e) => handleDelete(e)} />
             </IconButton>
-            <div className='editBtn'>
-            </div>
             <div className='item'>
                 {item.userItemName}
             </div>
@@ -59,32 +94,33 @@ function UserItem({ item, onUserItemUpdate }) {
                         value="bottom"
                         control={<Checkbox
                             {...label}
-                            defaultChecked
+                            // checked={item.userItemState === 2}
+                            onChange={(event) => handleCheckboxChange(event, 'packed')}
                             sx={{
-                                color: orange[800],
+                                color: orange[500],
                                 '&.Mui-checked': {
                                     color: orange[600],
                                 },
                             }}
                         />}
-                        label="Packed"
+                        label={<span style={{ color: 'orange' }}>Packed</span>}
                         labelPlacement="bottom"
                     />
                     <FormControlLabel
                         value="bottom"
                         control={<Checkbox
                             {...label}
-                            defaultChecked
+                            // checked={item.userItemState === 1}
+                            onChange={(event) => handleCheckboxChange(event, 'toBuy')}
                             sx={{
-                                color: orange[800],
+                                color: orange[500],
                                 '&.Mui-checked': {
                                     color: orange[600],
                                 },
                             }}
                         />}
-                        label="To buy"
+                        label={<span style={{ color: 'orange' }}>To buy</span>}
                         labelPlacement="bottom"
-                        label-color='white'
                     />
                 </FormGroup>
             </FormControl>

@@ -57,7 +57,7 @@ function ItemListModal({ closeModal, itemListName, itemListId }) {
         try {
             const response = await axios.get(itemEndpoints.getAllItems);
             console.log('Response:', response);
-            setAllItems(response.data || []);
+            setAllItems(response.data);
         } catch (error) {
             console.error('Error:', error);
         }
@@ -142,7 +142,8 @@ function ItemListModal({ closeModal, itemListName, itemListId }) {
             try {
                 await axios.post(userItemEndpoints.addUserItem, userItemDTO);
                 setUserItemDTO(userItemDTO)
-                setAllItemsByItemListId([...allItemsByItemListId, matchingItem]);
+                showAllItemsByItemListId()
+                // setAllItemsByItemListId([...allItemsByItemListId, matchingItem]);
             } catch (error) {
                 console.error('Error:', error);
             }
@@ -170,7 +171,7 @@ function ItemListModal({ closeModal, itemListName, itemListId }) {
                                 {allItemsByItemListId.map((item, index) => (
                                     <div className='item-container' key={item.userItemId}>
                                         {console.log(item)}
-                                        <UserItem item={item} onUserItemUpdate={showAllItemsByItemListId}/>
+                                        <UserItem item={item}/>
                                     </div>
                                 ))}
                             </div>
