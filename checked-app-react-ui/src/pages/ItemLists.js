@@ -72,7 +72,6 @@ export function ItemLists() {
                     >
                       {itemList.listName}
                     </h2>
-                    {/* {openModal && <ItemListModal closeModal={setOpenModal} itemListName={itemList.listName} itemListId={itemList.itemListId}/>} */}
                     <p>{itemList.travelDestination}</p>
                     <p>{formatDate(itemList.travelDate)}</p>
                     {itemList.isPublic ? (

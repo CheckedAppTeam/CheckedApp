@@ -2,7 +2,7 @@ import React, { useRef } from 'react'
 import CheckedFullLogo from '../../assets/CheckedFullLogo.png'
 import { FaBars, FaTimes } from 'react-icons/fa'
 import { useAuth } from '../../Contexts/AuthContext.js'
-import { useNavigate } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import '../../styles/main.css'
 
 function Navbar() {
@@ -17,19 +17,19 @@ function Navbar() {
   }
   const handleLogout = () => {
     removeToken()
-    navigate('/')
+    navigate('/', Link)
   }
   return (
     <header>
       <img className='nav-Logo' src={CheckedFullLogo} alt='Logo' />
       <nav ref={navRef}>
-        <a href='/'>Home</a>
-        <a href='/ItemLists'>Item Lists</a>
-        <a href='/hehe'>Items</a>
-        {!token && <a href='/Register'>Register</a>}
-        {!token && <a href='/Login'>Login</a>}
-        {token && <a href='/user-home'>User</a>}
-        {token && <a onClick={handleLogout}>Log out </a>}
+        <Link to='/' onClick={showNavBar}>Home</Link>
+        <Link to='/ItemLists' onClick={showNavBar}>Item Lists</Link>
+        <Link to='/hehe' onClick={showNavBar}>Items</Link>
+        {!token && <Link to='/Register' onClick={showNavBar}>Register</Link>}
+        {!token && <Link to='/Login' onClick={showNavBar}>Login</Link>}
+        {token && <Link to='/user-home' onClick={showNavBar}>User</Link>}
+        {token && <span onClick={handleLogout}>Log out</span>}
         <button className='nav-btn nav-close-btn' onClick={showNavBar}>
           <FaTimes />
         </button>
@@ -38,7 +38,7 @@ function Navbar() {
         <FaBars />
       </button>
     </header>
-  )
+  );
 }
 
 export default Navbar

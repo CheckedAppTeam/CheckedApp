@@ -71,8 +71,8 @@ namespace CheckedAppProject.DATA.DbServices.Repository
             var item = await _userItemContext.Items
                 .Where(i => i.ItemId == itemId)
                 .FirstOrDefaultAsync();
-            //var itemName = (item != null) ? item.ItemName : "DefaultName";
-            var itemName = item.ItemName;
+            var itemName = (item != null) ? item.ItemName : "DefaultName";
+            //var itemName = item.ItemName;
 
             return itemName;
         }
