@@ -4,6 +4,7 @@ import { useAuth } from '../Contexts/AuthContext.js'
 import '../styles/userProfile.css'
 import { jwtDecode } from 'jwt-decode'
 import { userEndpoints } from '../endpoints'
+import { Link } from 'react-router-dom'
 
 export function UserHome() {
   const { token } = useAuth()
@@ -40,26 +41,7 @@ export function UserHome() {
         .catch((error) => {
           console.error('Error while getting user', error)
         })
-    } else 
-    {
-      axios
-        .get(userEndpoints.getUserData(1))
-        .then((response) => {
-          console.log(response);
-          // //setUser({
-          //   userId: userId,
-          //   firstName: response.data.userName,
-          //   lastName: response.data.userSurname,
-          //   age: response.data.userAge,
-          //   gender: response.data.userSex,
-          //   email: userEmail,
-          // })
-          // //setPackingLists(response.data.ownItemList)
-        })
-        .catch((error) => {
-          console.error('Error while getting user', error)
-        })
-    }
+    } 
   }, [token])
 
   const handleInputChange = (event) => {
@@ -88,9 +70,12 @@ export function UserHome() {
   }
 
   if (!user) {
-    return <div>Loading...</div>
+    return (
+    <Link to='/Login'> 
+      <h1>Unauthorized, click to Log In.</h1>
+    </Link>
+    )
   }
-
   return (
     <>
       <div className='user-profile'>

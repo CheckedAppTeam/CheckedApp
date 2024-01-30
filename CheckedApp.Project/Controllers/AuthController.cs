@@ -1,4 +1,5 @@
 ﻿using CheckedAppProject.API.Contracts;
+using CheckedAppProject.LOGIC.DTOs;
 using CheckedAppProject.LOGIC.Services.Authentication;
 using Microsoft.AspNetCore.Mvc;
 
@@ -52,7 +53,7 @@ namespace CheckedAppProject.API.Controllers
         }
 
         [HttpPost("RefreshToken")]
-        public async Task<ActionResult<AuthResponse>> RefreshToken([FromBody] string refreshToken)
+        public async Task<ActionResult<AuthResponse>> RefreshToken([FromBody] RefreshTokenDTO refreshToken)
         {
             var result = await _authenticationService.RefreshTokenAsync(refreshToken);
 

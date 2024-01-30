@@ -69,10 +69,10 @@ namespace CheckedAppProject.LOGIC.Services.Authentication
             return new AuthResult(true, managedUser.Email, managedUser.UserName, accessToken, refreshToken);
         }
 
-        public async Task<AuthResult> RefreshTokenAsync(string refreshToken)
+        public async Task<AuthResult> RefreshTokenAsync(RefreshTokenDTO refreshToken)
         {
             var user = await _userManager.Users
-                .SingleOrDefaultAsync(u => u.RefreshToken == refreshToken && u.RefreshTokenExpiryTime > DateTime.UtcNow);
+                .SingleOrDefaultAsync(u => u.RefreshToken == refreshToken.RefreshToken && u.RefreshTokenExpiryTime > DateTime.UtcNow);
 
             if (user == null)
             {

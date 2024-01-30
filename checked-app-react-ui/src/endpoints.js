@@ -28,7 +28,7 @@ const userEndpoints = {
   getUserData: (id) => `${baseURL}/User/UserData/${id}`,
   getAllUsersData: `${baseURL}/User/UserData/AllUsers`,
   addUser: `${baseURL}/Auth/Register`,
-  tokenRefresh: `${baseURL}/Auth/RefreshToken`,
+  refreshToken: `${baseURL}/Auth/RefreshToken`,
   editUser: (id) => `${baseURL}/User/UserData/EditUser/${id}`,
   deleteUser: (id) => `${baseURL}/User/UserData/DeleteUser/${id}`,
   logUser: `${baseURL}/Auth/Login`

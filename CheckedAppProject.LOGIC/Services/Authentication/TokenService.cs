@@ -12,7 +12,7 @@ namespace CheckedAppProject.LOGIC.Services.Authentication
 {
     public class TokenService : ITokenService
     {
-        private const int ExpirationMinutes = 3;
+        private const int ExpirationMinutes = 10;
         private readonly UserManager<AppUser> _userManager;
 
         public TokenService(UserManager<AppUser> userManager)
@@ -23,7 +23,7 @@ namespace CheckedAppProject.LOGIC.Services.Authentication
         public async Task<string> CreateToken(AppUser user)
         {
             var roles = await _userManager.GetRolesAsync(user);
-            var expiration = DateTime.UtcNow.AddSeconds(ExpirationMinutes);
+            var expiration = DateTime.UtcNow.AddMinutes(ExpirationMinutes);
             var token = CreateJwtToken(
                 CreateClaims(user, roles),
                 CreateSigningCredentials(),
