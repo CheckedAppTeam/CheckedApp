@@ -77,7 +77,7 @@ function ItemListModal({ closeModal, itemListName, itemListId }) {
     // }
 
     const handleAddClick = (e) => {
-        e.preventDefault(); 
+        e.preventDefault();
         setShowSelect(true)
         setShowItemAdd(false)
         setShowBack(true)
@@ -87,9 +87,9 @@ function ItemListModal({ closeModal, itemListName, itemListId }) {
     useEffect(() => {
         const currentToken = localStorage.getItem('token')
         if (currentToken) {
-          axios.defaults.headers.common['Authorization'] = `Bearer ${currentToken}`
+            axios.defaults.headers.common['Authorization'] = `Bearer ${currentToken}`
         } else {
-          delete axios.defaults.headers.common['Authorization']
+            delete axios.defaults.headers.common['Authorization']
         }
         showAllItemsByItemListId();
         showAllItems();
@@ -126,7 +126,7 @@ function ItemListModal({ closeModal, itemListName, itemListId }) {
         setShowSelect(false);
         setShowBack(false);
         setShowAdd(false);
-    
+
         console.log(selectedItem.itemName.value)
         const matchingItem = allItems.find((item) => selectedItem.itemName.value.toLowerCase() === item.itemName.toLowerCase());
         console.log(matchingItem)
@@ -145,13 +145,13 @@ function ItemListModal({ closeModal, itemListName, itemListId }) {
                 // showAllItemsByItemListId()
                 // setAllItemsByItemListId([...allItemsByItemListId, matchingItem]);
                 setAllItemsByItemListId(prevItems => [...prevItems, matchingItem])
-                // showAllItemsByItemListId();
+                showAllItemsByItemListId();
             } catch (error) {
                 console.error('Error:', error);
             }
         }
     };
-    
+
     const handleItemChange = () => {
         showAllItemsByItemListId();
     };
@@ -172,12 +172,14 @@ function ItemListModal({ closeModal, itemListName, itemListId }) {
                     ) : (
                         <div className='itemsAndFooter'>
                             <div className='items'>
-                                {allItemsByItemListId.map((item, index) => (
-                                    <div className='item-container' key={item.userItemId}>
-                                        {console.log(item)}
-                                        <UserItem item={item} onItemChange={handleItemChange}/>
-                                    </div>
-                                ))}
+                                {allItemsByItemListId
+                                    .sort((a, b) => a.userItemId - b.userItemId)
+                                    .map((item, index) => (
+                                        <div className='item-container' key={item.userItemId}>
+                                            {console.log(item)}
+                                            <UserItem item={item} onItemChange={handleItemChange} />
+                                        </div>
+                                    ))}
                             </div>
                             <div className='footer'>
                                 <div className='selectBtn'>
