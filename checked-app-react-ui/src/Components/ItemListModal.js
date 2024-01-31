@@ -142,8 +142,6 @@ function ItemListModal({ closeModal, itemListName, itemListId }) {
             try {
                 await axios.post(userItemEndpoints.addUserItem, userItemDTO);
                 setUserItemDTO(userItemDTO)
-                // showAllItemsByItemListId()
-                // setAllItemsByItemListId([...allItemsByItemListId, matchingItem]);
                 setAllItemsByItemListId(prevItems => [...prevItems, matchingItem])
                 showAllItemsByItemListId();
             } catch (error) {
@@ -154,6 +152,28 @@ function ItemListModal({ closeModal, itemListName, itemListId }) {
 
     const handleItemChange = () => {
         showAllItemsByItemListId();
+    };
+
+    const renderButtons = () => {
+        if (selectedItem) {
+            // If there is a selected item, show the "Add" button
+            return (
+                <div className='addBtn'>
+                    <Button onClick={handleAdd} variant="contained" color="success">
+                        Add
+                    </Button>
+                </div>
+            );
+        } else {
+            // If there is no selected item, show the "Back" button
+            return (
+                <div className='backBtn'>
+                    <Button onClick={handleBack} variant="contained" color="success">
+                        Back
+                    </Button>
+                </div>
+            );
+        }
     };
 
 
@@ -195,24 +215,8 @@ function ItemListModal({ closeModal, itemListName, itemListId }) {
                                     />}
                                 </div>
                                 <div className='selectButtons'>
-                                    <div className='backBtn'>
-                                        {showBack && <Button onClick={handleBack} variant="contained" color="success">
-                                            Close
-                                        </Button>}
-                                    </div>
-                                    <div className='addBtn'>
-                                        {showAdd && <Button onClick={handleAdd} variant="contained" color="success">
-                                            Add
-                                        </Button>}
-                                    </div>
+                                {renderButtons()}
                                 </div>
-                                {/* {showInput && (
-                                <input
-                                    type="text"
-                                    placeholder="Type here..."
-                                />
-                            )} */}
-
                                 {showItemAdd && <Button id='AddItemBtn' onClick={handleAddClick}>
                                     Add
                                 </Button>}
