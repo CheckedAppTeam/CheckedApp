@@ -93,7 +93,7 @@ function ItemListModal({ closeModal, itemListName, itemListId }) {
         }
         showAllItemsByItemListId();
         showAllItems();
-    }, []);
+    }, [itemListId]);
 
     const handleBack = () => {
         setShowItemAdd(true)
@@ -142,15 +142,19 @@ function ItemListModal({ closeModal, itemListName, itemListId }) {
             try {
                 await axios.post(userItemEndpoints.addUserItem, userItemDTO);
                 setUserItemDTO(userItemDTO)
-                showAllItemsByItemListId()
+                // showAllItemsByItemListId()
                 // setAllItemsByItemListId([...allItemsByItemListId, matchingItem]);
+                setAllItemsByItemListId(prevItems => [...prevItems, matchingItem])
+                // showAllItemsByItemListId();
             } catch (error) {
                 console.error('Error:', error);
             }
         }
     };
     
-
+    const handleItemChange = () => {
+        showAllItemsByItemListId();
+    };
 
 
     return (
@@ -171,7 +175,7 @@ function ItemListModal({ closeModal, itemListName, itemListId }) {
                                 {allItemsByItemListId.map((item, index) => (
                                     <div className='item-container' key={item.userItemId}>
                                         {console.log(item)}
-                                        <UserItem item={item}/>
+                                        <UserItem item={item} onItemChange={handleItemChange}/>
                                     </div>
                                 ))}
                             </div>

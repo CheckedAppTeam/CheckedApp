@@ -7,47 +7,46 @@ import { orange } from '@mui/material/colors';
 import { IconButton } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
 import '../styles/modal.css'
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { userItemEndpoints } from "../endpoints";
 import { axios } from "../endpoints";
 
 const label = { inputProps: { 'aria-label': 'Checkbox demo' } };
 
-function UserItem({ item }) {
+function UserItem({ item, onItemChange }) {
     const [state, setState] = useState(0);
     const [id, setId] = useState();
 
 
-    const updateItemState = async () => {
-        if(id!==null){
-
+    const updateItemState = async (updatedState) => {
+        if (id !== null) {
             try {
-                console.log(id)
                 const response = await axios.put(
                     userItemEndpoints.editUserItem(id),
-                    state,
+                    updatedState,
                     { headers: { 'Content-Type': 'application/json' } }
                 );
-    
                 console.log('Update response:', response);
-                alert('Item state updated successfully');
             } catch (error) {
                 console.error('Error updating item state:', error);
             }
-
         }
+        onItemChange();
     };
 
-    const handleCheckboxChange = (event, checkboxType) => {
-console.log(checkboxType)
-        if (checkboxType == 'packed') {
-            setState(2)
-        } else if (checkboxType == 'toBuy') {
-            setState(1)
-        }
+    const handleCheckboxChange = (e, checkboxType) => {
+        const isChecked = e.target.checked;
+        console.log('isChecked:', isChecked);
+        console.log('item.userItemState:', item.itemState);
+        console.log(item)
 
-        updateItemState();
+        setState(() => {
+            const newState = (checkboxType === 'packed' && isChecked) ? 2 :
+                (checkboxType === 'toBuy' && isChecked) ? 1 : 0;
 
+            updateItemState(newState);
+            return newState;
+        });
     };
 
     async function deleteUserItem() {
@@ -63,10 +62,11 @@ console.log(checkboxType)
     useEffect(() => {
         setId(item.userItemId)
         console.log(id)
-        console.log("UserItem received item:", item);
-        // onUserItemUpdate();
-        // prevItemRef.current = item;
     }, [item]);
+
+    // useEffect(() => {
+    //     console.log(state)
+    // }, [state]);
 
     const handleDelete = async (e) => {
         e.preventDefault()
@@ -76,6 +76,7 @@ console.log(checkboxType)
         } catch (error) {
             console.error("Error deleting item:", error);
         }
+        onItemChange()
     }
 
 
@@ -94,8 +95,8 @@ console.log(checkboxType)
                         value="bottom"
                         control={<Checkbox
                             {...label}
-                            // checked={item.userItemState === 2}
-                            onChange={(event) => handleCheckboxChange(event, 'packed')}
+                            checked={item.itemState == 2}
+                            onChange={(e) => handleCheckboxChange(e, 'packed')}
                             sx={{
                                 color: orange[500],
                                 '&.Mui-checked': {
@@ -110,8 +111,8 @@ console.log(checkboxType)
                         value="bottom"
                         control={<Checkbox
                             {...label}
-                            // checked={item.userItemState === 1}
-                            onChange={(event) => handleCheckboxChange(event, 'toBuy')}
+                            checked={item.itemState == 1}
+                            onChange={(e) => handleCheckboxChange(e, 'toBuy')}
                             sx={{
                                 color: orange[500],
                                 '&.Mui-checked': {
