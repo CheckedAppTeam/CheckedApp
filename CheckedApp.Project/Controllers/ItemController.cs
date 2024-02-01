@@ -38,7 +38,7 @@ namespace CheckedAppProject.API.Controllers
 
         
         [HttpPost("AddItem")]
-        public async Task <IActionResult> AddItem(ItemDTO dto)
+        public async Task <IActionResult> AddItem(NewItemDTO dto)
         {
             if(dto != null) await _itemService.AddItemAsync(dto);
             

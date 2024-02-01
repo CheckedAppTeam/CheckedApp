@@ -18,8 +18,9 @@
 }
 
 .modalContainer {
-  width: 60%;
-  max-width: 500px;
+  width: 70%;
+  height: 70%;
+  min-width: 500px;
   border-radius: 12px;
   background-color: #434AF2;
   box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
@@ -31,6 +32,7 @@
   padding-right: 25px;
   margin-bottom: 20px;
   position: relative;
+  overflow: auto;
 }
 
 .body {
@@ -49,14 +51,13 @@
 
 .footer {
   display: flex;
-  /* flex-direction: column; */
   align-items: center;
   flex-direction: row;
   justify-content: space-between;
-  /* position: absolute; */
   bottom: 0;
   left: 0;
   right: 0;
+  padding-top: 10px;
 }
 
 .modalContainer .title {
@@ -82,7 +83,8 @@
 }
 
 .modalContainer .body {
-  flex: 50%;
+  margin:1em;
+  /* flex: 50%; */
   display: flex;
   justify-content: center;
   align-items: center;
@@ -92,12 +94,13 @@
 
 .modalContainer h1 {
   font-size: 3rem;
+  color: #FF9B36;
 }
 
 .item-container {
   display: flex;
   align-items: center;
-  margin-bottom: 10px;
+  margin-bottom: 0.3em;
 }
 
 .deleteIcon {
@@ -105,30 +108,27 @@
 
   path {
     color: #FF9B36
-  }
-
-  ;
+  };
 }
 
 .item {
   color: #FFF5EB;
   flex-grow: 1;
+  display: flex;
+  justify-content: space-between;
 }
 
 .modalContainer .footer {
-  margin-top: 20px;
-  flex: 20%;
+  height: 10%;
+  flex: 10%;
   display: flex;
-  justify-content: center;
-  align-items: flex-start;
-  flex-direction: row;
-  padding-bottom: 50px;
+  justify-content: start;
+  flex-direction: column;
 }
 
 .modalContainer .footer button {
   width: 150px;
   height: 45px;
-  margin: 10px;
   border: none;
   background-color: #434AF2;
   border: 4px solid #C7C7FE;
@@ -139,34 +139,50 @@
   /* margin-bottom: 40px; */
 }
 
-#cancelBtn {
+.items {
+  flex: 1;
+  overflow: scroll;
+}
+
+.cancelBtn {
   background-color: #434AF2;
   border: 4px solid #C7C7FE;
 }
 
-/* .footer input {
-  width: 100%;
-  padding: 10px;
-  box-sizing: border-box;
-  margin-bottom: 40px;
+.selectButtons{
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+}
+
+.twoButtons{
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+/* .modalContainer .footer .itemsAndFooter .selectButtons .twoButtons .backBtn {
+  margin: 1em;
+  display: flex;
 } */
 
-#selectButtons{
+/* .addNewItemBtn{
+  margin: 1em;
   display: flex;
-  flex-direction: row;
-}
+} */
 
-#backBtn {
-  display: flex;
-  align-items: center;
-}
-
-#addBtn {
+.addBtn {
   display: flex;
   align-items: center;
 }
 
-#AddItemBtn{
+.modalText {
+  font-size: 0.8em;
+  color: #FF9B36;
+  margin: 0.3em
+}
+
+/* #AddItemBtn{
   display: flex;
   align-items: center;
 }
@@ -174,4 +190,4 @@
 #selectBtn {
   display: flex;
   align-items: center;
-}
+} */

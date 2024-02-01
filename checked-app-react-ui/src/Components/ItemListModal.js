@@ -19,6 +19,8 @@ function ItemListModal({ closeModal, itemListName, itemListId }) {
     const [showAdd, setShowAdd] = useState(false);
     const [showBack, setShowBack] = useState(false);
     const [showItemAdd, setShowItemAdd] = useState(true);
+    const [showNewItemForm, setShowNewItemForm] = useState(false);
+    const [newItemName, setNewItemName] = useState('');
     const [userItemDTO, setUserItemDTO] = useState({
         itemListId: 0,
         itemId: 0,
@@ -28,19 +30,77 @@ function ItemListModal({ closeModal, itemListName, itemListId }) {
     // const [itemState, setItemState] = useState();
     // const [userItem, setUserItem] = useState();
 
+    // const customStyles = {
+    //     option: (provided, state) => ({
+    //         ...provided,
+    //         borderBottom: '1px solid #ccc',
+    //         color: state.isSelected ? 'white' : 'black',
+    //         background: state.isSelected ? '#0088cc' : 'white',
+    //         zIndex: 9900,
+    //     }),
+    //     menu: (provided) => ({
+    //         ...provided,
+    //         zIndex: 9900,
+    //     }),
+    // }
+
     const customStyles = {
         option: (provided, state) => ({
-            ...provided,
-            borderBottom: '1px solid #ccc',
-            color: state.isSelected ? 'white' : 'black',
-            background: state.isSelected ? '#0088cc' : 'white',
-            zIndex: 9900,
+          ...provided,
+          borderBottom: '1px solid #ccc',
+          color: state.isSelected ? 'white' : 'white',
+          background: state.isSelected ? '#FF9B36' : '#9B9BFF',
+          zIndex: 9900,
         }),
         menu: (provided) => ({
-            ...provided,
-            zIndex: 9900,
+          ...provided,
+          maxHeight: '150px',
+          zIndex: 99999,
+          position: 'absolute',
         }),
-    }
+        control: (provided) => ({
+            ...provided,
+            backgroundColor: '#9B9BFF',
+            color: 'white',
+            borderRadius: '8px',
+          }),
+          placeholder: (provided) => ({
+            ...provided,
+            color: 'white', 
+          }),
+          noOptionsMessage: (provided) => ({
+            ...provided,
+            backgroundColor: '#9B9BFF',
+            color: 'white', // Change color for "No options" message
+          }),
+      };
+
+    const handleAddNewItem = async () => {
+        setShowNewItemForm(true);
+    };
+
+
+    const handleNewItemSubmit = async () => {
+        try {
+            const newItemResponse = await axios.post(itemEndpoints.addItem, { itemName: newItemName });
+            const newItemId = newItemResponse.data.itemId;
+    
+            const newUserItemDTO = {
+                itemListId: itemListId,
+                itemId: newItemId,
+                itemState: 0,
+            };
+
+            await axios.post(userItemEndpoints.addUserItem, newUserItemDTO);
+    
+            showAllItemsByItemListId();
+            
+            setNewItemName('');
+            setShowNewItemForm(false);
+        } catch (error) {
+            console.error('Error adding new item:', error);
+        }
+    };
 
     const showAllItemsByItemListId = async () => {
         try {
@@ -156,21 +216,29 @@ function ItemListModal({ closeModal, itemListName, itemListId }) {
 
     const renderButtons = () => {
         if (selectedItem) {
-            // If there is a selected item, show the "Add" button
             return (
-                <div className='addBtn'>
-                    <Button onClick={handleAdd} variant="contained" color="success">
-                        Add
-                    </Button>
+                <div className='onlyOneButton'>
+                    <div id='addBtn'>
+                        <Button onClick={handleAdd} variant="contained" color="success">
+                            Add
+                        </Button>
+                    </div>
                 </div>
             );
         } else {
-            // If there is no selected item, show the "Back" button
             return (
-                <div className='backBtn'>
-                    <Button onClick={handleBack} variant="contained" color="success">
-                        Back
-                    </Button>
+                <div className='twoButtons'>
+                    <div id='backBtn'>
+                        <Button onClick={handleBack} variant="contained" color="success">
+                            Back
+                        </Button>
+                    </div>
+                    <div id='addNewItemBtn'>
+                        <p className='modalText'>Can't find any matching item?</p>
+                        <Button onClick={handleAddNewItem} variant="contained" color="success">
+                            Add New
+                        </Button>
+                    </div>
                 </div>
             );
         }
@@ -206,7 +274,6 @@ function ItemListModal({ closeModal, itemListName, itemListId }) {
                                     {showSelect && <Select
                                         className='map-input'
                                         defaultValue={inputValue}
-                                        // value={null}
                                         options={filterItems(inputValue)}
                                         onChange={handleItemsSelect}
                                         onInputChange={(value) => setInputValue(value)}
@@ -215,7 +282,7 @@ function ItemListModal({ closeModal, itemListName, itemListId }) {
                                     />}
                                 </div>
                                 <div className='selectButtons'>
-                                {renderButtons()}
+                                {!showItemAdd && renderButtons()}
                                 </div>
                                 {showItemAdd && <Button id='AddItemBtn' onClick={handleAddClick}>
                                     Add

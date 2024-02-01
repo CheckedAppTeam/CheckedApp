@@ -5,7 +5,7 @@ namespace CheckedAppProject.LOGIC.Services
 {
     public interface IItemService
     {
-        Task AddItemAsync(ItemDTO dto);
+        Task AddItemAsync(NewItemDTO dto);
         Task<bool> DeleteItemAsync(int itemId);
         Task<bool> EditItemAsync(ItemDTO dto, int itemId);
         Task<IEnumerable<Item>> GetAllItemDtoAsync();
