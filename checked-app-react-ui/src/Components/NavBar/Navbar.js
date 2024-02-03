@@ -25,7 +25,7 @@ function Navbar() {
       <nav ref={navRef}>
         <Link to='/' onClick={showNavBar}>Home</Link>
         <Link to='/ItemLists' onClick={showNavBar}>Item Lists</Link>
-        <Link to='/hehe' onClick={showNavBar}>Items</Link>
+        <Link to='/Items' onClick={showNavBar}>Items</Link>
         {!token && <Link to='/Register' onClick={showNavBar}>Register</Link>}
         {!token && <Link to='/Login' onClick={showNavBar}>Login</Link>}
         {token && <Link to='/user-home' onClick={showNavBar}>User</Link>}
