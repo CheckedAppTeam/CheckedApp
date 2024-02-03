@@ -27,53 +27,36 @@ function ItemListModal({ closeModal, itemListName, itemListId }) {
         itemState: 0
     })
 
-    // const [itemState, setItemState] = useState();
-    // const [userItem, setUserItem] = useState();
-
-    // const customStyles = {
-    //     option: (provided, state) => ({
-    //         ...provided,
-    //         borderBottom: '1px solid #ccc',
-    //         color: state.isSelected ? 'white' : 'black',
-    //         background: state.isSelected ? '#0088cc' : 'white',
-    //         zIndex: 9900,
-    //     }),
-    //     menu: (provided) => ({
-    //         ...provided,
-    //         zIndex: 9900,
-    //     }),
-    // }
-
     const customStyles = {
         option: (provided, state) => ({
-          ...provided,
-          borderBottom: '1px solid #ccc',
-          color: state.isSelected ? 'white' : 'white',
-          background: state.isSelected ? '#FF9B36' : '#9B9BFF',
-          zIndex: 9900,
+            ...provided,
+            borderBottom: '1px solid #ccc',
+            color: state.isSelected ? 'white' : 'white',
+            background: state.isSelected ? '#FF9B36' : '#9B9BFF',
+            zIndex: 9900,
         }),
         menu: (provided) => ({
-          ...provided,
-          maxHeight: '150px',
-          zIndex: 99999,
-          position: 'absolute',
+            ...provided,
+            maxHeight: '150px',
+            zIndex: 99999,
+            position: 'absolute',
         }),
         control: (provided) => ({
             ...provided,
             backgroundColor: '#9B9BFF',
             color: 'white',
             borderRadius: '8px',
-          }),
-          placeholder: (provided) => ({
+        }),
+        placeholder: (provided) => ({
             ...provided,
-            color: 'white', 
-          }),
-          noOptionsMessage: (provided) => ({
+            color: 'white',
+        }),
+        noOptionsMessage: (provided) => ({
             ...provided,
             backgroundColor: '#9B9BFF',
-            color: 'white', // Change color for "No options" message
-          }),
-      };
+            color: 'white',
+        }),
+    };
 
     const handleAddNewItem = async () => {
         setShowNewItemForm(true);
@@ -82,25 +65,34 @@ function ItemListModal({ closeModal, itemListName, itemListId }) {
 
     const handleNewItemSubmit = async () => {
         try {
-            const newItemResponse = await axios.post(itemEndpoints.addItem, { itemName: newItemName });
-            const newItemId = newItemResponse.data.itemId;
-    
+            const AddedItem = { itemName: newItemName }
+            await axios
+                .post(itemEndpoints.addItem, AddedItem)
+                .then((response) => {
+                    console.log(response);
+                });
+            const newItem = await axios.get(itemEndpoints.getItemByName(AddedItem.itemName));
+            console.log(newItem.data.itemName)
+
             const newUserItemDTO = {
                 itemListId: itemListId,
-                itemId: newItemId,
+                itemId: newItem.data.itemId,
                 itemState: 0,
             };
 
-            await axios.post(userItemEndpoints.addUserItem, newUserItemDTO);
-    
+            const newItemAdded = await axios.post(userItemEndpoints.addUserItem, newUserItemDTO);
+            setUserItemDTO(userItemDTO)
+            setAllItemsByItemListId(prevItems => [...prevItems, newItemAdded])
             showAllItemsByItemListId();
-            
+
             setNewItemName('');
             setShowNewItemForm(false);
         } catch (error) {
             console.error('Error adding new item:', error);
         }
     };
+
+
 
     const showAllItemsByItemListId = async () => {
         try {
@@ -122,19 +114,6 @@ function ItemListModal({ closeModal, itemListName, itemListId }) {
             console.error('Error:', error);
         }
     };
-
-    // const sendUserItem = async () => {
-    //     try {
-    //         await axios.post(userItemEndpoints.addUserItem, userItemDTO);
-    //         setUserItemDTO({
-    //             itemListId: itemListId,
-    //             itemId: 0,
-    //             itemState: 0
-    //         });
-    //     } catch (error) {
-    //         console.error('Error:', error);
-    //     }
-    // }
 
     const handleAddClick = (e) => {
         e.preventDefault();
@@ -160,6 +139,7 @@ function ItemListModal({ closeModal, itemListName, itemListId }) {
         setShowSelect(false);
         setShowBack(false)
         setShowAdd(false)
+        setShowNewItemForm(false)
     }
 
     const filterItems = (input) => {
@@ -238,6 +218,20 @@ function ItemListModal({ closeModal, itemListName, itemListId }) {
                         <Button onClick={handleAddNewItem} variant="contained" color="success">
                             Add New
                         </Button>
+                        {showNewItemForm && (
+                            <div className='inputAndSubmit'>
+                                <input
+                                    className='inputNewItem'
+                                    type="text"
+                                    value={newItemName}
+                                    onChange={(e) => setNewItemName(e.target.value)}
+                                    placeholder="Enter new item name"
+                                />
+                                <Button className='submitNewItem' onClick={handleNewItemSubmit} variant="contained" color="success">
+                                    Submit
+                                </Button>
+                            </div>
+                        )}
                     </div>
                 </div>
             );
@@ -264,7 +258,7 @@ function ItemListModal({ closeModal, itemListName, itemListId }) {
                                     .sort((a, b) => a.userItemId - b.userItemId)
                                     .map((item, index) => (
                                         <div className='item-container' key={item.userItemId}>
-                                            {console.log(item)}
+                                            {/* {console.log(item)} */}
                                             <UserItem item={item} onItemChange={handleItemChange} />
                                         </div>
                                     ))}
@@ -282,7 +276,7 @@ function ItemListModal({ closeModal, itemListName, itemListId }) {
                                     />}
                                 </div>
                                 <div className='selectButtons'>
-                                {!showItemAdd && renderButtons()}
+                                    {!showItemAdd && renderButtons()}
                                 </div>
                                 {showItemAdd && <Button id='AddItemBtn' onClick={handleAddClick}>
                                     Add

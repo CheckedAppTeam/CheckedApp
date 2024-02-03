@@ -9,6 +9,7 @@ namespace CheckedAppProject.DATA.DbServices.Repository
         Task<bool> EditItemAsync(Item itemData, int itemId);
         Task<IEnumerable<Item>> GetAllItemsAsync();
         Task<Item> GetItemByIdAsync(int itemId);
+        Task<Item> GetItemByNameAsync(string name);
         Task<string> GetItemNameByIdAsync(int itemId);
     }
 }

@@ -83,7 +83,7 @@
 }
 
 .modalContainer .body {
-  margin:1em;
+  margin: 1em;
   /* flex: 50%; */
   display: flex;
   justify-content: center;
@@ -108,7 +108,9 @@
 
   path {
     color: #FF9B36
-  };
+  }
+
+  ;
 }
 
 .item {
@@ -149,27 +151,17 @@
   border: 4px solid #C7C7FE;
 }
 
-.selectButtons{
+.selectButtons {
   display: flex;
   flex-direction: column;
   justify-content: space-around;
 }
 
-.twoButtons{
+.twoButtons {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
 }
-
-/* .modalContainer .footer .itemsAndFooter .selectButtons .twoButtons .backBtn {
-  margin: 1em;
-  display: flex;
-} */
-
-/* .addNewItemBtn{
-  margin: 1em;
-  display: flex;
-} */
 
 .addBtn {
   display: flex;
@@ -180,6 +172,29 @@
   font-size: 0.8em;
   color: #FF9B36;
   margin: 0.3em
+}
+
+.inputAndSubmit {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  margin: 0.5em
+}
+
+.inputNewItem {
+  padding: 8px;
+  background-color: #C7C7FE;
+  border: 1px solid white;
+  border-radius: 6px;
+  font-size: 16px;
+  width: 240px;
+  height: 50px;
+  margin: 1em;
+}
+
+.submitNewItem {
+  margin: 0.5em;
 }
 
 /* #AddItemBtn{

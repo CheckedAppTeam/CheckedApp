@@ -5,6 +5,6 @@ namespace CheckedAppProject.LOGIC.DTOs;
 public class NewItemDTO
 {
     [Required]
-    [MaxLength(16)]
+    [MaxLength(20)]
     public string ItemName { get; set; }
 }
