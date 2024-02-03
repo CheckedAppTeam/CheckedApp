@@ -21,6 +21,7 @@ function ItemListModal({ closeModal, itemListName, itemListId }) {
     const [showItemAdd, setShowItemAdd] = useState(true);
     const [showNewItemForm, setShowNewItemForm] = useState(false);
     const [newItemName, setNewItemName] = useState('');
+    const [showAddNew, setShowAddNew] = useState(false)
     const [userItemDTO, setUserItemDTO] = useState({
         itemListId: 0,
         itemId: 0,
@@ -60,6 +61,11 @@ function ItemListModal({ closeModal, itemListName, itemListId }) {
 
     const handleAddNewItem = async () => {
         setShowNewItemForm(true);
+        setShowBack(true);
+        setShowSelect(true)
+        setShowItemAdd(false)
+        setShowAdd(false)
+        setShowAddNew(false)
     };
 
 
@@ -87,6 +93,12 @@ function ItemListModal({ closeModal, itemListName, itemListId }) {
 
             setNewItemName('');
             setShowNewItemForm(false);
+            setShowBack(true);
+            setShowSelect(true)
+            setShowItemAdd(false)
+            setShowAdd(false)
+            setShowAddNew(true)
+
         } catch (error) {
             console.error('Error adding new item:', error);
         }
@@ -120,7 +132,9 @@ function ItemListModal({ closeModal, itemListName, itemListId }) {
         setShowSelect(true)
         setShowItemAdd(false)
         setShowBack(true)
-        setShowAdd(true)
+        setShowAdd(false)
+        setShowNewItemForm(false)
+        setShowAddNew(true)
     };
 
     useEffect(() => {
@@ -140,6 +154,7 @@ function ItemListModal({ closeModal, itemListName, itemListId }) {
         setShowBack(false)
         setShowAdd(false)
         setShowNewItemForm(false)
+        setShowAddNew(false)
     }
 
     const filterItems = (input) => {
@@ -159,13 +174,17 @@ function ItemListModal({ closeModal, itemListName, itemListId }) {
         setSelectItem({
             itemName: selectedOption
         })
+        setShowAdd(true)
     }
 
     const handleAdd = async () => {
-        setShowItemAdd(true);
-        setShowSelect(false);
-        setShowBack(false);
-        setShowAdd(false);
+        setShowSelect(false)
+        setShowItemAdd(true)
+        setShowBack(false)
+        setShowAdd(true)
+        setShowNewItemForm(false)
+        setShowAddNew(false)
+
 
         console.log(selectedItem.itemName.value)
         const matchingItem = allItems.find((item) => selectedItem.itemName.value.toLowerCase() === item.itemName.toLowerCase());
@@ -195,29 +214,34 @@ function ItemListModal({ closeModal, itemListName, itemListId }) {
     };
 
     const renderButtons = () => {
-        if (selectedItem) {
-            return (
-                <div className='onlyOneButton'>
-                    <div id='addBtn'>
-                        <Button onClick={handleAdd} variant="contained" color="success">
-                            Add
-                        </Button>
+        return (
+            <>
+                {showAdd &&
+                    <div className='onlyOneButton'>
+                        <div id='addBtn'>
+                            <Button onClick={handleAdd} variant="contained" color="success">
+                                Add
+                            </Button>
+                        </div>
                     </div>
-                </div>
-            );
-        } else {
-            return (
+                }
                 <div className='twoButtons'>
-                    <div id='backBtn'>
-                        <Button onClick={handleBack} variant="contained" color="success">
-                            Back
-                        </Button>
-                    </div>
+                    {showBack &&
+                        <div id='backBtn'>
+                            <Button onClick={handleBack} variant="contained" color="success">
+                                Back
+                            </Button>
+                        </div>
+                    }
                     <div id='addNewItemBtn'>
-                        <p className='modalText'>Can't find any matching item?</p>
-                        <Button onClick={handleAddNewItem} variant="contained" color="success">
-                            Add New
-                        </Button>
+                        {showAddNew &&
+                            <>
+                                <p className='modalText'>Can't find any matching item?</p>
+                                <Button onClick={handleAddNewItem} variant="contained" color="success">
+                                    Add New
+                                </Button>
+                            </>
+                        }
                         {showNewItemForm && (
                             <div className='inputAndSubmit'>
                                 <input
@@ -234,10 +258,9 @@ function ItemListModal({ closeModal, itemListName, itemListId }) {
                         )}
                     </div>
                 </div>
-            );
-        }
-    };
-
+            </>
+        )
+    }
 
     return (
         <div className='modalBackground'>
