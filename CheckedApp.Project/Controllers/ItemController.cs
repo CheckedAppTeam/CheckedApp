@@ -36,9 +36,22 @@ namespace CheckedAppProject.API.Controllers
             return Ok(item);
         }
 
-        
+        [HttpGet("GetByName/{name}")]
+        public async Task<IActionResult> GetItemByName([FromRoute] string name)
+        {
+            var item = await _itemService.GetItemByName(name);
+
+            if (item == null)
+            {
+                return NotFound(new { ErrorCode = 404, Message = $"Item with ID {name} not found" });
+            }
+
+            return Ok(item);
+        }
+
+
         [HttpPost("AddItem")]
-        public async Task <IActionResult> AddItem(ItemDTO dto)
+        public async Task <IActionResult> AddItem(NewItemDTO dto)
         {
             if(dto != null) await _itemService.AddItemAsync(dto);
             

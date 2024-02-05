@@ -29,7 +29,7 @@ namespace CheckedAppProject.LOGIC.Services
             if (userItemFromDb == null) return null;
             UserItemDTO userItemDTO = new UserItemDTO()
             {
-                UserItemName = await _itemRepository.GetItemNameByIdAsync(userItemFromDb.UserItemId),
+                UserItemName = await _itemRepository.GetItemNameByIdAsync(userItemFromDb.ItemId),
                 UserItemListName = await _itemListRepository.GetItemListNameByIdAsync(userItemFromDb.ItemListId),
                 ItemState = userItemFromDb.ItemState,
             };
@@ -72,7 +72,7 @@ namespace CheckedAppProject.LOGIC.Services
             for(int i = 0; i < userItemList.Count; i++)
             {
                 targetList[i].UserItemListName = await _itemListRepository.GetItemListNameByIdAsync(itemListId);
-                targetList[i].UserItemName = await _itemRepository.GetItemNameByIdAsync(userItemList[i].UserItemId);
+                targetList[i].UserItemName = await _itemRepository.GetItemNameByIdAsync(userItemList[i].ItemId);
             }
 
             return targetList;

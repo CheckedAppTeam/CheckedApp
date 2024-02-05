@@ -4,6 +4,6 @@
     {
         toPack,
         toBuy,
-        toBuyAndPack
+        Packed
     }
 }

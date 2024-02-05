@@ -29,6 +29,8 @@ namespace CheckedAppProject.LOGIC.AutoMapperProfiles
             CreateMap<Item, ItemDTO>();
             CreateMap<ItemDTO, Item>();
 
+            CreateMap<NewItemDTO, Item>();
+
             CreateMap<UserItem, UserItemDTO>()
             .ForMember(dest => dest.UserItemName, opt => opt.MapFrom(src => _itemRepository.GetItemNameByIdAsync(src.ItemId)))
             .ForMember(dest => dest.ItemState, opt => opt.MapFrom(src => src.ItemState))

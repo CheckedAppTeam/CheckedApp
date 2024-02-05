@@ -1,4 +1,5 @@
 ﻿using CheckedAppProject.API.Contracts;
+using CheckedAppProject.LOGIC.DTOs;
 using CheckedAppProject.LOGIC.Services.Authentication;
 using Microsoft.AspNetCore.Mvc;
 
@@ -48,7 +49,21 @@ namespace CheckedAppProject.API.Controllers
                 return BadRequest(ModelState);
             }
 
-            return Ok(new AuthResponse(result.Email, result.UserName, result.Token));
+            return Ok(new AuthResponse(result.Email, result.UserName, result.Token, result.RefreshToken));
+        }
+
+        [HttpPost("RefreshToken")]
+        public async Task<ActionResult<AuthResponse>> RefreshToken([FromBody] RefreshTokenDTO refreshToken)
+        {
+            var result = await _authenticationService.RefreshTokenAsync(refreshToken);
+
+            if (!result.Success)
+            {
+                AddErrors(result);
+                return BadRequest(ModelState);
+            }
+
+            return Ok(new AuthResponse(result.Email, result.UserName, result.Token, result.RefreshToken));
         }
 
     }

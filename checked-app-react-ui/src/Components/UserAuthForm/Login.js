@@ -11,37 +11,30 @@ import { Link }from "react-router-dom"
 
 function Login() {
   const navigate = useNavigate()
-  const { updateToken } = useAuth()
+  const { updateTokens } = useAuth()
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
 
-  function handleSubmit(event) {
-    event.preventDefault()
+  const handleSubmit = async (event) => {
+    event.preventDefault();
 
     const loginPayload = {
       Email: email,
       Password: password,
+    };
+
+    try {
+      const response = await axios.post(userEndpoints.logUser, loginPayload);
+      const { token, refreshToken } = response.data;
+
+      if (token && refreshToken) {
+        updateTokens(token, refreshToken);
+        navigate('/user-home');
+      }
+    } catch (err) {
+      console.error(err);
     }
-//axios in async await way
-
-
-
-    axios
-      .post(userEndpoints.logUser, loginPayload)
-      .then((response) => {
-        const token = response.data.token
-        localStorage.setItem('token', token)
-        if (token) {
-          updateToken(token)
-          navigate('/user-home')
-        }
-      })
-      .catch((err) => console.error(err))
-  }
-
-  
-
- 
+  };
 
   return (
     <div className='auth-container'>

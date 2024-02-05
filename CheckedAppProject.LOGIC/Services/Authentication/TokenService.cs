@@ -4,6 +4,7 @@ using Microsoft.IdentityModel.Tokens;
 using System.Globalization;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
+using System.Security.Cryptography;
 using System.Text;
 
 
@@ -11,7 +12,7 @@ namespace CheckedAppProject.LOGIC.Services.Authentication
 {
     public class TokenService : ITokenService
     {
-        private const int ExpirationMinutes = 30;
+        private const int ExpirationMinutes = 10;
         private readonly UserManager<AppUser> _userManager;
 
         public TokenService(UserManager<AppUser> userManager)
@@ -68,7 +69,6 @@ namespace CheckedAppProject.LOGIC.Services.Authentication
                 throw;
             }
         }
-
         private SigningCredentials CreateSigningCredentials()
         {
             return new SigningCredentials(
@@ -77,6 +77,16 @@ namespace CheckedAppProject.LOGIC.Services.Authentication
                 ),
                 SecurityAlgorithms.HmacSha256
             );
+        }
+        public async Task<string> GenerateRefreshToken(AppUser user)
+        {
+            var refreshToken = Convert.ToBase64String(RandomNumberGenerator.GetBytes(64));
+            user.RefreshToken = refreshToken;
+            user.RefreshTokenExpiryTime = DateTime.UtcNow.AddDays(7);
+
+            await _userManager.UpdateAsync(user);
+
+            return refreshToken;
         }
     }
 

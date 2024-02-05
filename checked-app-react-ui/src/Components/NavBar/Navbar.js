@@ -8,7 +8,7 @@ import { Link } from 'react-router-dom'
 
 function Navbar() {
   const navRef = useRef()
-  const { token, removeToken } = useAuth()
+  const { token, removeTokens } = useAuth()
   const navigate = useNavigate()
 
   const showNavBar = () => {
@@ -17,7 +17,7 @@ function Navbar() {
     }
   }
   const handleLogout = () => {
-    removeToken()
+    removeTokens()
     showNavBar()
     navigate('/')
   }
@@ -31,7 +31,7 @@ function Navbar() {
         <Link onClick={showNavBar} to='/ItemLists'>
           Item Lists
         </Link>
-        <Link onClick={showNavBar} to='/hehe'>
+        <Link onClick={showNavBar} to='/Items'>
           Items
         </Link>
         {!token && (
@@ -58,7 +58,7 @@ function Navbar() {
         <FaBars />
       </button>
     </header>
-  )
+  );
 }
 
 export default Navbar

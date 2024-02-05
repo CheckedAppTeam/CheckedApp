@@ -31,7 +31,14 @@ namespace CheckedAppProject.LOGIC.Services
             var item = await _itemRepository.GetItemByIdAsync(id);
             return item;
         }
-        public async Task AddItemAsync(ItemDTO dto)
+
+        public async Task<Item> GetItemByName(string name)
+        {
+            var item = await _itemRepository.GetItemByNameAsync(name);
+            return item;
+        }
+
+        public async Task AddItemAsync(NewItemDTO dto)
         {
             var item = _mapper.Map<Item>(dto);
             await _itemRepository.AddItemAsync(item);
@@ -49,33 +56,5 @@ namespace CheckedAppProject.LOGIC.Services
             return await _itemRepository.EditItemAsync(item, itemId);
         }
 
-        //public async Task<bool> ToggleItemStateAsync(int itemId, string itemState)
-        //{
-
-        //var userItem = _userItemContext.UserItems
-        //    .FirstOrDefault(ui => ui.Item.ItemName == itemName);
-
-        //if (userItem != null)
-        //{
-        //    switch (itemState.ToLower())
-        //    {
-        //        case "tobuy":
-        //            userItem.ItemState = "ToBuy";
-        //            break;
-        //        case "topack":
-        //            userItem.ItemState = "ToPack";
-        //            break;
-        //        default:
-        //            _logger.LogInformation("Invalid itemState. Use 'ToBuy' or 'ToPack'.");
-        //            break;
-        //    }
-
-        //    await _userItemContext.SaveChangesAsync();
-        //}
-        //else
-        //{
-        //    _logger.LogInformation("Item not found in the specified list");
-        //}
-        //}
     }
 }

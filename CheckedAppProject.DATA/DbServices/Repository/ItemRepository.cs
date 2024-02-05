@@ -71,11 +71,20 @@ namespace CheckedAppProject.DATA.DbServices.Repository
             var item = await _userItemContext.Items
                 .Where(i => i.ItemId == itemId)
                 .FirstOrDefaultAsync();
-            //var itemName = (item != null) ? item.ItemName : "DefaultName";
             var itemName = item.ItemName;
 
             return itemName;
         }
+        public async Task<Item> GetItemByNameAsync(string name)
+        {
+            var item = await _userItemContext.Items
+                .Where(i => i.ItemName == name)
+                .OrderBy(i => i.ItemId)
+                .LastOrDefaultAsync();
+
+            return item;
+        }
+        
         public async Task<bool> DeleteItemAsync(Func<IQueryable<Item>, IQueryable<Item>> customQuery)
         {
             var query = _userItemContext.Items.AsQueryable();
