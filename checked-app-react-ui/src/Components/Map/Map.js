@@ -6,7 +6,7 @@ import { useMap } from 'react-leaflet'
 import Select from 'react-select'
 import ReactDOMServer from 'react-dom/server'
 import '../../styles/map.css'
-
+import PlaceSeeker from './PlaceSeeker.js'
 const FlyToMarker = ({ position, zoomLevel }) => {
   const map = useMap()
 
@@ -27,17 +27,11 @@ function Map() {
   const [selectedCountry, setSelectedCountry] = useState(null)
   const mapRef = useRef(null)
   const [inputValue, setInputValue] = useState('')
-  const [clickedPosition, setClickedPosition] = useState(null) // New state to store clicked position
 
   const CustomMarkerIcon = L.divIcon({
     className: 'custom-marker-icon',
     html: ReactDOMServer.renderToString(<FaMapMarker />),
   })
-
-  const customStyles = {
-    option: 'custom-option',
-    menu: 'custom-menu',
-  }
 
   useEffect(() => {
     fetch('https://restcountries.com/v2/all')
@@ -53,23 +47,6 @@ function Map() {
         setCountries(countryOptions)
       })
       .catch((error) => console.error('Error fetching country data:', error))
-  }, [])
-
-  useEffect(() => {
-    if (mapRef.current) {
-      mapRef.current.on('click', handleMapClick) // Attach click event handler to the map
-    }
-
-    if (mapRef.current && selectedCountry) {
-      const { geocode, zoom } = selectedCountry
-      mapRef.current.flyTo(geocode, zoom)
-    }
-
-    return () => {
-      if (mapRef.current) {
-        mapRef.current.off('click', handleMapClick) // Detach the event handler on component unmount
-      }
-    }
   }, [selectedCountry])
 
   const handleCountrySelect = (selectedOption) => {
@@ -79,13 +56,6 @@ function Map() {
     })
   }
 
-  const handleMapClick = (event) => {
-    console.log('Map clicked:', event.latlng)
-
-    const { lat, lng } = event.latlng
-    setClickedPosition([lat, lng])
-  }
-
   const filterCountries = (input) => {
     return countries.filter((country) =>
       country.label.toLowerCase().includes(input.toLowerCase())
@@ -93,7 +63,7 @@ function Map() {
   }
 
   return (
-    <div>
+    <>
       <div className='country-list'>
         <h1>Where do You wanna go?</h1>
         <Select
@@ -103,9 +73,10 @@ function Map() {
           onChange={handleCountrySelect}
           onInputChange={(value) => setInputValue(value)}
           placeholder='Type to search...'
-          styles={customStyles}
-        />
+          />
+          <PlaceSeeker/>
       </div>
+      <br></br>
       <MapContainer
         className='map-container'
         center={[52.0, 18.0]}
@@ -116,15 +87,8 @@ function Map() {
           attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
           url='https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png'
         />
-        {clickedPosition && (
-          <Marker position={clickedPosition} icon={CustomMarkerIcon}>
-            <Popup>
-              <FaMapMarker />
-              Clicked Marker
-            </Popup>
-          </Marker>
-        )}
-        {countries.map((country, index) => (
+
+        {/* {countries.map((country, index) => (
           <Marker
             key={index}
             position={country.geocode}
@@ -135,12 +99,12 @@ function Map() {
               <a href={country.label}>{country.label}</a>
             </Popup>
           </Marker>
-        ))}
+        ))} */}
         {selectedCountry && (
           <FlyToMarker position={selectedCountry.geocode} zoomLevel={5} />
         )}
       </MapContainer>
-    </div>
+    </>
   )
 }
 
