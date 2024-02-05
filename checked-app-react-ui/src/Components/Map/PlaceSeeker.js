@@ -45,7 +45,6 @@ const GeocodingExample = () => {
   return (
     <div>
       <h2>Cant find what you want? Just type it in!</h2>
-      
         <input placeholder="Type address..." type="text" value={address} onChange={handleAddressChange} />
       
       <button onClick={handleGetCoordinates}>Add Place</button>

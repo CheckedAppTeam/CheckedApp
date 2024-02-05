@@ -7,7 +7,7 @@ import email_icon from '../../assets/email.png'
 import password_icon from '../../assets/password.png'
 import InputWithIcon from '../Reusables/InputWithIcon.js'
 import { userEndpoints } from '../../endpoints'
-import { Link }from "react-router-dom"
+import { Link } from 'react-router-dom'
 
 function Login() {
   const navigate = useNavigate()
@@ -16,25 +16,25 @@ function Login() {
   const [password, setPassword] = useState('')
 
   const handleSubmit = async (event) => {
-    event.preventDefault();
+    event.preventDefault()
 
     const loginPayload = {
       Email: email,
       Password: password,
-    };
+    }
 
     try {
-      const response = await axios.post(userEndpoints.logUser, loginPayload);
-      const { token, refreshToken } = response.data;
+      const response = await axios.post(userEndpoints.logUser, loginPayload)
+      const { token, refreshToken } = response.data
 
       if (token && refreshToken) {
-        updateTokens(token, refreshToken);
-        navigate('/user-home');
+        updateTokens(token, refreshToken)
+        navigate('/user-home')
       }
     } catch (err) {
-      console.error(err);
+      console.error(err)
     }
-  };
+  }
 
   return (
     <div className='auth-container'>
@@ -49,7 +49,7 @@ function Login() {
               name='email'
               type='email'
               value={email}
-              onChange={(event) =>setEmail(event.target.value)}
+              onChange={(event) => setEmail(event.target.value)}
             />
             <InputWithIcon
               placeholder='Password'
@@ -57,15 +57,12 @@ function Login() {
               name='password'
               type='password'
               value={password}
-              onChange={(event)=> setPassword(event.target.value)}
+              onChange={(event) => setPassword(event.target.value)}
             />
           </div>
-          {/* change href to link */}
           <div className='row'>
-            
-            You don't have an account? 
-            <Link to="/Register">Register</Link>
-            
+            You don't have an account?
+            <Link to='/Register'>Register</Link>
           </div>
           <div className='row'>
             <div className='col-button'>
