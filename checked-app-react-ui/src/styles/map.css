@@ -9,15 +9,6 @@
 
 
 
-.react-select__option--is-selected {
-  color: white;
-  background-color: #cc0000; 
-}
-
-.react-select__menu {
-  z-index: 9999;
-}
-
 #root {
     display: flex;
     justify-content: center;
@@ -26,48 +17,66 @@
     font-family: sans-serif;
     color: #333;
     
-
-}
-.map-input{
-  padding: 1rem;
-}
-
-
-.map-container{
+    
+  }
+  .map-input{
+    
+    position: relative;
+  }
   
-  align-items: center; 
-  min-width: 100%;
-  padding: 4rem;
-  box-sizing: border-box;
-  max-width: none;
-}
-.custom-marker-icon{
-  font-size: 18px;
-  color: red;
-}
-/* height of the container */
-.leaflet-container {
+  
+  .map-container{
+    position: relative; 
+    z-index: 1;
+    align-items: center; 
+    min-width: 100%;
+    padding: 4rem;
+    box-sizing: border-box;
+    max-width: none;
+    
+  }
+  .custom-marker-icon{
+    font-size: 18px;
+    color: red;
+  }
+  /* height of the container */
+  .leaflet-container {
     height: 100vh;
-  align-self: center;
+    align-self: center;
+    
+    height: 90vh;
+    width: 90%;
+    border-radius: 2rem;
+  }
+  
+  .cluster-icon {
+    background-color: #333;
+    height: 2em;
+    width: 2em;
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    font-size: 1.2rem;
+    box-shadow: 0 0 0px 5px #fff;
+  }
+  
+  
+  
+  .react-select__option--is-selected {
+    color: white;
+    background-color: #cc0000; 
+  }
+  
+  
 
-  height: 90vh;
-  width: 90%;
-  border-radius: 2rem;
+
+.map-input {
+  
+  position: relative; 
+  z-index: 10000;
 }
-
-.cluster-icon {
-  background-color: #333;
-  height: 2em;
-  width: 2em;
-  color: #fff;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 50%;
-  font-size: 1.2rem;
-  box-shadow: 0 0 0px 5px #fff;
-}
-
 .custom-option {
   border-bottom: 1px solid #ccc;
   color: black;
@@ -81,4 +90,5 @@
 .custom-menu {
   width: 97%;
   top: 3rem;
+  z-index: 10000;
 }
