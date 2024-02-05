@@ -3,6 +3,7 @@ using CheckedAppProject.LOGIC.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using CheckedAppProject.DATA.Models;
 
 namespace CheckedAppProject.API.Controllers
 {
@@ -16,13 +17,20 @@ namespace CheckedAppProject.API.Controllers
         {
             _itemService = itemService;
         }
+        [HttpGet("GetAllPages")]
+        public async Task<IActionResult> GetAllItemsPages([FromQuery]ItemsQuery query)
+        {
+           var items = await _itemService.GetAllItemDtoAsyncPages(query);
+            return items == null ? NotFound(new { ErrorCode = 404, Message = "Item with this ID not found" }) : Ok(items);
+        }
+
         [HttpGet("GetAll")]
         public async Task<IActionResult> GetAllItems()
         {
-           var items = await _itemService.GetAllItemDtoAsync();
+            var items = await _itemService.GetAllItemDtoAsync();
             return items == null ? NotFound(new { ErrorCode = 404, Message = "Item with this ID not found" }) : Ok(items);
         }
-       
+
         [HttpGet("GetById/{id}")]
         public async Task<IActionResult> GetItemById([FromRoute] int id)
         {
