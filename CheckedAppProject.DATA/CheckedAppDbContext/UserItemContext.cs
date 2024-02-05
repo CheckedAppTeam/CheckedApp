@@ -10,7 +10,6 @@ namespace CheckedAppProject.DATA.CheckedAppDbContext
         public UserItemContext(DbContextOptions<UserItemContext> options) : base(options)
         {
         }
-        public DbSet<AppUser> Users { get; set; }
         public DbSet<Item> Items { get; set; }
         public DbSet<ItemList> ItemLists { get; set; }
         public DbSet<UserItem> UserItems { get; set; }
