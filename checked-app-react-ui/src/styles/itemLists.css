@@ -68,12 +68,6 @@ h1 {
   background-color: #FF9B36;
   border-radius: 20px;
   text-align: center;
-  margin-top: 50px;
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  -ms-transform: translate(-50%, -50%);
-  transform: translate(-50%, -50%);
 }
 
 @media (max-width: 600px) {

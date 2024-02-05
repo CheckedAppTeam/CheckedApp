@@ -6,7 +6,7 @@
         {
             var frontendURL = builder.Configuration.GetValue<string>("AllowedOrigins:FrontendURL");
 
-            if (frontendURL != null ) { 
+            if (!string.IsNullOrEmpty(frontendURL)) { 
                 builder.Services.AddCors(options =>
                 {
                     options.AddDefaultPolicy(builder =>

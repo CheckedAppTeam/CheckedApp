@@ -31,7 +31,7 @@ function Navbar() {
         <Link onClick={showNavBar} to='/ItemLists'>
           Item Lists
         </Link>
-        <Link onClick={showNavBar} to='/hehe'>
+        <Link onClick={showNavBar} to='/Items'>
           Items
         </Link>
         {!token && (
@@ -58,7 +58,7 @@ function Navbar() {
         <FaBars />
       </button>
     </header>
-  )
+  );
 }
 
 export default Navbar

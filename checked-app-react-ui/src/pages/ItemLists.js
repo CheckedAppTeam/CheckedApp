@@ -10,6 +10,8 @@ import jwt_decode from 'jwt-decode' // to używane jest? będzie? kasujcie od ra
 import { itemListEndpoints } from '../endpoints'
 import { useAuth } from '../Contexts/AuthContext.js'
 import { jwtDecode } from 'jwt-decode'
+import ItemList from '../Components/ItemList.js';
+
 
 export function ItemLists() {
   const [allItemListsResponseData, setAllitemListsResponseData] = useState(null)
@@ -19,22 +21,17 @@ export function ItemLists() {
   const [currentListName, setCurrentListName] = useState()
   const { token } = useAuth()
 
-  // const token = localStorage.getItem("token");
 
   useEffect(() => {
     const fetchData = async () => {
       if (token) {
         try {
           const decodedToken = jwtDecode(token)
-          // console.log('Decoded Token:', decodedToken);
-
-          //osobna metoda do authcontext
           const userId =
             decodedToken[
               'http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier'
             ]
           const data = await axios.get(userEndpoints.getUserData(userId))
-          // console.log(data);
           setAllitemListsResponseData(data.data)
           setLoading(true)
         } catch (error) {
@@ -60,31 +57,18 @@ export function ItemLists() {
         <div className='body'>
           <h1>All Your Lists</h1>
           {!loading && <Loader />}
-          {allItemListsResponseData && allItemListsResponseData.ownItemList && (
-            <div className='item-lists'>
-              {allItemListsResponseData &&
-                allItemListsResponseData.ownItemList.map((itemList, index) => (
-                  <div className='itemList' key={index}>
-                    <h2
-                      className='openModalClick'
-                      onClick={() => {
-                        openModalAtIndex(itemList.itemListId, itemList.listName)
-                      }}
-                    >
-                      {itemList.listName}
-                    </h2>
-                    {/* {openModal && <ItemListModal closeModal={setOpenModal} itemListName={itemList.listName} itemListId={itemList.itemListId}/>} */}
-                    <p>{itemList.travelDestination}</p>
-                    <p>{formatDate(itemList.travelDate)}</p>
-                    {itemList.isPublic ? (
-                      <p className='public'>public</p>
-                    ) : (
-                      <p className='private'>private</p>
-                    )}
-                  </div>
-                ))}
-            </div>
-          )}
+          {!loading && <Loader />}
+        {allItemListsResponseData && allItemListsResponseData.ownItemList && (
+          <div className='item-lists'>
+            {allItemListsResponseData.ownItemList.map((itemList, index) => (
+              <ItemList
+                key={index}
+                itemList={itemList}
+                openModalAtIndex={openModalAtIndex}
+              />
+            ))}
+          </div>
+        )}
           <div className='footer'>
             <div className='AddButton'>
               <button>Add</button>
@@ -97,20 +81,10 @@ export function ItemLists() {
               itemListId={currentId}
             />
           )}
-          <div>
-            {/* <pre> */}
-            {/* <h2>{JSON.stringify(itemListResponseData,null,2)}</h2> */}
-            {/* <p>{JSON.stringify(allItemListsResponseData, null, 2)}</p> */}
-            {/* </pre> */}
-          </div>
         </div>
       </div>
     
   )
 }
 
-function formatDate(dateString) {
-  const date = new Date(dateString)
-  const formattedDate = date.toISOString().split('T')[0]
-  return formattedDate
-}
+

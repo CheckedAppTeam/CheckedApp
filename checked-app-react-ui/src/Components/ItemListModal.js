@@ -19,28 +19,92 @@ function ItemListModal({ closeModal, itemListName, itemListId }) {
     const [showAdd, setShowAdd] = useState(false);
     const [showBack, setShowBack] = useState(false);
     const [showItemAdd, setShowItemAdd] = useState(true);
+    const [showNewItemForm, setShowNewItemForm] = useState(false);
+    const [newItemName, setNewItemName] = useState('');
+    const [showAddNew, setShowAddNew] = useState(false)
     const [userItemDTO, setUserItemDTO] = useState({
         itemListId: 0,
         itemId: 0,
         itemState: 0
     })
 
-    // const [itemState, setItemState] = useState();
-    // const [userItem, setUserItem] = useState();
-
     const customStyles = {
         option: (provided, state) => ({
             ...provided,
             borderBottom: '1px solid #ccc',
-            color: state.isSelected ? 'white' : 'black',
-            background: state.isSelected ? '#0088cc' : 'white',
+            color: state.isSelected ? 'white' : 'white',
+            background: state.isSelected ? '#FF9B36' : '#9B9BFF',
             zIndex: 9900,
         }),
         menu: (provided) => ({
             ...provided,
-            zIndex: 9900,
+            maxHeight: '150px',
+            zIndex: 99999,
+            position: 'absolute',
         }),
-    }
+        control: (provided) => ({
+            ...provided,
+            backgroundColor: '#9B9BFF',
+            color: 'white',
+            borderRadius: '8px',
+        }),
+        placeholder: (provided) => ({
+            ...provided,
+            color: 'white',
+        }),
+        noOptionsMessage: (provided) => ({
+            ...provided,
+            backgroundColor: '#9B9BFF',
+            color: 'white',
+        }),
+    };
+
+    const handleAddNewItem = async () => {
+        setShowNewItemForm(true);
+        setShowBack(true);
+        setShowSelect(true)
+        setShowItemAdd(false)
+        setShowAdd(false)
+        setShowAddNew(false)
+    };
+
+
+    const handleNewItemSubmit = async () => {
+        try {
+            const AddedItem = { itemName: newItemName }
+            await axios
+                .post(itemEndpoints.addItem, AddedItem)
+                .then((response) => {
+                    console.log(response);
+                });
+            const newItem = await axios.get(itemEndpoints.getItemByName(AddedItem.itemName));
+            console.log(newItem.data.itemName)
+
+            const newUserItemDTO = {
+                itemListId: itemListId,
+                itemId: newItem.data.itemId,
+                itemState: 0,
+            };
+
+            const newItemAdded = await axios.post(userItemEndpoints.addUserItem, newUserItemDTO);
+            setUserItemDTO(userItemDTO)
+            setAllItemsByItemListId(prevItems => [...prevItems, newItemAdded])
+            showAllItemsByItemListId();
+
+            setNewItemName('');
+            setShowNewItemForm(false);
+            setShowBack(true);
+            setShowSelect(true)
+            setShowItemAdd(false)
+            setShowAdd(false)
+            setShowAddNew(true)
+
+        } catch (error) {
+            console.error('Error adding new item:', error);
+        }
+    };
+
+
 
     const showAllItemsByItemListId = async () => {
         try {
@@ -56,49 +120,41 @@ function ItemListModal({ closeModal, itemListName, itemListId }) {
     const showAllItems = async () => {
         try {
             const response = await axios.get(itemEndpoints.getAllItems);
-            //console.log('Response:', response);
-            setAllItems(response.data || []);
+            console.log('Response:', response);
+            setAllItems(response.data);
         } catch (error) {
             console.error('Error:', error);
         }
     };
 
-    // const sendUserItem = async () => {
-    //     try {
-    //         await axios.post(userItemEndpoints.addUserItem, userItemDTO);
-    //         setUserItemDTO({
-    //             itemListId: itemListId,
-    //             itemId: 0,
-    //             itemState: 0
-    //         });
-    //     } catch (error) {
-    //         console.error('Error:', error);
-    //     }
-    // }
-
-    const handleAddClick = () => {
+    const handleAddClick = (e) => {
+        e.preventDefault();
         setShowSelect(true)
         setShowItemAdd(false)
         setShowBack(true)
-        setShowAdd(true)
+        setShowAdd(false)
+        setShowNewItemForm(false)
+        setShowAddNew(true)
     };
 
     useEffect(() => {
         const currentToken = localStorage.getItem('token')
         if (currentToken) {
-          axios.defaults.headers.common['Authorization'] = `Bearer ${currentToken}`
+            axios.defaults.headers.common['Authorization'] = `Bearer ${currentToken}`
         } else {
-          delete axios.defaults.headers.common['Authorization']
+            delete axios.defaults.headers.common['Authorization']
         }
         showAllItemsByItemListId();
         showAllItems();
-    }, []);
+    }, [itemListId]);
 
     const handleBack = () => {
         setShowItemAdd(true)
         setShowSelect(false);
         setShowBack(false)
         setShowAdd(false)
+        setShowNewItemForm(false)
+        setShowAddNew(false)
     }
 
     const filterItems = (input) => {
@@ -118,15 +174,19 @@ function ItemListModal({ closeModal, itemListName, itemListId }) {
         setSelectItem({
             itemName: selectedOption
         })
+        setShowAdd(true)
     }
 
     const handleAdd = async () => {
-        setShowItemAdd(true);
-        setShowSelect(false);
-        setShowBack(false);
-        setShowAdd(false);
-    
-        //console.log(selectedItem.itemName.value)
+        setShowSelect(false)
+        setShowItemAdd(true)
+        setShowBack(false)
+        setShowAdd(true)
+        setShowNewItemForm(false)
+        setShowAddNew(false)
+
+
+        console.log(selectedItem.itemName.value)
         const matchingItem = allItems.find((item) => selectedItem.itemName.value.toLowerCase() === item.itemName.toLowerCase());
         //console.log(matchingItem)
         //console.log(itemListId)
@@ -141,15 +201,66 @@ function ItemListModal({ closeModal, itemListName, itemListId }) {
             try {
                 await axios.post(userItemEndpoints.addUserItem, userItemDTO);
                 setUserItemDTO(userItemDTO)
-                setAllItemsByItemListId([...allItemsByItemListId, matchingItem]);
+                setAllItemsByItemListId(prevItems => [...prevItems, matchingItem])
+                showAllItemsByItemListId();
             } catch (error) {
                 console.error('Error:', error);
             }
         }
     };
-    
 
+    const handleItemChange = () => {
+        showAllItemsByItemListId();
+    };
 
+    const renderButtons = () => {
+        return (
+            <>
+                {showAdd &&
+                    <div className='onlyOneButton'>
+                        <div id='addBtn'>
+                            <Button onClick={handleAdd} variant="contained" color="success">
+                                Add
+                            </Button>
+                        </div>
+                    </div>
+                }
+                <div className='twoButtons'>
+                    {showBack &&
+                        <div id='backBtn'>
+                            <Button onClick={handleBack} variant="contained" color="success">
+                                Back
+                            </Button>
+                        </div>
+                    }
+                    <div id='addNewItemBtn'>
+                        {showAddNew &&
+                            <>
+                                <p className='modalText'>Can't find any matching item?</p>
+                                <Button onClick={handleAddNewItem} variant="contained" color="success">
+                                    Add New
+                                </Button>
+                            </>
+                        }
+                        {showNewItemForm && (
+                            <div className='inputAndSubmit'>
+                                <input
+                                    className='inputNewItem'
+                                    type="text"
+                                    value={newItemName}
+                                    onChange={(e) => setNewItemName(e.target.value)}
+                                    placeholder="Enter new item name"
+                                />
+                                <Button className='submitNewItem' onClick={handleNewItemSubmit} variant="contained" color="success">
+                                    Submit
+                                </Button>
+                            </div>
+                        )}
+                    </div>
+                </div>
+            </>
+        )
+    }
 
     return (
         <div className='modalBackground'>
@@ -159,7 +270,6 @@ function ItemListModal({ closeModal, itemListName, itemListId }) {
                 </div>
                 <div className='title'>
                     <h1>{itemListName}</h1>
-                    {console.log(allItems)}
                 </div>
                 <div className='body'>
                     {!loading ? (
@@ -167,19 +277,20 @@ function ItemListModal({ closeModal, itemListName, itemListId }) {
                     ) : (
                         <div className='itemsAndFooter'>
                             <div className='items'>
-                                {allItemsByItemListId.map((item, index) => (
-                                    <div className='item-container' key={index}>
-                                        <UserItem item={item} />
-                                    </div>
-                                ))}
+                                {allItemsByItemListId
+                                    .sort((a, b) => a.userItemId - b.userItemId)
+                                    .map((item, index) => (
+                                        <div className='item-container' key={item.userItemId}>
+                                            {/* {console.log(item)} */}
+                                            <UserItem item={item} onItemChange={handleItemChange} />
+                                        </div>
+                                    ))}
                             </div>
                             <div className='footer'>
-                                {console.log(userItemDTO)}
                                 <div className='selectBtn'>
                                     {showSelect && <Select
                                         className='map-input'
                                         defaultValue={inputValue}
-                                        // value={null}
                                         options={filterItems(inputValue)}
                                         onChange={handleItemsSelect}
                                         onInputChange={(value) => setInputValue(value)}
@@ -188,24 +299,8 @@ function ItemListModal({ closeModal, itemListName, itemListId }) {
                                     />}
                                 </div>
                                 <div className='selectButtons'>
-                                    <div className='backBtn'>
-                                        {showBack && <Button onClick={handleBack} variant="contained" color="success">
-                                            Close
-                                        </Button>}
-                                    </div>
-                                    <div className='addBtn'>
-                                        {showAdd && <Button onClick={handleAdd} variant="contained" color="success">
-                                            Add
-                                        </Button>}
-                                    </div>
+                                    {!showItemAdd && renderButtons()}
                                 </div>
-                                {/* {showInput && (
-                                <input
-                                    type="text"
-                                    placeholder="Type here..."
-                                />
-                            )} */}
-
                                 {showItemAdd && <Button id='AddItemBtn' onClick={handleAddClick}>
                                     Add
                                 </Button>}
