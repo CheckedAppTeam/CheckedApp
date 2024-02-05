@@ -2,31 +2,21 @@ import React, { useState, useEffect, useRef } from 'react'
 import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet'
 import L from 'leaflet'
 import { FaMapMarker } from 'react-icons/fa'
-import { useMap } from 'react-leaflet'
 import Select from 'react-select'
 import ReactDOMServer from 'react-dom/server'
 import '../../styles/map.css'
 import PlaceSeeker from './PlaceSeeker.js'
-const FlyToMarker = ({ position, zoomLevel }) => {
-  const map = useMap()
+import FlyToMarker from './FlyToMarker.js'
 
-  useEffect(() => {
-    if (position) {
-      const zoom = zoomLevel || map.getZoom()
-      map.flyTo(position, zoom, {
-        duration: 4,
-      })
-    }
-  }, [map, position, zoomLevel])
 
-  return null
-}
 
 function Map() {
   const [countries, setCountries] = useState([])
   const [selectedCountry, setSelectedCountry] = useState(null)
-  const mapRef = useRef(null)
+  const [parentCoordinates, setParentCoordinates] = useState(null);
+
   const [inputValue, setInputValue] = useState('')
+  const mapRef = useRef(null)
 
   const CustomMarkerIcon = L.divIcon({
     className: 'custom-marker-icon',
@@ -56,6 +46,11 @@ function Map() {
     })
   }
 
+  const handleCoordinatesChange = (coordinates) => {
+    setParentCoordinates(coordinates);
+  }
+  
+
   const filterCountries = (input) => {
     return countries.filter((country) =>
       country.label.toLowerCase().includes(input.toLowerCase())
@@ -73,9 +68,10 @@ function Map() {
           onChange={handleCountrySelect}
           onInputChange={(value) => setInputValue(value)}
           placeholder='Type to search...'
-          />
-          <PlaceSeeker/>
+        />
+        
       </div>
+      <PlaceSeeker onCoordinatesChange={handleCoordinatesChange}  />
       <br></br>
       <MapContainer
         className='map-container'
@@ -102,6 +98,9 @@ function Map() {
         ))} */}
         {selectedCountry && (
           <FlyToMarker position={selectedCountry.geocode} zoomLevel={5} />
+        )}
+        {parentCoordinates && (
+          <FlyToMarker position={[parentCoordinates.latitude,parentCoordinates.longitude]} zoomLevel={6} />
         )}
       </MapContainer>
     </>

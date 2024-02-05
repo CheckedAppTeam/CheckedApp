@@ -60,10 +60,9 @@ function Login() {
               onChange={(event)=> setPassword(event.target.value)}
             />
           </div>
-          {/* change href to link */}
           <div className='row'>
             
-            You don't have an account? 
+            You don't have an account?{" "}
             <Link to="/Register">Register</Link>
             
           </div>
