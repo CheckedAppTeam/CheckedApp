@@ -21,9 +21,12 @@ function Navbar() {
     showNavBar()
     navigate('/')
   }
+  const handleLogoClick = ()=>{
+    navigate('/')
+  }
   return (
     <header>
-      <img className='nav-Logo' src={CheckedFullLogo} alt='Logo' />
+      <img className='nav-Logo' onClick={handleLogoClick} src={CheckedFullLogo} alt='Logo' />
       <nav ref={navRef}>
         <Link onClick={showNavBar} to='/'>
           Home

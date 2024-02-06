@@ -11,11 +11,8 @@ import FlyToMarker from './FlyToMarker.js'
 
 
 function Map() {
-  const [countries, setCountries] = useState([])
-  const [selectedCountry, setSelectedCountry] = useState(null)
   const [parentCoordinates, setParentCoordinates] = useState(null);
 
-  const [inputValue, setInputValue] = useState('')
   const mapRef = useRef(null)
 
   const CustomMarkerIcon = L.divIcon({
@@ -23,52 +20,15 @@ function Map() {
     html: ReactDOMServer.renderToString(<FaMapMarker />),
   })
 
-  useEffect(() => {
-    fetch('https://restcountries.com/v2/all')
-      .then((response) => response.json())
-      .then((data) => {
-        const countryOptions = data
-          .filter((country) => country.latlng && country.latlng.length === 2)
-          .map((country) => ({
-            value: country.name,
-            label: country.name,
-            geocode: country.latlng,
-          }))
-        setCountries(countryOptions)
-      })
-      .catch((error) => console.error('Error fetching country data:', error))
-  }, [selectedCountry])
-
-  const handleCountrySelect = (selectedOption) => {
-    setSelectedCountry({
-      geocode: selectedOption.geocode,
-      zoom: 6,
-    })
-  }
-
   const handleCoordinatesChange = (coordinates) => {
     setParentCoordinates(coordinates);
   }
   
-
-  const filterCountries = (input) => {
-    return countries.filter((country) =>
-      country.label.toLowerCase().includes(input.toLowerCase())
-    )
-  }
-
   return (
     <>
       <div className='country-list'>
         <h1>Where do You wanna go?</h1>
-        <Select
-          className='map-input'
-          value={null}
-          options={filterCountries(inputValue)}
-          onChange={handleCountrySelect}
-          onInputChange={(value) => setInputValue(value)}
-          placeholder='Type to search...'
-        />
+        
         
       </div>
       <PlaceSeeker onCoordinatesChange={handleCoordinatesChange}  />
@@ -96,9 +56,7 @@ function Map() {
             </Popup>
           </Marker>
         ))} */}
-        {selectedCountry && (
-          <FlyToMarker position={selectedCountry.geocode} zoomLevel={5} />
-        )}
+        
         {parentCoordinates && (
           <FlyToMarker position={[parentCoordinates.latitude,parentCoordinates.longitude]} zoomLevel={6} />
         )}

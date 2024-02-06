@@ -1,6 +1,9 @@
 .nav-Logo{
     height: 6cqh;
 }
+.nav-Logo:hover{
+	cursor: pointer;
+}
 :root {
 	--mainColor: #FF9B36;
 	--mainColorLight: #9B9BFF;

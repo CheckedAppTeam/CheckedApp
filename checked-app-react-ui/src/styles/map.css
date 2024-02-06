@@ -64,31 +64,3 @@
   
   
   
-  .react-select__option--is-selected {
-    color: white;
-    background-color: #cc0000; 
-  }
-  
-  
-
-
-.map-input {
-  
-  position: relative; 
-  z-index: 10000;
-}
-.custom-option {
-  border-bottom: 1px solid #ccc;
-  color: black;
-}
-
-.custom-option--is-selected {
-  color: white;
-  background-color: #0088cc;
-}
-
-.custom-menu {
-  width: 97%;
-  top: 3rem;
-  z-index: 10000;
-}
