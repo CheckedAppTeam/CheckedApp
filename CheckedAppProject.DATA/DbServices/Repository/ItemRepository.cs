@@ -2,6 +2,7 @@
 using CheckedAppProject.DATA.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
+using CheckedAppProject.DATA.Models;
 
 namespace CheckedAppProject.DATA.DbServices.Repository
 {
@@ -49,6 +50,24 @@ namespace CheckedAppProject.DATA.DbServices.Repository
                 return true;
             }
             return false;
+        }
+
+        public async Task<(IEnumerable<Item>, int, int, int)> GetAllItemsAsyncPages(ItemsQuery query)
+        {
+            var baseQuery = _userItemContext
+                .Items
+                .Where(i => query.SearchPhrase == null || (i.ItemName.ToLower().Contains(query.SearchPhrase.ToLower())));
+
+            var items = await baseQuery
+                .Skip(query.PageSize*(query.PageNumber-1))
+                .Take(query.PageSize)
+                .ToListAsync();
+
+            var itemsCount = baseQuery.Count();
+            var pageSize = query.PageSize;
+            var pageNumber = query.PageNumber;
+
+            return (items, itemsCount, pageSize, pageNumber);
         }
 
         public async Task<IEnumerable<Item>> GetAllItemsAsync()

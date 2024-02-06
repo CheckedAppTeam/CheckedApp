@@ -3,7 +3,9 @@ using CheckedAppProject.DATA.CheckedAppDbContext;
 using CheckedAppProject.DATA.DbServices.Repository;
 using CheckedAppProject.DATA.Entities;
 using CheckedAppProject.LOGIC.DTOs;
+using CheckedAppProject.DATA.Models;
 using CheckedAppProject.LOGIC.AutoMapperProfiles;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 
 namespace CheckedAppProject.LOGIC.Services
@@ -18,13 +20,27 @@ namespace CheckedAppProject.LOGIC.Services
             _mapper = mapper;
             _itemRepository = itemRepository;
         }
-        public async Task<IEnumerable<Item>> GetAllItemDtoAsync()
+        public async Task<PageResult<ItemDTO>> GetAllItemDtoAsyncPages(ItemsQuery query)
+        {
+            var result = await _itemRepository.GetAllItemsAsyncPages(query);
+            var items = result.Item1;
+            var count = result.Item2;
+            var pageSise = result.Item3;
+            var pageNumber = result.Item4;
+
+            var itemsDtos = _mapper.Map<List<ItemDTO>>(items);
+
+            var pageResult = new PageResult<ItemDTO>(itemsDtos, count, pageSise, pageNumber);
+
+            return pageResult;
+        }
+        public async Task<IEnumerable<ItemDTO>> GetAllItemDtoAsync()
         {
             var items = await _itemRepository.GetAllItemsAsync();
 
-            //var itemsDtos = _mapper.Map<List<ItemDTO>>(items);
+            var itemsDtos = _mapper.Map<List<ItemDTO>>(items);
 
-            return items;
+            return itemsDtos;
         }
         public async Task<Item> GetItemById(int id)
         {

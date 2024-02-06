@@ -49,6 +49,7 @@ const PlaceSeeker = ({ onCoordinatesChange }) => {
     <div>
       <h2>Cant find what you want? Just type it in!</h2>
 
+
       <input
         placeholder='Type address...'
         type='text'
