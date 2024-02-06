@@ -2,8 +2,6 @@
 using CheckedAppProject.DATA.DbServices.Repository;
 using Microsoft.EntityFrameworkCore;
 using CheckedAppProject.DATA.Entities;
-using CheckedAppProject.DATA.CheckedAppDbContext;
-using CheckedAppProject.DATA.DbServices.Repository;
 using Microsoft.Extensions.Logging;
 using Moq;
 
