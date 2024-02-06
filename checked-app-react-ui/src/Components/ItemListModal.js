@@ -186,6 +186,8 @@ function ItemListModal({ closeModal, itemListName, itemListId }) {
 
         console.log(selectedItem.itemName.value)
         const matchingItem = allItems.find((item) => selectedItem.itemName.value.toLowerCase() === item.itemName.toLowerCase());
+        console.log(allItems)
+        console.log(matchingItem)
         if (matchingItem) {
             const userItemDTO = {
                 itemListId: itemListId,
@@ -193,6 +195,7 @@ function ItemListModal({ closeModal, itemListName, itemListId }) {
                 itemState: 0,
             }
             try {
+                console.log(userItemDTO)
                 await axios.post(userItemEndpoints.addUserItem, userItemDTO);
                 setUserItemDTO(userItemDTO)
                 setAllItemsByItemListId(prevItems => [...prevItems, matchingItem])

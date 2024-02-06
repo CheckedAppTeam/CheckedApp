@@ -52,34 +52,28 @@ export function ItemLists() {
     setCurrentListName(name)
   }
 
+
+
   return (
     <div className='itemListBackground'>
       {console.log(itemListEndpoints)}
       <div className='body'>
         <h1>All Your Lists</h1>
         {!loading && <Loader />}
-        {/* {!loading && <Loader />} */}
         {allItemListsResponseData && allItemListsResponseData.ownItemList && (
           <div className='item-lists'>
-            {/* <Grid container spacing={{ xs: 2, md: 3 }} columns={{ xs: 4, sm: 8, md: 12 }}>
+            <Grid container spacing={{ xs: 2, md: 3 }} columns={{ xs: 4, sm: 8, md: 12 }}>
               {allItemListsResponseData.ownItemList.map((itemList, index) => (
                 <Grid xs={2} sm={4} md={4} key={itemList.ItemListId}>
                   <ItemList itemList={itemList} openModalAtIndex={openModalAtIndex}>xs=2</ItemList>
                 </Grid>
               ))}
-            </Grid> */}
-            {allItemListsResponseData.ownItemList.map((itemList, index) => (
-              <ItemList
-                key={itemList.itemListId}
-                itemList={itemList}
-                openModalAtIndex={openModalAtIndex}
-              />
-            ))}
+            </Grid>
           </div>
         )}
         <div className='footerButton'>
           <div className='AddItemListButton'>
-            <button>Add</button>
+            <button >Add</button>
           </div>
         </div>
         {openModal && (

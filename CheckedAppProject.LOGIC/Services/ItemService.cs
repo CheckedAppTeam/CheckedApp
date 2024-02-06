@@ -20,7 +20,7 @@ namespace CheckedAppProject.LOGIC.Services
             _mapper = mapper;
             _itemRepository = itemRepository;
         }
-        public async Task<PageResult<ItemDTO>> GetAllItemDtoAsyncPages(ItemsQuery query)
+        public async Task<PageResult<GetItemDTO>> GetAllItemDtoAsyncPages(ItemsQuery query)
         {
             var result = await _itemRepository.GetAllItemsAsyncPages(query);
             var items = result.Item1;
@@ -28,23 +28,24 @@ namespace CheckedAppProject.LOGIC.Services
             var pageSise = result.Item3;
             var pageNumber = result.Item4;
 
-            var itemsDtos = _mapper.Map<List<ItemDTO>>(items);
+            var itemsDtos = _mapper.Map<List<GetItemDTO>>(items);
 
-            var pageResult = new PageResult<ItemDTO>(itemsDtos, count, pageSise, pageNumber);
+            var pageResult = new PageResult<GetItemDTO>(itemsDtos, count, pageSise, pageNumber);
 
             return pageResult;
         }
-        public async Task<IEnumerable<ItemDTO>> GetAllItemDtoAsync()
+        public async Task<IEnumerable<GetItemDTO>> GetAllItemDtoAsync()
         {
             var items = await _itemRepository.GetAllItemsAsync();
 
-            var itemsDtos = _mapper.Map<List<ItemDTO>>(items);
+            var itemsDtos = _mapper.Map<List<GetItemDTO>>(items);
 
             return itemsDtos;
         }
         public async Task<Item> GetItemById(int id)
         {
             var item = await _itemRepository.GetItemByIdAsync(id);
+
             return item;
         }
 
