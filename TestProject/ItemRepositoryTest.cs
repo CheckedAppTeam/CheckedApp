@@ -62,5 +62,61 @@ namespace TestProject
             Assert.That(dbItem.ItemName, Is.EqualTo("UpdatedName"));
             Assert.That(dbItem.ItemCompany, Is.EqualTo("UpdatedCompany"));
         }
+        [Test]
+        public async Task GetAllItemsAsync_ReturnsAllItems()
+        {
+            var expectedItems = new List<Item>
+            {
+                new Item { ItemName = "TestItem", ItemCompany = "TestCompany" },
+                new Item { ItemName = "TestItem1", ItemCompany = "TestCompany2" }
+            };
+
+            await _contextIR.Items.AddRangeAsync(expectedItems);
+            await _contextIR.SaveChangesAsync();
+
+            var items = await _itemRepository.GetAllItemsAsync();
+
+            Assert.That(items.Count(), Is.EqualTo(expectedItems.Count));
+        }
+        [Test]
+        public async Task GetItemNameByIdAsync_ReturnsItemName()
+        {
+            var newItem = new Item { ItemName = "TestItem", ItemCompany = "TestCompany" };
+            await _contextIR.Items.AddAsync(newItem);
+            await _contextIR.SaveChangesAsync();
+
+            var itemName = await _itemRepository.GetItemNameByIdAsync(newItem.ItemId);
+
+            Assert.That(itemName, Is.EqualTo(newItem.ItemName));
+        }
+        [Test]
+        public async Task GetItemByNameAsync_ReturnsCorrectItem()
+        {
+            var newItem1 = new Item { ItemName = "TestItem", ItemCompany = "TestCompany1" };
+            var newItem2 = new Item { ItemName = "TestItem2", ItemCompany = "TestCompany2" };
+            await _contextIR.Items.AddRangeAsync(new List<Item> { newItem1, newItem2 });
+            await _contextIR.SaveChangesAsync();
+
+            var item = await _itemRepository.GetItemByNameAsync("TestItem2");
+
+            Assert.That(item, Is.Not.Null);
+            Assert.That(item.ItemCompany, Is.EqualTo(newItem2.ItemCompany));
+        }
+        [Test]
+        public async Task DeleteItemAsync_ReturnsTrue_WhenItemIsDeleted()
+        {
+            var newItem = new Item { ItemName = "TestItem", ItemCompany = "TestCompany" };
+            await _contextIR.Items.AddAsync(newItem);
+            await _contextIR.SaveChangesAsync();
+
+            Func<IQueryable<Item>, IQueryable<Item>> customQuery = (items) => items.Where(i => i.ItemId == newItem.ItemId);
+
+            var result = await _itemRepository.DeleteItemAsync(customQuery);
+
+            var itemInDb = await _contextIR.Items.AnyAsync(i => i.ItemId == newItem.ItemId);
+            Assert.That(result, Is.True);
+            Assert.That(itemInDb, Is.False);
+        }
+
     }
 }
