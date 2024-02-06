@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>net7.0</TargetFramework>
@@ -29,6 +29,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\CheckedApp.Project\CheckedAppProject.API.csproj" />
     <ProjectReference Include="..\CheckedAppProject.DATA\CheckedAppProject.DATA.csproj" />
     <ProjectReference Include="..\CheckedAppProject.LOGIC\CheckedAppProject.LOGIC.csproj" />
   </ItemGroup>
