@@ -1,15 +1,14 @@
 @import url("https://fonts.googleapis.com/css2?family=Titillium+Web:wght@300;400;700&display=swap");
 
-body {
-  font-family: 'Titillium Web', sans-serif;
-  margin: 0;
-}
-
-h1 {
-  text-align: center;
-  margin-top: 1vh;
-  color: #311abb;
-  font-size: 7vw;
+:root {
+	--mainColor: #FF9B36;
+	--mainColorLight: #9B9BFF;
+  --mainColorBlue: #311ABB;
+	--secondaryColor: #434AF2;
+	--textColor: #FFF5EB;
+  --backgroundCoor: #FAE2CA;
+  --greenColor: #3BB927;
+  --redColour: #DB5353;
 }
 
 .item-list {
@@ -19,8 +18,7 @@ h1 {
 }
 
 .itemList {
-  /* background-image: linear-gradient(#FAE2CA, #FFF5EB); */
-  background-color: #FAE2CA;
+  background-color: var(--backgroundCoor);
   border-radius: 20px;
   padding: 10px;
   margin: 10px;
@@ -40,16 +38,16 @@ h1 {
 }
 
 .itemList p.public {
-  color: green;
+  color: var(--greenColor);
 }
 
 .itemList p.private {
-  color: red;
+  color: var(--redColour);
 }
 
 .openModalClick {
   border: none;
-  color: #311ABB;
+  color: var(--mainColorBlue);
   cursor: pointer;
 }
 
@@ -61,36 +59,22 @@ h1 {
   width: 30vw;
   height: 100px;
   border: none;
-  color: #311ABB;
+  color: var(--mainColorBlue);
   border-radius: 8px;
   font-size: 40px;
   cursor: pointer;
-  background-color: #FF9B36;
+  background-color: var(--mainColor);
   border-radius: 20px;
   text-align: center;
 }
 
-@media (max-width: 600px) {
-  .itemList {
-    max-width: 100%;
-    flex: 0 0 100%;
-  }
-}
-
-@media (min-width: 601px) and (max-width: 900px) {
-  .itemList {
-    flex: 0 0 calc(50% - 20px);
-  }
-}
-
-@media (min-width: 901px) and (max-width: 1200px) {
-  .itemList {
-    flex: 0 0 calc(33.33% - 20px);
-  }
-}
-
-@media (min-width: 1201px) {
-  .itemList {
-    flex: 0 0 calc(25% - 20px);
-  }
+#footerButton {
+  display: flex;
+  align-items: center;
+  flex-direction: row;
+  justify-content: center;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding-top: 10px;
 }

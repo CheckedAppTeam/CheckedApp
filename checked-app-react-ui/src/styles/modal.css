@@ -53,7 +53,7 @@
   display: flex;
   align-items: center;
   flex-direction: row;
-  justify-content: space-between;
+  justify-content: center;
   bottom: 0;
   left: 0;
   right: 0;

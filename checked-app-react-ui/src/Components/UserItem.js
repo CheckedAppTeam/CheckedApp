@@ -64,9 +64,6 @@ function UserItem({ item, onItemChange }) {
         console.log(id)
     }, [item]);
 
-    // useEffect(() => {
-    //     console.log(state)
-    // }, [state]);
 
     const handleDelete = async (e) => {
         e.preventDefault()
