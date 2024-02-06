@@ -39,7 +39,7 @@ namespace TestProject
 
             var result = await _authService.RegisterAsync(addUserDto);
 
-            Assert.That(result, Is.True);
+            Assert.That(result.Success, Is.True);
         }
 
         [Test]
@@ -53,12 +53,13 @@ namespace TestProject
             };
 
             _userManagerMock.Setup(x => x.CreateAsync(It.IsAny<AppUser>(), It.IsAny<string>()))
-                .ReturnsAsync(IdentityResult.Failed(new IdentityError { Description = "Test error" }));
+                .ReturnsAsync(IdentityResult.Failed(new IdentityError { Code = "TestError", Description = "Test error" }));
 
             var result = await _authService.RegisterAsync(addUserDto);
 
-            Assert.That(result, Is.False);
-            Assert.That(result.ErrorMessages, Contains.Key("Test error"));
+            Assert.That(result.Success, Is.False);
+            Assert.That(result.ErrorMessages, Contains.Key("TestError"));
+            Assert.That(result.ErrorMessages["TestError"], Is.EqualTo("Test error"));
         }
     }
 

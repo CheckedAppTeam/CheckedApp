@@ -1,18 +1,21 @@
 ﻿using AutoMapper;
 using CheckedAppProject.LOGIC.AutoMapperProfiles;
 
-[TestFixture]
-public class AutoMapperConfigurationTests
+namespace TestProject
 {
-    [Test]
-    public void AutoMapper_Configuration_IsValid()
+    [TestFixture]
+    public class AutoMapperConfigurationTests
     {
-        var mapperConfiguration = new MapperConfiguration(cfg =>
+        [Test]
+        public void AutoMapper_Configuration_IsValid()
         {
-            cfg.AddProfile(new ItemListMappingProfile());
-            cfg.AddProfile(new UserMappingProfile());
-        });
+            var mapperConfiguration = new MapperConfiguration(cfg =>
+            {
+                cfg.AddProfile(new ItemListMappingProfile());
+                cfg.AddProfile(new UserMappingProfile());
+            });
 
-        mapperConfiguration.AssertConfigurationIsValid();
+            mapperConfiguration.AssertConfigurationIsValid();
+        }
     }
 }
