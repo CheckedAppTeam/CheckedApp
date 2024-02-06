@@ -31,7 +31,6 @@ namespace CheckedAppProject.DATA.DbServices.Repository
                 throw;
             }
         }
-
         public async Task<bool> EditItemAsync(Item itemData, int itemId)
         {
             var dbItem = await _userItemContext.Items

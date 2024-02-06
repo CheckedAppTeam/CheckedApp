@@ -1,86 +1,96 @@
+using Microsoft.EntityFrameworkCore;
+using CheckedAppProject.DATA.Entities;
 using CheckedAppProject.DATA.CheckedAppDbContext;
 using CheckedAppProject.DATA.DbServices.Repository;
-using CheckedAppProject.DATA.Entities;
-using Microsoft.EntityFrameworkCore;
-using Moq;
 
-[TestFixture]
-public class UserRepositoryTests
+namespace CheckedAppProject.Tests
 {
-    private Mock<UserItemContext> _mockContext;
-    private UserRepository _userRepository;
-
-    [SetUp]
-    public void SetUp()
+    [TestFixture]
+    public class UserRepositoryTests
     {
-        _mockContext = new Mock<UserItemContext>();
-        _userRepository = new UserRepository(_mockContext.Object);
-    }
+        private UserItemContext _context;
+        private UserRepository _userRepository;
 
-    [Test]
-    public async Task GetUserAsync_ShouldReturnUser_WhenCustomQueryProvided()
-    {
-        var expectedUser = new User { UserId = 1, UserName = "TestUser" };
-        var mockDbSet = new Mock<DbSet<User>>();
-        var data = new List<User> { expectedUser }.AsQueryable();
+        [SetUp]
+        public void Setup()
+        { 
+            var options = new DbContextOptionsBuilder<UserItemContext>()
+                .UseInMemoryDatabase(databaseName: "TestDatabase" + Guid.NewGuid()) 
+                .Options;
 
-        mockDbSet.As<IQueryable<User>>().Setup(m => m.Provider).Returns(data.Provider);
-        mockDbSet.As<IQueryable<User>>().Setup(m => m.Expression).Returns(data.Expression);
-        mockDbSet.As<IQueryable<User>>().Setup(m => m.ElementType).Returns(data.ElementType);
-        mockDbSet.As<IQueryable<User>>().Setup(m => m.GetEnumerator()).Returns(data.GetEnumerator());
+            _context = new UserItemContext(options);
 
-        _mockContext.Setup(c => c.Users).Returns(mockDbSet.Object);
+            _userRepository = new UserRepository(_context);
+        }
 
-        Func<IQueryable<User>, IQueryable<User>> customQuery = q => q.Where(u => u.UserId == 1);
-
-        var result = await _userRepository.GetUserAsync(customQuery);
-
-        Assert.That(result, Is.EqualTo(expectedUser));
-    }
-
-    [Test]
-    public async Task GetAllUsersDataAsync_ShouldReturnAllUsersWithData()
-    {
-        var expectedUsers = new List<User>
+        [TearDown]
+        public void CleanUp()
         {
-            new User { UserId = 1, UserName = "User1" },
-            new User { UserId = 2, UserName = "User2" }
-        };
+            _context.Database.EnsureDeleted();
+            _context.Dispose();
+        }
+        [Test]
+        public async Task GetUserAsync_ReturnsUser_WhenCustomQueryIsApplied()
+        {
+            var users = new List<AppUser>
+            {
+                new AppUser { UserName = "TestManekin" },
+                new AppUser { UserName = "KolejnyManekin" }
+            };
 
-        var mockDbSet = new Mock<DbSet<User>>();
-        mockDbSet.As<IQueryable<User>>().Setup(m => m.Provider).Returns(() => expectedUsers.AsQueryable().Provider);
-        mockDbSet.As<IQueryable<User>>().Setup(m => m.Expression).Returns(() => expectedUsers.AsQueryable().Expression);
-        mockDbSet.As<IQueryable<User>>().Setup(m => m.ElementType).Returns(() => expectedUsers.AsQueryable().ElementType);
-        mockDbSet.As<IQueryable<User>>().Setup(m => m.GetEnumerator()).Returns(() => expectedUsers.AsQueryable().GetEnumerator());
+            await _context.Users.AddRangeAsync(users);
+            await _context.SaveChangesAsync();
 
-        _mockContext.Setup(c => c.Users).Returns(mockDbSet.Object);
+            Func<IQueryable<AppUser>, IQueryable<AppUser>> customQuery = query => query.Where(u => u.UserName == "TestManekin");
 
-        var result = await _userRepository.GetAllUsersDataAsync();
+            var result = await _userRepository.GetUserAsync(customQuery);
 
-        
-        Assert.That(result, Is.EquivalentTo(expectedUsers));
+            Assert.That(result, Is.Not.Null);
+            Assert.That(result.UserName, Is.EqualTo("TestManekin"));
+        }
+
+        [Test]
+        public async Task GetAllUsersDataAsync_ReturnsAllUsers()
+        {
+            await _context.Users.AddRangeAsync(new AppUser { UserName = "TestManekin", UserSurname = "BiednyPies" }, new AppUser { UserName = "TestManekin2" });
+            await _context.SaveChangesAsync();
+
+            var result = await _userRepository.GetAllUsersDataAsync();
+
+            Assert.That(result.Count(), Is.EqualTo(2));
+            Assert.That(result.First().UserName, Is.EqualTo("TestManekin"));
+            Assert.That(result.First().UserSurname, Is.EqualTo("BiednyPies"));
+        }
+        [Test]
+        public async Task DeleteUserAsync_ReturnsTrue_WhenUserIsDeleted()
+        {
+            var user = new AppUser { UserName = "TestManekin" };
+            await _context.Users.AddAsync(user);
+            await _context.SaveChangesAsync();
+
+            Func<IQueryable<AppUser>, IQueryable<AppUser>> customQuery = query => query.Where(u => u.UserName == "TestManekin");
+            var result = await _userRepository.DeleteUserAsync(customQuery);
+
+            Assert.That(result, Is.True);
+            Assert.That(await _context.Users.AnyAsync(u => u.UserName == "TestManekin"), Is.False);
+        }
+
+        [Test]
+        public async Task EditUserData_ReturnsTrue_WhenUserDataIsEdited()
+        {
+            var user = new AppUser { UserName = "Name", UserSurname = "Surname", PasswordHash = "Hash", UserAge = 44 };
+            await _context.Users.AddAsync(user);
+            await _context.SaveChangesAsync();
+
+            var updatedUser = new AppUser { UserName = "NewName", UserSurname = "NewSurname", PasswordHash = "NewHash", UserAge = 66 };
+            var result = await _userRepository.EditUserData(updatedUser, user.Id);
+
+            Assert.That(result, Is.True);
+            var dbUser = await _context.Users.FindAsync(user.Id);
+            Assert.That(dbUser.UserName, Is.EqualTo("NewName"));
+            Assert.That(dbUser.UserSurname, Is.EqualTo("NewSurname"));
+            Assert.That(dbUser.PasswordHash, Is.EqualTo("NewHash"));
+            Assert.That(dbUser.UserAge, Is.EqualTo(66));
+        }
     }
-
-    [Test]
-    public async Task DeleteUserAsync_ShouldReturnTrue_WhenUserExistsAndIsDeleted()
-    {      
-        var userToDelete = new User { UserId = 1, UserName = "UserToDelete" };
-
-        var mockDbSet = new Mock<DbSet<User>>();
-        mockDbSet.As<IQueryable<User>>().Setup(m => m.Provider).Returns(() => new List<User> { userToDelete }.AsQueryable().Provider);
-        mockDbSet.As<IQueryable<User>>().Setup(m => m.Expression).Returns(() => new List<User> { userToDelete }.AsQueryable().Expression);
-        mockDbSet.As<IQueryable<User>>().Setup(m => m.ElementType).Returns(() => new List<User> { userToDelete }.AsQueryable().ElementType);
-        mockDbSet.As<IQueryable<User>>().Setup(m => m.GetEnumerator()).Returns(() => new List<User> { userToDelete }.AsQueryable().GetEnumerator());
-
-        _mockContext.Setup(c => c.Users).Returns(mockDbSet.Object);
-
-        Func<IQueryable<User>, IQueryable<User>> customQuery = q => q.Where(u => u.UserId == 1);
-
-        var result = await _userRepository.DeleteUserAsync(customQuery);
-
-        Assert.That(result, Is.True);
-        _mockContext.Verify(c => c.SaveChangesAsync(default), Times.Once);
-    }
-
-   
 }
