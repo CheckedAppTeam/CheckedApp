@@ -8,6 +8,7 @@ import password_icon from '../../assets/password.png'
 import InputWithIcon from '../Reusables/InputWithIcon.js'
 import terms_pdf from '../../assets/TermsOfService.pdf'
 import { userEndpoints } from '../../endpoints'
+import { Link } from 'react-router-dom'
 
 function Signup() {
   const [form, setForm] = useState({
@@ -150,23 +151,22 @@ function Signup() {
           </div>
           <div className='row'>
             <br></br>
-            You already have an account? <a href='/Login'>Login</a>
+            You already have an account? <Link to='/Login'>Login</Link>
           </div>
           <br></br>
           <div className='row'>
             <div className='col-half'>
               <h4>Age</h4>
-              
-                <div className='col-half'>
-                  <input
-                    className='age-input'
-                    type='number'
-                    name='UserAge'
-                    onChange={handleForm}
-                    value={form.UserAge}
-                  />
-                </div>
-              
+
+              <div className='col-half'>
+                <input
+                  className='age-input'
+                  type='number'
+                  name='UserAge'
+                  onChange={handleForm}
+                  value={form.UserAge}
+                />
+              </div>
             </div>
             <div className='col-half'>
               <h4>Gender</h4>
@@ -204,9 +204,9 @@ function Signup() {
                 checked={form.terms}
               />
               <label htmlFor='terms'>
-                <a href={terms_pdf} target='_blank' rel='noopener noreferrer'>
+                <Link to={terms_pdf} target='_blank' rel='noopener noreferrer'>
                   Terms
-                </a>{' '}
+                </Link>{' '}
                 I accept the terms and conditions for signing up to this
                 service, and also confirm I have read the privacy policy.
               </label>
