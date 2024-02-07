@@ -77,4 +77,54 @@
   background-color: var(--mainColor);
   border-radius: 20px;
   text-align: center;
+  margin: 0.4em;
+}
+
+.closeBtnForm button {
+  background-image: url('../assets/Cancel.png');
+  background-color: transparent;
+  height: 40px;
+  width: 40px;
+  border: none;
+  font-size: 25px;
+  cursor: pointer;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.addItemListForm {
+  margin-top: 20px;
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.addItemListForm label {
+  display: block;
+  margin-bottom: 10px;
+}
+
+.addItemListForm input[type="text"],
+.addItemListForm input[type="date"],
+.addItemListForm input[type="checkbox"] {
+  width: 100%;
+  padding: 8px;
+  margin-top: 4px;
+  margin-bottom: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  box-sizing: border-box;
+}
+
+.addItemListForm button[type="submit"] {
+  background-color: #007bff;
+  color: #fff;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.addItemListForm button[type="submit"]:hover {
+  background-color: #0056b3;
 }
