@@ -9,6 +9,7 @@ import Navbar from './Components/NavBar/Navbar'
 import Signup from './Components/UserAuthForm/Signup'
 import Login from './Components/UserAuthForm/Login'
 import { AuthProvider } from './Contexts/AuthContext.js'
+import {PrivateRoute} from './Components/PrivateRoute.js'
 
 function App() {
   return (
@@ -21,7 +22,12 @@ function App() {
             <Route index element={<ItemLists />} />{/* zabezpieczyc private route */}
             <Route path='new' element={<NewList />} />
           </Route>
-          <Route path='/items' element={<Items/>}/>
+          <Route path='/items' 
+          element={
+          <PrivateRoute>
+              <Items />
+            </PrivateRoute>}
+            />
           <Route path='*' element={<NotFound />} />
           <Route path='/Register' element={<Signup />} />
           <Route path='/Login' element={<Login />} />
