@@ -13,6 +13,7 @@
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="7.0.15" />
     <PackageReference Include="Microsoft.AspNetCore.Identity" Version="2.2.0" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="7.0.14" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.Testing" Version="7.0.15" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="7.0.14" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.6.0" />
     <PackageReference Include="Moq" Version="4.20.70" />
@@ -29,7 +30,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\CheckedApp.Project\CheckedAppProject.API.csproj" />
     <ProjectReference Include="..\CheckedAppProject.DATA\CheckedAppProject.DATA.csproj" />
+    <ProjectReference Include="..\CheckedAppProject.LOGIC\CheckedAppProject.LOGIC.csproj" />
   </ItemGroup>
 
 </Project>

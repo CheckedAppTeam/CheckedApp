@@ -43,7 +43,8 @@ namespace CheckedAppProject.LOGIC.Services.Authentication
 
             foreach (var error in result.Errors)
             {
-                authResult.ErrorMessages.Add(error.Code, error.Description);
+                var key = string.IsNullOrEmpty(error.Code) ? error.Description : error.Code;
+                authResult.ErrorMessages.Add(key,error.Description);
             }
 
             return authResult;

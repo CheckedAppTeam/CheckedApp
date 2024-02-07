@@ -5,11 +5,23 @@ import { useAuth } from '../../Contexts/AuthContext.js'
 import { useNavigate } from 'react-router-dom'
 import '../../styles/navbar.css'
 import { Link } from 'react-router-dom'
+import { jwtDecode } from 'jwt-decode';
 
 function Navbar() {
   const navRef = useRef()
   const { token, removeTokens } = useAuth()
   const navigate = useNavigate()
+
+  let isAdmin = false;
+  if (token) {
+    try {
+      const decodedToken = jwtDecode(token);
+      const roles = decodedToken["http://schemas.microsoft.com/ws/2008/06/identity/claims/role"];
+      isAdmin = roles === 'Admin';
+    } catch (error) {
+      console.error('Problem with token decoding:', error);
+    }
+  }
 
   const showNavBar = () => {
     if (navRef.current) {
@@ -34,9 +46,11 @@ function Navbar() {
         <Link onClick={showNavBar} to='/ItemLists'>
           Item Lists
         </Link>
-        <Link onClick={showNavBar} to='/Items'>
-          Items
-        </Link>
+        {isAdmin && (
+          <Link onClick={showNavBar} to='/Items'>
+            Items
+          </Link>
+        )}
         {!token && (
           <Link onClick={showNavBar} to='/Register'>
             Register
