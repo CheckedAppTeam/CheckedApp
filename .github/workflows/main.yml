@@ -25,4 +25,4 @@ jobs:
        run: dotnet build ./CheckedApp/CheckedApp.sln --configuration Release --no-restore
 
      - name: Publish
-       run: dotnet publish ./CheckedApp/CheckedApp.sln --configuration Release --no-build --output
+       run: dotnet publish ./CheckedApp/CheckedApp.sln --configuration Release --no-build
