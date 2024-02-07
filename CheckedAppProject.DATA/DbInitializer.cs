@@ -19,7 +19,7 @@ namespace CheckedAppProject.DATA
             {
                 var adminUser = new AppUser
                 {
-                    UserName = "admin",
+                    UserName = "Admin",
                     Email = "admin@ham.com"
                 };
                 var createAdminResult = await userManager.CreateAsync(adminUser, "klarowanieGigaKraBowe");
