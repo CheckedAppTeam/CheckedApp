@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 
-async function getCoordinates(address) {
+export async function getCoordinates(address) {
   const apiKey = process.env.REACT_APP_GOOGLE_MAPS_API_KEY
   const apiUrl = `https://maps.googleapis.com/maps/api/geocode/json?address=${encodeURIComponent(
     address
@@ -39,21 +39,18 @@ const PlaceSeeker = ({ onCoordinatesChange }) => {
     if (address.trim() !== '') {
       const coords = await getCoordinates(address)
       setCoordinates(coords)
-      onCoordinatesChange(coords);
-
+      onCoordinatesChange(coords)
     }
   }
-  
+
   const handleKeyPress = (event) => {
     if (event.key === 'Enter') {
-      handleGetCoordinates();
+      handleGetCoordinates()
     }
-  };
+  }
 
   return (
     <div>
-      
-
       <input
         placeholder='Type address...'
         type='text'
