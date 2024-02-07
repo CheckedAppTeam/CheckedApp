@@ -71,9 +71,7 @@ nav {
 		transition: 1s;
 	}
 
-	header .responsive_nav {
-		transform: translateY(110vh);
-	}
+	
 
 	nav .nav-close-btn {
 		position: absolute;

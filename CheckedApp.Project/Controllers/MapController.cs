@@ -10,7 +10,7 @@ namespace CheckedAppProject.API.Controllers
 {
     [ApiController]
     [Route("Map")]
-    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+    //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
 
     public class MapController : ControllerBase
     {

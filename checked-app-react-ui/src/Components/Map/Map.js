@@ -2,16 +2,74 @@ import React, { useState, useEffect, useRef } from 'react'
 import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet'
 import L from 'leaflet'
 import { FaMapMarker } from 'react-icons/fa'
-import Select from 'react-select'
 import ReactDOMServer from 'react-dom/server'
 import '../../styles/map.css'
-import PlaceSeeker from './PlaceSeeker.js'
+import PlaceSeeker, { getCoordinates } from './PlaceSeeker.js'
 import FlyToMarker from './FlyToMarker.js'
-
+import { Icon } from 'leaflet'
 
 
 function Map() {
-  const [parentCoordinates, setParentCoordinates] = useState(null);
+  const [parentCoordinates, setParentCoordinates] = useState(null)
+  const [destinations, setDestinations] = useState([])
+  const [formattedCoords, setFormattedCoords] = useState([])
+
+  useEffect(() => {
+    const fetchDataAndFormatCoords = async () => {
+      try {
+        const response = await fetch(
+          'https://localhost:7161/Map/GetAllDestinations',
+          {
+            headers: {
+              Accept: 'application/json',
+              'Content-Type': 'application/json',
+            },
+          }
+        )
+
+        if (!response.ok) {
+          console.error(
+            'Failed to fetch destinations. Status:',
+            response.status
+          )
+          return
+        }
+
+        const data = await response.json()
+        setDestinations(data)
+
+        const formattedCoordsPromises = data.map(async (destination) => {
+          try {
+            const coordinates = await getCoordinates(
+              destination.itemListDestination
+            )
+            return {
+              key: destination.itemListId,
+              position: [coordinates.latitude, coordinates.longitude],
+              icon: CustomMarkerIcon,
+              name: destination.itemListName,
+            }
+          } catch (error) {
+            console.error(
+              'Error fetching coordinates for destination:',
+              destination,
+              error
+            )
+            return null
+          }
+        })
+
+        const resolvedFormattedCoords = await Promise.all(
+          formattedCoordsPromises
+        )
+        setFormattedCoords(resolvedFormattedCoords)
+      } catch (error) {
+        console.error('Error fetching destinations:', error)
+      }
+    }
+
+    fetchDataAndFormatCoords()
+  }, [])
 
   const mapRef = useRef(null)
 
@@ -21,17 +79,15 @@ function Map() {
   })
 
   const handleCoordinatesChange = (coordinates) => {
-    setParentCoordinates(coordinates);
+    setParentCoordinates(coordinates)
   }
-  
+
   return (
     <>
       <div className='country-list'>
         <h1>Where do You wanna go?</h1>
-        
-        
       </div>
-      <PlaceSeeker onCoordinatesChange={handleCoordinatesChange}  />
+      <PlaceSeeker onCoordinatesChange={handleCoordinatesChange} />
       <br></br>
       <MapContainer
         className='map-container'
@@ -43,22 +99,30 @@ function Map() {
           attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
           url='https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png'
         />
+        {formattedCoords.map((formattedCoord) => {
+          if (formattedCoord) {
+            return (
+              <Marker
+                key={formattedCoord.key}
+                position={formattedCoord.position}
+                icon={formattedCoord.icon}
+              >
+                <Popup>
+                  <FaMapMarker />
+                  {formattedCoord.name}
+                </Popup>
+              </Marker>
+            )
+          } else {
+            return null
+          }
+        })}
 
-        {/* {countries.map((country, index) => (
-          <Marker
-            key={index}
-            position={country.geocode}
-            icon={CustomMarkerIcon}
-          >
-            <Popup>
-              <FaMapMarker />
-              <a href={country.label}>{country.label}</a>
-            </Popup>
-          </Marker>
-        ))} */}
-        
         {parentCoordinates && (
-          <FlyToMarker position={[parentCoordinates.latitude,parentCoordinates.longitude]} zoomLevel={6} />
+          <FlyToMarker
+            position={[parentCoordinates.latitude, parentCoordinates.longitude]}
+            zoomLevel={6}
+          />
         )}
       </MapContainer>
     </>
