@@ -1,0 +1,28 @@
+name: CI development
+
+on: 
+ workflow_dispatch:
+ push: 
+   branches:
+   - development
+
+jobs:
+ publish:
+   runs-on: ubuntu-latest
+
+   steps:
+     - uses: actions/checkout@v3
+     
+     - name: Setup .NET
+       uses: actions/checkout@v3
+       with:
+        dotnet version: '7.x'
+        
+     - name: Restore
+       run: dotnet restore ./CheckedApp/CheckedApp.sln
+        
+     - name: Build
+       run: dotnet build ./CheckedApp/CheckedApp.sln --configuration Release --no-restore
+
+     - name: Publish
+       run: dotnet publish ./CheckedApp/CheckedApp.sln --configuration Release --no-build --output
