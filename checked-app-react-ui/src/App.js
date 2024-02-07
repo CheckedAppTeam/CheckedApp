@@ -9,7 +9,7 @@ import Navbar from './Components/NavBar/Navbar'
 import Signup from './Components/UserAuthForm/Signup'
 import Login from './Components/UserAuthForm/Login'
 import { AuthProvider } from './Contexts/AuthContext.js'
-import {PrivateRoute} from './Components/PrivateRoute.js'
+import PrivateRoute from './Components/PrivateRoute.js'
 
 function App() {
   return (
@@ -25,7 +25,7 @@ function App() {
           <Route path='/items' 
           element={
           <PrivateRoute>
-              <Items />
+            <Items />
             </PrivateRoute>}
             />
           <Route path='*' element={<NotFound />} />

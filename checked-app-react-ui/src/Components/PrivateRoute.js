@@ -1,7 +1,7 @@
 import React from 'react';
 import { Navigate } from 'react-router-dom';
-import jwtDecode from 'jwt-decode';
-import { useAuth } from './Contexts/AuthContext';
+import {jwtDecode} from 'jwt-decode';
+import { useAuth } from '../Contexts/AuthContext';
 
 const PrivateRoute = ({ children }) => {
   const { token } = useAuth();
