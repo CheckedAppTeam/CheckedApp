@@ -45,10 +45,15 @@ const userItemEndpoints = {
   deleteUserItem: (id) => `${baseURL}/UserId/DeleteItemFromList/${id}`,
 }
 
+const mapEndpoints = {
+  getAllDestinations:`${baseURL}/Map/GetAllDestinations`
+}
+
 export {
   axios,
   itemEndpoints,
   itemListEndpoints,
   userEndpoints,
   userItemEndpoints,
+  mapEndpoints
 }

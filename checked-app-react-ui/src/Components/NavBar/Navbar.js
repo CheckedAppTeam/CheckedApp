@@ -1,16 +1,17 @@
-import React, { useRef } from 'react'
-import CheckedFullLogo from '../../assets/CheckedFullLogo.png'
-import { FaBars, FaTimes } from 'react-icons/fa'
-import { useAuth } from '../../Contexts/AuthContext.js'
-import { useNavigate } from 'react-router-dom'
-import '../../styles/navbar.css'
-import { Link } from 'react-router-dom'
+import React, { useRef, useState } from 'react';
+import CheckedFullLogo from '../../assets/CheckedFullLogo.png';
+import { FaBars, FaTimes } from 'react-icons/fa';
+import { useAuth } from '../../Contexts/AuthContext.js';
+import { useNavigate } from 'react-router-dom';
+import '../../styles/navbar.css';
+import { Link } from 'react-router-dom';
 import { jwtDecode } from 'jwt-decode';
 
 function Navbar() {
-  const navRef = useRef()
-  const { token, removeTokens } = useAuth()
-  const navigate = useNavigate()
+  const navRef = useRef();
+  const [isNavVisible, setIsNavVisible] = useState(false);
+  const { token, removeTokens } = useAuth();
+  const navigate = useNavigate();
 
   let isAdmin = false;
   if (token) {
@@ -24,22 +25,23 @@ function Navbar() {
   }
 
   const showNavBar = () => {
-    if (navRef.current) {
-      navRef.current.classList.toggle('responsive_nav')
-    }
-  }
+    setIsNavVisible(!isNavVisible);
+  };
+
   const handleLogout = () => {
-    removeTokens()
-    showNavBar()
-    navigate('/')
-  }
-  const handleLogoClick = ()=>{
-    navigate('/')
-  }
+    removeTokens();
+    showNavBar();
+    navigate('/');
+  };
+
+  const handleLogoClick = () => {
+    navigate('/');
+  };
+
   return (
     <header>
       <img className='nav-Logo' onClick={handleLogoClick} src={CheckedFullLogo} alt='Logo' />
-      <nav ref={navRef}>
+      <nav className={isNavVisible ? 'responsive_nav' : ''} ref={navRef}>
         <Link onClick={showNavBar} to='/'>
           Home
         </Link>
@@ -78,4 +80,4 @@ function Navbar() {
   );
 }
 
-export default Navbar
+export default Navbar;

@@ -98,5 +98,12 @@ namespace CheckedAppProject.LOGIC.Services
             return await _itemListRepository.DeleteAsync(query => query.Where(il => il.ItemListId == id));
         }
 
+        public async Task<List<ItemList>> GetPublicListsAsync()
+        {
+            return await _dbContext.ItemLists
+                .Where(itemList => itemList.ItemListPublic)
+                .ToListAsync();
+        }
+
     }
 }

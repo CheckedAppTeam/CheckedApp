@@ -1,11 +1,13 @@
 import React, { useState, useEffect, useRef } from 'react'
 import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet'
-import L from 'leaflet'
+import L,{divIcon} from 'leaflet'
 import { FaMapMarker } from 'react-icons/fa'
 import ReactDOMServer from 'react-dom/server'
 import '../../styles/map.css'
 import PlaceSeeker, { getCoordinates } from './PlaceSeeker.js'
 import FlyToMarker from './FlyToMarker.js'
+import { mapEndpoints } from '../../endpoints.js'
+import MarkerClusterGroup from 'react-leaflet-cluster'
 
 
 function Map({ handleMarkerClick }) {
@@ -15,15 +17,12 @@ function Map({ handleMarkerClick }) {
   useEffect(() => {
     const fetchDataAndFormatCoords = async () => {
       try {
-        const response = await fetch(
-          'https://localhost:7161/Map/GetAllDestinations',
-          {
-            headers: {
-              Accept: 'application/json',
-              'Content-Type': 'application/json',
-            },
-          }
-        )
+        const response = await fetch(mapEndpoints.getAllDestinations, {
+          headers: {
+            Accept: 'application/json',
+            'Content-Type': 'application/json',
+          },
+        })
 
         if (!response.ok) {
           console.error(
@@ -74,6 +73,12 @@ function Map({ handleMarkerClick }) {
     className: 'custom-marker-icon',
     html: ReactDOMServer.renderToString(<FaMapMarker />),
   })
+  // const createClusterIcon = (cluster)=>{
+  //   return new divIcon({
+  //     html:`<div class="cluster-icon">${cluster.getChildCount()}</div>`,
+  //     iconSize
+  //   })
+  // }
 
   const handleCoordinatesChange = (coordinates) => {
     setParentCoordinates(coordinates)
@@ -96,6 +101,12 @@ function Map({ handleMarkerClick }) {
           attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
           url='https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png'
         />
+
+        <MarkerClusterGroup
+        chunkedLoading
+        // iconCreateFunction={createClusterIcon}
+        >
+
         {formattedCoords.map((formattedCoord) => {
           if (formattedCoord) {
             return (
@@ -104,13 +115,16 @@ function Map({ handleMarkerClick }) {
                 position={formattedCoord.position}
                 icon={formattedCoord.icon}
                 eventHandlers={{
-                  click: () => handleMarkerClick(formattedCoord.key, formattedCoord.name),
+                  click: () =>
+                    handleMarkerClick(formattedCoord.key, formattedCoord.name),
                 }}
               >
                 <Popup>
                   <FaMapMarker />
                   <span
-                    onClick={() => handleMarkerClick(formattedCoord.key, formattedCoord.name)}
+                    onClick={() =>
+                      handleMarkerClick(formattedCoord.key, formattedCoord.name)
+                    }
                     style={{ cursor: 'pointer', textDecoration: 'underline' }}
                   >
                     {formattedCoord.name}
@@ -122,6 +136,7 @@ function Map({ handleMarkerClick }) {
             return null
           }
         })}
+        </MarkerClusterGroup>
 
         {parentCoordinates && (
           <FlyToMarker
