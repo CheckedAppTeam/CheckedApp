@@ -13,10 +13,6 @@ function ItemList({ itemList, openModalAtIndex }) {
   }, [itemListId, listName, openModalAtIndex]);
   
   useEffect( () => {
-    console.log(itemListId)
-    console.log(listName)
-    console.log(travelDestination)
-    console.log(travelDate)
     if (itemList !== undefined) {
       setIsLoading(false);
     }

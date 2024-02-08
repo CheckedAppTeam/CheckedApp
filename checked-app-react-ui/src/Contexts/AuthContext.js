@@ -43,8 +43,9 @@ export const AuthProvider = ({ children }) => {
         if (error.response.status === 401 && !originalRequest._retry) { 
           originalRequest._retry = true; 
           try {
-            const response = await axios.post(userEndpoints.refreshToken, {refreshToken});
+            const response = await axios.post(userEndpoints.refreshToken, { refreshToken});
             const { token: newToken, refreshToken: newRefreshToken } = response.data;
+
             updateTokens(newToken, newRefreshToken);
 
             axios.defaults.headers.common['Authorization'] = `Bearer ${newToken}`;
@@ -64,8 +65,8 @@ export const AuthProvider = ({ children }) => {
       axios.interceptors.response.eject(interceptor);
     };
   }, [refreshToken, updateTokens, removeTokens]);
-
-  return (
+  
+return (
     <AuthContext.Provider value={{ token, updateTokens, removeTokens }}>
       {children}
     </AuthContext.Provider>
