@@ -4,13 +4,14 @@ import { useAuth } from '../Contexts/AuthContext.js'
 import '../styles/userProfile.css'
 import { jwtDecode } from 'jwt-decode'
 import { userEndpoints } from '../endpoints'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 
 export function UserHome() {
   const { token } = useAuth()
   const [user, setUser] = useState(null)
   const [packingLists, setPackingLists] = useState([])
   const [isEditing, setIsEditing] = useState(false)
+  const navigate = useNavigate()
 
   useEffect(() => {
     if (token) {
@@ -27,7 +28,7 @@ export function UserHome() {
       axios
         .get(userEndpoints.getUserData(userId))
         .then((response) => {
-          console.log(response);
+          console.log(response)
           setUser({
             userId: userId,
             firstName: response.data.userName,
@@ -41,7 +42,7 @@ export function UserHome() {
         .catch((error) => {
           console.error('Error while getting user', error)
         })
-    } 
+    }
   }, [token])
 
   const handleInputChange = (event) => {
@@ -71,9 +72,9 @@ export function UserHome() {
 
   if (!user) {
     return (
-    <Link to='/Login'> 
-      <h1>Unauthorized, click to Log In.</h1>
-    </Link>
+      <Link to='/Login'>
+        <h1>Unauthorized, click to Log In.</h1>
+      </Link>
     )
   }
   return (
@@ -83,14 +84,14 @@ export function UserHome() {
         <div className='user-info'>
           {isEditing ? (
             <>
-            <label for="firstName">Name</label>
+              <label for='firstName'>Name</label>
               <input
                 type='text'
                 name='firstName'
                 value={user.firstName}
                 onChange={handleInputChange}
               />
-            <label for="lastName">Surname</label>
+              <label for='lastName'>Surname</label>
 
               <input
                 type='text'
@@ -98,7 +99,7 @@ export function UserHome() {
                 value={user.lastName}
                 onChange={handleInputChange}
               />
-            <label for="age">Age</label>
+              <label for='age'>Age</label>
 
               <input
                 type='number'
@@ -126,7 +127,9 @@ export function UserHome() {
           <h2>Your packing lists</h2>
           {packingLists.length > 0 ? (
             packingLists.map((list) => (
-              <button key={list.itemListId}>{list.listName}</button>
+              <Link to='/ItemLists' className='linkButton'>
+                <button key={list.itemListId}>{list.listName}</button>
+              </Link>
             ))
           ) : (
             <p>You have no packing lists...</p>

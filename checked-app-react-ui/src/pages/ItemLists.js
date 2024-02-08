@@ -28,24 +28,24 @@ export function ItemLists() {
   });
   const { token } = useAuth()
 
-
-  useEffect(() => {
-    const fetchData = async () => {
-      if (token) {
-        try {
-          const decodedToken = await jwtDecode(token)
-          const userId = await
-            decodedToken[
-            'http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier'
-            ]
-          const data = await axios.get(userEndpoints.getUserData(userId))
-          setAllitemListsResponseData(data.data)
-          setLoading(true)
-        } catch (error) {
-          console.error(error)
-        }
+  const fetchData = async () => {
+    if (token) {
+      try {
+        const decodedToken = jwtDecode(token)
+        const userId =
+          decodedToken[
+          'http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier'
+          ]
+        const data = await axios.get(userEndpoints.getUserData(userId))
+        setAllitemListsResponseData(data.data)
+        setLoading(true)
+      } catch (error) {
+        console.error(error)
       }
     }
+  }
+  useEffect(() => {
+
     fetchData()
   }, [])
 
@@ -57,7 +57,10 @@ export function ItemLists() {
     setCurrentListName(name)
   }
 
-  const handleAddItemList = () => {
+
+
+  const handleAddItemList = (e) => {
+    e.preventDefault();
     setShowForm(true);
   };
 
@@ -66,10 +69,17 @@ export function ItemLists() {
     setNewListData({ ...newListData, [name]: value });
   };
 
+  const handleAddItemToList = (newList) => {
+    setAllitemListsResponseData((prevData) => ({
+      ...prevData,
+      ownItemList: [...prevData.ownItemList, newList],
+    }));
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
-    handleAddItemList(newListData);
-    setShowForm(false);
+    // handleAddItemList(newListData);
+    
 
     try {
       const decodedToken = jwtDecode(token)
@@ -84,37 +94,33 @@ export function ItemLists() {
         const response = await axios.post(itemListEndpoints.addList(userId), requestData);
         const updatedItemLists = [...allItemListsResponseData.ownItemList, response.data];
         setAllitemListsResponseData({ ...allItemListsResponseData, ownItemList: updatedItemLists });
+        await fetchData();
 
       } catch (error) {
         console.error(error)
       }
-
+      
     } catch (error) {
       console.error(error);
     }
+    setShowForm(false);
   };
 
-  const handleCheckboxChange = (e) => {
-    const isChecked = e.target.checked;
-    setNewListData({ ...newListData, isPublic: isChecked });
+  const handleDelete = (itemId) => {
+    const updatedItemLists = allItemListsResponseData.ownItemList.filter(item => item.itemListId !== itemId);
+    setAllitemListsResponseData({ ...allItemListsResponseData, ownItemList: updatedItemLists });
+  };
+
+
+
+  const handleCheckboxChange = () => {
+    setNewListData({ ...newListData, ItemListPublic: !newListData.ItemListPublic });
   };
 
   return (
     <div className='itemListBackground'>
       <div className='body'>
         <h1>All Your Lists</h1>
-        {!loading && <Loader />}
-        {allItemListsResponseData && allItemListsResponseData.ownItemList && (
-          <div className='item-lists'>
-            <Grid container spacing={{ xs: 2, md: 3 }} columns={{ xs: 4, sm: 8, md: 12 }}>
-              {allItemListsResponseData.ownItemList.map((item, index) => (
-                <Grid item xs={2} sm={4} md={4} key={index}>
-                  <ItemList key={item.ItemListId} itemList={item} openModalAtIndex={openModalAtIndex}>xs=2</ItemList>
-                </Grid>
-              ))}
-            </Grid>
-          </div>
-        )}
         <div className='footerButton'>
           <div className='AddItemListButton'>
             <button onClick={handleAddItemList}>Add</button>
@@ -164,6 +170,18 @@ export function ItemLists() {
             </label>
             <button className='submitButton' type="submit">Submit</button>
           </form>
+        )}
+        {!loading && <Loader />}
+        {allItemListsResponseData && allItemListsResponseData.ownItemList && (
+          <div className='item-lists'>
+            <Grid container spacing={{ xs: 2, md: 2 }} columns={{ xs: 4, sm: 8, md: 12 }}>
+              {allItemListsResponseData.ownItemList.map((item, index) => (
+                <Grid item xs={2} sm={4} md={4} key={index}>
+                  <ItemList key={item.ItemListId} itemList={item} openModalAtIndex={openModalAtIndex} onDelete={handleDelete} addedList={newListData}>xs=2</ItemList>
+                </Grid>
+              ))}
+            </Grid>
+          </div>
         )}
         {openModal && (
           <ItemListModal

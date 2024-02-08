@@ -1,11 +1,13 @@
 import React from 'react';
 import { useState, useCallback, useEffect } from 'react'
+import axios from 'axios';
 import { Link } from 'react-router-dom';
 import ItemListModal from './ItemListModal';
+import { itemListEndpoints } from '../endpoints';
 
-function ItemList({ itemList, openModalAtIndex }) {
+function ItemList({ itemList, openModalAtIndex, onDelete }) {
   const [isLoading, setIsLoading] = useState(true);
-  
+
   const { itemListId, listName, travelDestination, travelDate, isPublic } = itemList;
   
   const handleClick = useCallback(() => {
@@ -13,6 +15,10 @@ function ItemList({ itemList, openModalAtIndex }) {
   }, [itemListId, listName, openModalAtIndex]);
   
   useEffect( () => {
+    console.log(itemListId)
+    console.log(listName)
+    console.log(travelDestination)
+    console.log(travelDate)
     if (itemList !== undefined) {
       setIsLoading(false);
     }
@@ -23,32 +29,38 @@ function ItemList({ itemList, openModalAtIndex }) {
       {isLoading ? (
         <div>Loading...</div>
       ) : (
-          <div className='itemList' key={itemListId}>
-            <h2 className='openModalClick' onClick={handleClick}>
-              {listName}
-            </h2>
-            <p>{travelDestination}</p>
-            <p>{formatDate(travelDate)}</p>
-            {isPublic ? (
-              <p className='public'>public</p>
-            ) : (
-              <p className='private'>private</p>
-            )}
-          </div>
+        <>
+            <div className='itemList' key={itemListId}>
+              <div className='titleCloseBtn'>
+                <button onClick={deleteItemList}></button>
+              </div>
+              <h2 className='openModalClick' onClick={handleClick}>
+                {listName}
+              </h2>
+              <p>{travelDestination}</p>
+              <p>{formatDate(travelDate)}</p>
+              {isPublic ? (
+                <p className='public'>public</p>
+              ) : (
+                <p className='private'>private</p>
+              )}
+            </div>
+        </>
       )}
     </>
   );
+  
 }
 
 function formatDate(dateString) {
-  try{
-    // console.log(dateString)
-    const date = new Date(dateString)
-    const formattedDate = date.toISOString().split('T')[0]
-    return formattedDate
-  } catch(e){
-    console.error(e)
-  }
+    try {
+      // console.log(dateString)
+      const date = new Date(dateString)
+      const formattedDate = date.toISOString().split('T')[0]
+      return formattedDate
+    } catch (e) {
+      console.error(e)
+    }
 }
 
-export default ItemList;
+export default ItemList
