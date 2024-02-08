@@ -6,10 +6,9 @@ import ReactDOMServer from 'react-dom/server'
 import '../../styles/map.css'
 import PlaceSeeker, { getCoordinates } from './PlaceSeeker.js'
 import FlyToMarker from './FlyToMarker.js'
-import { Icon } from 'leaflet'
 
 
-function Map() {
+function Map({ handleMarkerClick }) {
   const [parentCoordinates, setParentCoordinates] = useState(null)
   const [destinations, setDestinations] = useState([])
   const [formattedCoords, setFormattedCoords] = useState([])
@@ -106,10 +105,18 @@ function Map() {
                 key={formattedCoord.key}
                 position={formattedCoord.position}
                 icon={formattedCoord.icon}
+                eventHandlers={{
+                  click: () => handleMarkerClick(formattedCoord.key, formattedCoord.name),
+                }}
               >
                 <Popup>
                   <FaMapMarker />
-                  {formattedCoord.name}
+                  <span
+                    onClick={() => handleMarkerClick(formattedCoord.key, formattedCoord.name)}
+                    style={{ cursor: 'pointer', textDecoration: 'underline' }}
+                  >
+                    {formattedCoord.name}
+                  </span>
                 </Popup>
               </Marker>
             )

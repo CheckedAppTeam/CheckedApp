@@ -2,7 +2,6 @@ import { useState, useEffect } from 'react'
 import axios from 'axios'
 import { userEndpoints } from '../endpoints'
 import '../styles/itemLists.css'
-import { Link } from 'react-router-dom' 
 import '../styles/main.css'
 import Loader from '../spinners/Loader.js'
 import ItemListModal from '../Components/ItemListModal.js'
@@ -50,6 +49,8 @@ export function ItemLists() {
     setCurrentId(index)
     setCurrentListName(name)
   }
+
+
 
   return (
       <div className='itemListBackground'>
