@@ -1,16 +1,15 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
-import ItemListModal from './ItemListModal';
+import React from 'react'
 
 function ItemList({ itemList, openModalAtIndex }) {
-  const { itemListId, listName, travelDestination, travelDate, isPublic } = itemList;
+  const { itemListId, listName, travelDestination, travelDate, isPublic } =
+    itemList
 
   return (
     <div className='itemList' key={itemListId}>
       <h2
         className='openModalClick'
         onClick={() => {
-          openModalAtIndex(itemListId, listName);
+          openModalAtIndex(itemListId, listName)
         }}
       >
         {listName}
@@ -23,7 +22,7 @@ function ItemList({ itemList, openModalAtIndex }) {
         <p className='private'>private</p>
       )}
     </div>
-  );
+  )
 }
 
 function formatDate(dateString) {
@@ -32,4 +31,4 @@ function formatDate(dateString) {
   return formattedDate
 }
 
-export default ItemList;
+export default ItemList

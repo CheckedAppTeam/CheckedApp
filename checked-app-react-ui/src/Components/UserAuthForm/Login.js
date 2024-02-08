@@ -61,10 +61,7 @@ function Login() {
             />
           </div>
           <div className='row'>
-            
-            You don't have an account?{" "}
-            <Link to="/Register">Register</Link>
-            
+            You don't have an account? <Link to='/Register'>Register</Link>
           </div>
           <div className='row'>
             <div className='col-button'>

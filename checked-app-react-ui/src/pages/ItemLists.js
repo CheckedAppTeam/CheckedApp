@@ -9,8 +9,7 @@ import jwt_decode from 'jwt-decode' // to używane jest? będzie? kasujcie od ra
 import { itemListEndpoints } from '../endpoints'
 import { useAuth } from '../Contexts/AuthContext.js'
 import { jwtDecode } from 'jwt-decode'
-import ItemList from '../Components/ItemList.js';
-
+import ItemList from '../Components/ItemList.js'
 
 export function ItemLists() {
   const [allItemListsResponseData, setAllitemListsResponseData] = useState(null)
@@ -19,7 +18,6 @@ export function ItemLists() {
   const [currentId, setCurrentId] = useState()
   const [currentListName, setCurrentListName] = useState()
   const { token } = useAuth()
-
 
   useEffect(() => {
     const fetchData = async () => {
@@ -50,15 +48,13 @@ export function ItemLists() {
     setCurrentListName(name)
   }
 
-
-
   return (
-      <div className='itemListBackground'>
-        {console.log(itemListEndpoints)}
-        <div className='body'>
-          <h1>All Your Lists</h1>
-          {!loading && <Loader />}
-          {!loading && <Loader />}
+    <div className='itemListBackground'>
+      {console.log(itemListEndpoints)}
+      <div className='body'>
+        <h1>All Your Lists</h1>
+        {!loading && <Loader />}
+        {!loading && <Loader />}
         {allItemListsResponseData && allItemListsResponseData.ownItemList && (
           <div className='item-lists'>
             {allItemListsResponseData.ownItemList.map((itemList, index) => (
@@ -70,22 +66,17 @@ export function ItemLists() {
             ))}
           </div>
         )}
-          <div className='footer'>
-            <div className='AddButton'>
-              <button>Add</button>
-            </div>
-          </div>
-          {openModal && (
-            <ItemListModal
-              closeModal={setOpenModal}
-              itemListName={currentListName}
-              itemListId={currentId}
-            />
-          )}
+        <div className='footer'>
+          <button className='AddButton'>Add</button>
         </div>
+        {openModal && (
+          <ItemListModal
+            closeModal={setOpenModal}
+            itemListName={currentListName}
+            itemListId={currentId}
+          />
+        )}
       </div>
-    
+    </div>
   )
 }
-
-

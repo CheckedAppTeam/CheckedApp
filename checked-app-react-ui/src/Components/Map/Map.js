@@ -10,7 +10,6 @@ import FlyToMarker from './FlyToMarker.js'
 
 function Map({ handleMarkerClick }) {
   const [parentCoordinates, setParentCoordinates] = useState(null)
-  const [destinations, setDestinations] = useState([])
   const [formattedCoords, setFormattedCoords] = useState([])
 
   useEffect(() => {
@@ -35,7 +34,6 @@ function Map({ handleMarkerClick }) {
         }
 
         const data = await response.json()
-        setDestinations(data)
 
         const formattedCoordsPromises = data.map(async (destination) => {
           try {
@@ -128,7 +126,7 @@ function Map({ handleMarkerClick }) {
         {parentCoordinates && (
           <FlyToMarker
             position={[parentCoordinates.latitude, parentCoordinates.longitude]}
-            zoomLevel={6}
+            zoomLevel={10}
           />
         )}
       </MapContainer>
