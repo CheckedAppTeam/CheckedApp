@@ -29,6 +29,9 @@ namespace CheckedAppProject.LOGIC.AutoMapperProfiles
             CreateMap<Item, ItemDTO>();
             CreateMap<ItemDTO, Item>();
 
+            CreateMap<GetItemDTO, Item>();
+            CreateMap<Item, GetItemDTO>();
+
             CreateMap<NewItemDTO, Item>();
 
             CreateMap<UserItem, UserItemDTO>()

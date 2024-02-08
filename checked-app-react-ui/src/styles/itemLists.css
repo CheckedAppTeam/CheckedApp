@@ -1,26 +1,25 @@
 @import url("https://fonts.googleapis.com/css2?family=Titillium+Web:wght@300;400;700&display=swap");
 
-body {
-  font-family: 'Titillium Web', sans-serif;
-  margin: 0;
-}
-
-h1 {
-  text-align: center;
-  margin-top: 1vh;
-  color: #311abb;
-  font-size: 7vw;
+:root {
+  --mainColor: #FF9B36;
+  --mainColorLight: #9B9BFF;
+  --mainColorBlue: #311ABB;
+  --secondaryColor: #434AF2;
+  --textColor: #FFF5EB;
+  --backgroundCoor: #FAE2CA;
+  --greenColor: #3BB927;
+  --redColour: #DB5353;
 }
 
 .item-list {
   display: flex;
   flex-wrap: wrap;
   justify-content: space-between;
+  margin-top: 1em;
 }
 
 .itemList {
-  /* background-image: linear-gradient(#FAE2CA, #FFF5EB); */
-  background-color: #FAE2CA;
+  background-color: var(--backgroundCoor);
   border-radius: 20px;
   padding: 10px;
   margin: 10px;
@@ -40,16 +39,16 @@ h1 {
 }
 
 .itemList p.public {
-  color: green;
+  color: var(--greenColor);
 }
 
 .itemList p.private {
-  color: red;
+  color: var(--redColour);
 }
 
 .openModalClick {
   border: none;
-  color: #311ABB;
+  color: var(--mainColorBlue);
   cursor: pointer;
 }
 
@@ -57,40 +56,75 @@ h1 {
   position: relative;
 }
 
-.itemListBackground .footer button {
-  width: 30vw;
-  height: 100px;
+.footerButton {
+  display: flex;
+  justify-content: center;
+}
+
+
+.AddItemListButton button {
+  display: flex;
+  align-items: center;
+  text-align: center;
+  justify-content: center;
+  width: 5em;
+  height: 3em;
   border: none;
-  color: #311ABB;
+  color: var(--mainColorBlue);
   border-radius: 8px;
-  font-size: 40px;
+  font-size: 3em;
   cursor: pointer;
-  background-color: #FF9B36;
+  background-color: var(--mainColor);
   border-radius: 20px;
   text-align: center;
+  margin: 0.4em;
 }
 
-@media (max-width: 600px) {
-  .itemList {
-    max-width: 100%;
-    flex: 0 0 100%;
-  }
+.closeBtnForm button {
+  background-image: url('../assets/Cancel.png');
+  background-color: transparent;
+  height: 40px;
+  width: 40px;
+  border: none;
+  font-size: 25px;
+  cursor: pointer;
+  display: flex;
+  justify-content: flex-end;
 }
 
-@media (min-width: 601px) and (max-width: 900px) {
-  .itemList {
-    flex: 0 0 calc(50% - 20px);
-  }
+.addItemListForm {
+  margin-top: 20px;
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
 }
 
-@media (min-width: 901px) and (max-width: 1200px) {
-  .itemList {
-    flex: 0 0 calc(33.33% - 20px);
-  }
+.addItemListForm label {
+  display: block;
+  margin-bottom: 10px;
 }
 
-@media (min-width: 1201px) {
-  .itemList {
-    flex: 0 0 calc(25% - 20px);
-  }
+.addItemListForm input[type="text"],
+.addItemListForm input[type="date"],
+.addItemListForm input[type="checkbox"] {
+  width: 100%;
+  padding: 8px;
+  margin-top: 4px;
+  margin-bottom: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  box-sizing: border-box;
+}
+
+.addItemListForm button[type="submit"] {
+  background-color: #007bff;
+  color: #fff;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.addItemListForm button[type="submit"]:hover {
+  background-color: #0056b3;
 }

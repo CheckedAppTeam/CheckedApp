@@ -104,8 +104,6 @@ function ItemListModal({ closeModal, itemListName, itemListId }) {
         }
     };
 
-
-
     const showAllItemsByItemListId = async () => {
         try {
             const response = await axios.get(userItemEndpoints.getAllUsersItemsByListId(itemListId));
@@ -188,17 +186,16 @@ function ItemListModal({ closeModal, itemListName, itemListId }) {
 
         console.log(selectedItem.itemName.value)
         const matchingItem = allItems.find((item) => selectedItem.itemName.value.toLowerCase() === item.itemName.toLowerCase());
-        //console.log(matchingItem)
-        //console.log(itemListId)
-        //console.log(matchingItem.itemId)
+        console.log(allItems)
+        console.log(matchingItem)
         if (matchingItem) {
             const userItemDTO = {
                 itemListId: itemListId,
                 itemId: matchingItem.itemId,
                 itemState: 0,
             }
-            //console.log(userItemDTO)
             try {
+                console.log(userItemDTO)
                 await axios.post(userItemEndpoints.addUserItem, userItemDTO);
                 setUserItemDTO(userItemDTO)
                 setAllItemsByItemListId(prevItems => [...prevItems, matchingItem])
@@ -281,7 +278,7 @@ function ItemListModal({ closeModal, itemListName, itemListId }) {
                                     .sort((a, b) => a.userItemId - b.userItemId)
                                     .map((item, index) => (
                                         <div className='item-container' key={item.userItemId}>
-                                            {/* {console.log(item)} */}
+                                            {console.log(item)}
                                             <UserItem item={item} onItemChange={handleItemChange} />
                                         </div>
                                     ))}
