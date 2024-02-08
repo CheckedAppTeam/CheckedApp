@@ -1,0 +1,29 @@
+name: CIdevV3
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - development
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: '7.x'
+
+      - name: Restore dependencies
+        run: dotnet restore ./CheckedApp/CheckedApp.sln
+
+      - name: Build
+        run: dotnet build ./CheckedApp/CheckedApp.sln --configuration Release --no-restore
+
+      - name: Run tests
+        run: dotnet test ./CheckedApp/TestProject/TestProject.csproj
