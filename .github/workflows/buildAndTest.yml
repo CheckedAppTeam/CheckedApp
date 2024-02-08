@@ -26,5 +26,5 @@ jobs:
         run: dotnet build ./CheckedApp/CheckedApp.sln --configuration Release --no-restore
 
       - name: Run tests
-        run: dotnet test ./CheckedApp/TestProject/TestProject.csproj --filter TestCategory!=Integration
+        run: dotnet test ./CheckedApp/TestProject/TestProject.csproj
 
