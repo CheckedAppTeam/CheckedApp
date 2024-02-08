@@ -23,7 +23,7 @@ jobs:
         run: dotnet restore CheckedAppProject.sln
 
       - name: Build
-        run: dotnet build ./CheckedApp/CheckedApp.sln --configuration Release --no-restore
+        run: dotnet build CheckedAppProject.sln --configuration Release --no-restore
 
       - name: Run tests
-        run: dotnet test ./CheckedApp/TestProject/TestProject.csproj
+        run: dotnet test TestProject/TestProject.csproj
