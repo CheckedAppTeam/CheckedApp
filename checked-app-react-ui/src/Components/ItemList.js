@@ -55,4 +55,4 @@ function formatDate(dateString) {
   }
 }
 
-export default ItemList;
+export default ItemList

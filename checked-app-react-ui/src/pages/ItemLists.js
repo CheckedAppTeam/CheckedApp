@@ -36,7 +36,6 @@ export function ItemLists() {
   });
   const { token } = useAuth()
 
-
   useEffect(() => {
     const fetchData = async () => {
       if (token) {
@@ -204,8 +203,5 @@ export function ItemLists() {
         )}
       </div>
     </div>
-
   )
 }
-
-
