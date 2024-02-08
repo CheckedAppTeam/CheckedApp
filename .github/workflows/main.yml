@@ -20,7 +20,7 @@ jobs:
           dotnet-version: '7.x'
 
       - name: Restore dependencies
-        run: dotnet restore ../../../CheckedAppProject.sln
+        run: dotnet restore ./CheckedApp/CheckedAppProject.sln
 
       - name: Build
         run: dotnet build ./CheckedApp/CheckedApp.sln --configuration Release --no-restore
