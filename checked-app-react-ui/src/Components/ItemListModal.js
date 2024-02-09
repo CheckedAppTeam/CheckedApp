@@ -67,9 +67,18 @@ function ItemListModal({ closeModal, itemListName, itemListId }) {
     setShowAddNew(false)
   }
 
+  const alternateCase = (word) => {
+    return word
+      .split('')
+      .map((char, index) => {
+        return index === 0 ? char.toUpperCase() : char.toLowerCase()
+      })
+      .join('')
+  }
+
   const handleNewItemSubmit = async () => {
     try {
-      const AddedItem = { itemName: newItemName }
+      const AddedItem = { itemName: alternateCase(newItemName) }
       await axios.post(itemEndpoints.addItem, AddedItem).then((response) => {
         console.log(response)
       })
