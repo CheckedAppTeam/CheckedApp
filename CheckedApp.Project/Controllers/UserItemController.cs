@@ -19,6 +19,7 @@ namespace CheckedAppProject.API.Controllers
             _userItemService = userItemService;
         }
 
+        // GET userItem by Id
         [HttpGet("GetUserItem/{id}")]
         public async Task<IActionResult> GetUserItem([FromRoute] int id)
         {
@@ -29,6 +30,7 @@ namespace CheckedAppProject.API.Controllers
             return userData == null ? (NotFound(new { ErrorCode = 404, Message = "User item with this ID not found" })) : Ok(userData);
         }
 
+        // GET userItem by Id and state of the userItem
         [HttpGet("ByState/{state}/InItemList/{id}")]
         public async Task<IActionResult> GetAllUsersItemsByStateInItemList([FromRoute] UserItemState state, [FromRoute] int id)
         {
@@ -39,6 +41,8 @@ namespace CheckedAppProject.API.Controllers
             return usersItemsByState == null ?
                 (NotFound(new { ErrorCode = 404, Message = "No list or items with this status found" })) : Ok(usersItemsByState);
         }
+
+        //GET all userItems from choosen ItemList by itemList Id
         [HttpGet("ByListId/{id}")]
         public async Task<IActionResult> GetAllUsersItemsByListId([FromRoute] int id)
         {
@@ -50,6 +54,7 @@ namespace CheckedAppProject.API.Controllers
                 (NotFound(new { ErrorCode = 404, Message = "No items in this list found or such list not found" })) : Ok(usersItemsByList);
         }
 
+        //POST new userItem to choosen list
         [HttpPost("AddItemToList")]
         public async Task<IActionResult> AddUserItem(AddUserItemDTO dto)
         {
@@ -60,6 +65,7 @@ namespace CheckedAppProject.API.Controllers
             return Ok(new { Message = "UserItem created successfully" });
         }
 
+        //PUT editing userItem when on list by userItem Id
         [HttpPut("EditItemOnList/{id}")]
         public async Task<IActionResult> EditUserItemStatus([FromBody] UserItemState state, [FromRoute] int id)
         {
@@ -72,6 +78,7 @@ namespace CheckedAppProject.API.Controllers
                 : (Ok(new { Message = "Changes added successfully" }));
         }
 
+        //DELETE remove userItem from list by userItem Id
         [HttpDelete("DeleteItemFromList/{id}")]
         public async Task<IActionResult> DeleteUserItem([FromRoute] int id)
         {
