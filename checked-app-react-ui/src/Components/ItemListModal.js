@@ -120,7 +120,6 @@ function ItemListModal({ closeModal, itemListName, itemListId }) {
   const showAllItems = async () => {
     try {
       const response = await axios.get(itemEndpoints.getAllItems)
-      console.log('Response:', response)
       setAllItems(response.data)
     } catch (error) {
       console.error('Error:', error)
@@ -292,7 +291,6 @@ function ItemListModal({ closeModal, itemListName, itemListId }) {
                   .sort((a, b) => a.userItemId - b.userItemId)
                   .map((item, index) => (
                     <div className='item-container' key={item.userItemId}>
-                      {console.log(item)}
                       <UserItem item={item} onItemChange={handleItemChange} />
                     </div>
                   ))}

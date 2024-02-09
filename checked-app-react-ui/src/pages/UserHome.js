@@ -27,7 +27,6 @@ export function UserHome() {
       axios
         .get(userEndpoints.getUserData(userId))
         .then((response) => {
-          console.log(response)
           setUser({
             userId: userId,
             firstName: response.data.userName,
