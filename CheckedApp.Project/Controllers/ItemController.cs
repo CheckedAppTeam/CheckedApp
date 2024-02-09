@@ -17,6 +17,8 @@ namespace CheckedAppProject.API.Controllers
         {
             _itemService = itemService;
         }
+
+        //GET filtered items, one item - depending on the function provided - delegate
         [HttpGet("GetAllPages")]
         public async Task<IActionResult> GetAllItemsPages([FromQuery]ItemsQuery query)
         {
@@ -24,6 +26,7 @@ namespace CheckedAppProject.API.Controllers
             return items == null ? NotFound(new { ErrorCode = 404, Message = "Item with this ID not found" }) : Ok(items);
         }
 
+        //GET all items
         [HttpGet("GetAll")]
         public async Task<IActionResult> GetAllItems()
         {
@@ -31,6 +34,7 @@ namespace CheckedAppProject.API.Controllers
             return items == null ? NotFound(new { ErrorCode = 404, Message = "Item with this ID not found" }) : Ok(items);
         }
 
+        //GET item by Id
         [HttpGet("GetById/{id}")]
         public async Task<IActionResult> GetItemById([FromRoute] int id)
         {
@@ -44,6 +48,7 @@ namespace CheckedAppProject.API.Controllers
             return Ok(item);
         }
 
+        //GET item by name
         [HttpGet("GetByName/{name}")]
         public async Task<IActionResult> GetItemByName([FromRoute] string name)
         {
@@ -57,7 +62,7 @@ namespace CheckedAppProject.API.Controllers
             return Ok(item);
         }
 
-
+        //POST item
         [HttpPost("AddItem")]
         public async Task <IActionResult> AddItem(NewItemDTO dto)
         {
@@ -65,6 +70,8 @@ namespace CheckedAppProject.API.Controllers
             
             return Ok(new { Message = "Item added successfully" });
         }
+
+        //DELETE delete item by Id, only by ADMIN
         [Authorize(Roles = "Admin")]
         [HttpDelete("DeleteItem/{id}")]
         public async Task<IActionResult>  DeleteItem([FromRoute]int id) 
@@ -74,6 +81,8 @@ namespace CheckedAppProject.API.Controllers
             return isDeleted == false ? (NotFound(new { ErrorCode = 404, Message = "Item with this ID not found" }))
                 : (Ok(new { Message = "Item successfully deleted" }));
         }
+
+        //PUT edit item by Id, only by ADMIN
         [Authorize(Roles = "Admin")]
         [HttpPut("EditItem/{id}")]
         public async Task<IActionResult> EditItemName([FromBody]ItemDTO dto, [FromRoute] int id)

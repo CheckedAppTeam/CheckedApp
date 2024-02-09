@@ -23,6 +23,7 @@ namespace CheckedAppProject.API.Controllers
             _logger = logger;
         }
 
+        //GET all destinations from API
         [HttpGet("GetAllDestinations")]
         public async Task<ActionResult<IEnumerable<ListDestinationDTO>>> GetAllDestinationsAsync()
         {

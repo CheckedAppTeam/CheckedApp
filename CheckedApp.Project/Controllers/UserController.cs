@@ -18,7 +18,8 @@ namespace CheckedAppProject.API.Controllers
         {
             _userService = userService;
         }
-
+        
+        //GET Single User data by Id
         [HttpGet("UserData/{id}")]
         public async Task<IActionResult> GetUserData([FromRoute] string id)
         {
@@ -27,6 +28,7 @@ namespace CheckedAppProject.API.Controllers
             return userData == null ? (NotFound(new { ErrorCode = 404, Message = "User with this ID not found" })) : Ok(userData);
         }
 
+        //GET All Users data
         [HttpGet("UserData/AllUsers")]
         public async Task<IActionResult> GetAllUsersData()
         {
@@ -35,7 +37,7 @@ namespace CheckedAppProject.API.Controllers
             return usersDatas == null ? (NotFound(new { ErrorCode = 404, Message = "User with this ID not found" })) : Ok(usersDatas);
         }
 
-
+        //PUT Editing single user by ID
         [HttpPut("UserData/EditUser/{id}")]
         public async Task<IActionResult> EditUser([FromBody] UserUpdateDTO dto, [FromRoute] string id)
         {
@@ -45,6 +47,8 @@ namespace CheckedAppProject.API.Controllers
                 (NotFound(new { ErrorCode = 404, Message = "User with this ID not found" }))
                 : (Ok(new { Message = "Changes added successfully" }));
         }
+
+        //DELETE Deleting User by Id, only by ADMIN
         [Authorize(Roles = "Admin")]
         [HttpDelete("UserData/DeleteUser/{id}")]
         public async Task<IActionResult> DeleteUser([FromRoute] string id)
