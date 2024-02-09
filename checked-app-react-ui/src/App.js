@@ -13,26 +13,31 @@ import PrivateRoute from './Components/PrivateRoute.js'
 
 function App() {
   return (
-      <AuthProvider>
-        <Navbar />
-        <Routes>
-          <Route path='/' element={<Home />} />
-          <Route path='/user-home' element={<UserHome />} />
-          <Route path='/itemlists'>
-            <Route index element={<ItemLists />} />{/* zabezpieczyc private route */}
-            <Route path='new' element={<NewList />} />
-          </Route>
-          <Route path='/items' 
+    <AuthProvider>
+      <Navbar />
+      <Routes>
+        <Route path='/' element={<Home />} />
+        <Route path='/user-home' element={<UserHome />} />
+
+        <Route path='/itemlists'>
+          <Route index element={<ItemLists />} />
+
+          <Route path='new' element={<NewList />} />
+        </Route>
+
+        <Route
+          path='/items'
           element={
-          <PrivateRoute>
-            <Items />
-            </PrivateRoute>}
-            />
-          <Route path='*' element={<NotFound />} />
-          <Route path='/Register' element={<Signup />} />
-          <Route path='/Login' element={<Login />} />
-        </Routes>
-      </AuthProvider>
+            <PrivateRoute>
+              <Items />
+            </PrivateRoute>
+          }
+        />
+        <Route path='*' element={<NotFound />} />
+        <Route path='/Register' element={<Signup />} />
+        <Route path='/Login' element={<Login />} />
+      </Routes>
+    </AuthProvider>
   )
 }
 

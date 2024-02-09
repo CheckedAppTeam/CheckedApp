@@ -1,14 +1,13 @@
-import React, { useState, useEffect, useRef } from 'react'
 import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet'
-import L,{divIcon} from 'leaflet'
-import { FaMapMarker } from 'react-icons/fa'
-import ReactDOMServer from 'react-dom/server'
-import '../../styles/map.css'
-import PlaceSeeker, { getCoordinates } from './PlaceSeeker.js'
+import L from 'leaflet'
 import FlyToMarker from './FlyToMarker.js'
+import PlaceSeeker, { getCoordinates } from './PlaceSeeker.js'
+import React, { useState, useEffect, useRef } from 'react'
+import ReactDOMServer from 'react-dom/server'
 import { mapEndpoints } from '../../endpoints.js'
+import { FaMapMarker } from 'react-icons/fa'
 import MarkerClusterGroup from 'react-leaflet-cluster'
-
+import '../../styles/map.css'
 
 function Map({ handleMarkerClick }) {
   const [parentCoordinates, setParentCoordinates] = useState(null)
@@ -29,7 +28,7 @@ function Map({ handleMarkerClick }) {
             'Failed to fetch destinations. Status:',
             response.status
           )
-          return
+          return <div>Fail</div>
         }
 
         const data = await response.json()
@@ -54,7 +53,6 @@ function Map({ handleMarkerClick }) {
             return null
           }
         })
-
         const resolvedFormattedCoords = await Promise.all(
           formattedCoordsPromises
         )
@@ -63,7 +61,6 @@ function Map({ handleMarkerClick }) {
         console.error('Error fetching destinations:', error)
       }
     }
-
     fetchDataAndFormatCoords()
   }, [])
 
@@ -73,12 +70,6 @@ function Map({ handleMarkerClick }) {
     className: 'custom-marker-icon',
     html: ReactDOMServer.renderToString(<FaMapMarker />),
   })
-  // const createClusterIcon = (cluster)=>{
-  //   return new divIcon({
-  //     html:`<div class="cluster-icon">${cluster.getChildCount()}</div>`,
-  //     iconSize
-  //   })
-  // }
 
   const handleCoordinatesChange = (coordinates) => {
     setParentCoordinates(coordinates)
@@ -103,39 +94,44 @@ function Map({ handleMarkerClick }) {
         />
 
         <MarkerClusterGroup
-        chunkedLoading
-        // iconCreateFunction={createClusterIcon}
+          chunkedLoading
+          // iconCreateFunction={createClusterIcon}
         >
-
-        {formattedCoords.map((formattedCoord) => {
-          if (formattedCoord) {
-            return (
-              <Marker
-                key={formattedCoord.key}
-                position={formattedCoord.position}
-                icon={formattedCoord.icon}
-                eventHandlers={{
-                  click: () =>
-                    handleMarkerClick(formattedCoord.key, formattedCoord.name),
-                }}
-              >
-                <Popup>
-                  <FaMapMarker />
-                  <span
-                    onClick={() =>
-                      handleMarkerClick(formattedCoord.key, formattedCoord.name)
-                    }
-                    style={{ cursor: 'pointer', textDecoration: 'underline' }}
-                  >
-                    {formattedCoord.name}
-                  </span>
-                </Popup>
-              </Marker>
-            )
-          } else {
-            return null
-          }
-        })}
+          {formattedCoords.map((formattedCoord) => {
+            if (formattedCoord) {
+              return (
+                <Marker
+                  key={formattedCoord.key}
+                  position={formattedCoord.position}
+                  icon={formattedCoord.icon}
+                  eventHandlers={{
+                    click: () =>
+                      handleMarkerClick(
+                        formattedCoord.key,
+                        formattedCoord.name
+                      ),
+                  }}
+                >
+                  <Popup>
+                    <FaMapMarker />
+                    <span
+                      onClick={() =>
+                        handleMarkerClick(
+                          formattedCoord.key,
+                          formattedCoord.name
+                        )
+                      }
+                      style={{ cursor: 'pointer', textDecoration: 'underline' }}
+                    >
+                      {formattedCoord.name}
+                    </span>
+                  </Popup>
+                </Marker>
+              )
+            } else {
+              return null
+            }
+          })}
         </MarkerClusterGroup>
 
         {parentCoordinates && (

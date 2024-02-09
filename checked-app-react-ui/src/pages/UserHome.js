@@ -4,14 +4,13 @@ import { useAuth } from '../Contexts/AuthContext.js'
 import '../styles/userProfile.css'
 import { jwtDecode } from 'jwt-decode'
 import { userEndpoints } from '../endpoints'
-import { Link, useNavigate } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 
 export function UserHome() {
   const { token } = useAuth()
   const [user, setUser] = useState(null)
   const [packingLists, setPackingLists] = useState([])
   const [isEditing, setIsEditing] = useState(false)
-  const navigate = useNavigate()
 
   useEffect(() => {
     if (token) {
@@ -61,10 +60,7 @@ export function UserHome() {
         userSurname: user.lastName,
         userAge: user.age,
       })
-      .then((response) => {
-        console.log('Changes saved', response)
-        setIsEditing(false)
-      })
+      .then(setIsEditing(false))
       .catch((error) => {
         console.error('Error while sending data', error)
       })
