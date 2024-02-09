@@ -27,7 +27,6 @@ export function UserHome() {
       axios
         .get(userEndpoints.getUserData(userId))
         .then((response) => {
-          console.log(response)
           setUser({
             userId: userId,
             firstName: response.data.userName,
@@ -60,10 +59,7 @@ export function UserHome() {
         userSurname: user.lastName,
         userAge: user.age,
       })
-      .then((response) => {
-        console.log('Changes saved', response)
-        setIsEditing(false)
-      })
+      .then(setIsEditing(false))
       .catch((error) => {
         console.error('Error while sending data', error)
       })
@@ -126,7 +122,9 @@ export function UserHome() {
           <h2>Your packing lists</h2>
           {packingLists.length > 0 ? (
             packingLists.map((list) => (
-              <button key={list.itemListId}>{list.listName}</button>
+              <Link to='/ItemLists' className='linkButton'>
+                <button key={list.itemListId}>{list.listName}</button>
+              </Link>
             ))
           ) : (
             <p>You have no packing lists...</p>

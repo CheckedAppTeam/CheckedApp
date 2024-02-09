@@ -1,12 +1,13 @@
-import React, { useState, useEffect, useRef } from 'react'
 import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet'
 import L from 'leaflet'
-import { FaMapMarker } from 'react-icons/fa'
-import ReactDOMServer from 'react-dom/server'
-import '../../styles/map.css'
-import PlaceSeeker, { getCoordinates } from './PlaceSeeker.js'
 import FlyToMarker from './FlyToMarker.js'
-
+import PlaceSeeker, { getCoordinates } from './PlaceSeeker.js'
+import React, { useState, useEffect, useRef } from 'react'
+import ReactDOMServer from 'react-dom/server'
+import { mapEndpoints } from '../../endpoints.js'
+import { FaMapMarker } from 'react-icons/fa'
+import MarkerClusterGroup from 'react-leaflet-cluster'
+import '../../styles/map.css'
 
 function Map({ handleMarkerClick }) {
   const [parentCoordinates, setParentCoordinates] = useState(null)
@@ -15,22 +16,19 @@ function Map({ handleMarkerClick }) {
   useEffect(() => {
     const fetchDataAndFormatCoords = async () => {
       try {
-        const response = await fetch(
-          'https://localhost:7161/Map/GetAllDestinations',
-          {
-            headers: {
-              Accept: 'application/json',
-              'Content-Type': 'application/json',
-            },
-          }
-        )
+        const response = await fetch(mapEndpoints.getAllDestinations, {
+          headers: {
+            Accept: 'application/json',
+            'Content-Type': 'application/json',
+          },
+        })
 
         if (!response.ok) {
           console.error(
             'Failed to fetch destinations. Status:',
             response.status
           )
-          return
+          return <div>Fail</div>
         }
 
         const data = await response.json()
@@ -55,7 +53,6 @@ function Map({ handleMarkerClick }) {
             return null
           }
         })
-
         const resolvedFormattedCoords = await Promise.all(
           formattedCoordsPromises
         )
@@ -64,7 +61,6 @@ function Map({ handleMarkerClick }) {
         console.error('Error fetching destinations:', error)
       }
     }
-
     fetchDataAndFormatCoords()
   }, [])
 
@@ -96,32 +92,47 @@ function Map({ handleMarkerClick }) {
           attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
           url='https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png'
         />
-        {formattedCoords.map((formattedCoord) => {
-          if (formattedCoord) {
-            return (
-              <Marker
-                key={formattedCoord.key}
-                position={formattedCoord.position}
-                icon={formattedCoord.icon}
-                eventHandlers={{
-                  click: () => handleMarkerClick(formattedCoord.key, formattedCoord.name),
-                }}
-              >
-                <Popup>
-                  <FaMapMarker />
-                  <span
-                    onClick={() => handleMarkerClick(formattedCoord.key, formattedCoord.name)}
-                    style={{ cursor: 'pointer', textDecoration: 'underline' }}
-                  >
-                    {formattedCoord.name}
-                  </span>
-                </Popup>
-              </Marker>
-            )
-          } else {
-            return null
-          }
-        })}
+
+        <MarkerClusterGroup
+          chunkedLoading
+          // iconCreateFunction={createClusterIcon}
+        >
+          {formattedCoords.map((formattedCoord) => {
+            if (formattedCoord) {
+              return (
+                <Marker
+                  key={formattedCoord.key}
+                  position={formattedCoord.position}
+                  icon={formattedCoord.icon}
+                  eventHandlers={{
+                    click: () =>
+                      handleMarkerClick(
+                        formattedCoord.key,
+                        formattedCoord.name
+                      ),
+                  }}
+                >
+                  <Popup>
+                    <FaMapMarker />
+                    <span
+                      onClick={() =>
+                        handleMarkerClick(
+                          formattedCoord.key,
+                          formattedCoord.name
+                        )
+                      }
+                      style={{ cursor: 'pointer', textDecoration: 'underline' }}
+                    >
+                      {formattedCoord.name}
+                    </span>
+                  </Popup>
+                </Marker>
+              )
+            } else {
+              return null
+            }
+          })}
+        </MarkerClusterGroup>
 
         {parentCoordinates && (
           <FlyToMarker

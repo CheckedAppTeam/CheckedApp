@@ -14,5 +14,7 @@ namespace CheckedAppProject.LOGIC.Services
         Task<ItemListDTO> GetByIdAsync(int itemListId);
         Task<IEnumerable<ItemListDTO>> GetByMonthAndCity(DateTime date, string city);
         Task<bool> UpdateAsync(UpdateItemListDTO dto, int id);
+        Task<List<ItemList>> GetPublicListsAsync();
+
     }
 }

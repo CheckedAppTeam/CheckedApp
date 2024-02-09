@@ -1,45 +1,55 @@
-import React, { useRef } from 'react'
+import React, { useRef, useState } from 'react'
 import CheckedFullLogo from '../../assets/CheckedFullLogo.png'
 import { FaBars, FaTimes } from 'react-icons/fa'
 import { useAuth } from '../../Contexts/AuthContext.js'
 import { useNavigate } from 'react-router-dom'
 import '../../styles/navbar.css'
 import { Link } from 'react-router-dom'
-import { jwtDecode } from 'jwt-decode';
+import { jwtDecode } from 'jwt-decode'
 
 function Navbar() {
   const navRef = useRef()
+  const [isNavVisible, setIsNavVisible] = useState(false)
   const { token, removeTokens } = useAuth()
   const navigate = useNavigate()
 
-  let isAdmin = false;
+  let isAdmin = false
   if (token) {
     try {
-      const decodedToken = jwtDecode(token);
-      const roles = decodedToken["http://schemas.microsoft.com/ws/2008/06/identity/claims/role"];
-      isAdmin = roles === 'Admin';
+      const decodedToken = jwtDecode(token)
+      const roles =
+        decodedToken[
+          'http://schemas.microsoft.com/ws/2008/06/identity/claims/role'
+        ]
+      isAdmin = roles === 'Admin'
     } catch (error) {
-      console.error('Problem with token decoding:', error);
+      console.error('Problem with token decoding:', error)
     }
   }
 
   const showNavBar = () => {
-    if (navRef.current) {
-      navRef.current.classList.toggle('responsive_nav')
-    }
+    setIsNavVisible(!isNavVisible)
   }
+
   const handleLogout = () => {
     removeTokens()
     showNavBar()
     navigate('/')
   }
-  const handleLogoClick = ()=>{
+
+  const handleLogoClick = () => {
     navigate('/')
   }
+
   return (
     <header>
-      <img className='nav-Logo' onClick={handleLogoClick} src={CheckedFullLogo} alt='Logo' />
-      <nav ref={navRef}>
+      <img
+        className='nav-Logo'
+        onClick={handleLogoClick}
+        src={CheckedFullLogo}
+        alt='Logo'
+      />
+      <nav className={isNavVisible ? 'responsive_nav' : ''} ref={navRef}>
         <Link onClick={showNavBar} to='/'>
           Home
         </Link>
@@ -77,7 +87,7 @@ function Navbar() {
         <FaBars />
       </button>
     </header>
-  );
+  )
 }
 
 export default Navbar

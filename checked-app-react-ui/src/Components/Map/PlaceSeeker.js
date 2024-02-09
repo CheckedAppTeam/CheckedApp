@@ -30,6 +30,7 @@ export async function getCoordinates(address) {
 const PlaceSeeker = ({ onCoordinatesChange }) => {
   const [address, setAddress] = useState('')
   const [coordinates, setCoordinates] = useState(null)
+  const [placeTitle, setPlaceTitle] = useState('')
 
   const handleAddressChange = (event) => {
     setAddress(event.target.value)
@@ -42,13 +43,27 @@ const PlaceSeeker = ({ onCoordinatesChange }) => {
       onCoordinatesChange(coords)
     }
   }
+  const handlePlaceTitle = (placeName) => {
+    const formattedName = alternateCase(placeName)
+    setPlaceTitle(formattedName)
+  }
 
   const handleKeyPress = (event) => {
     if (event.key === 'Enter') {
       handleGetCoordinates()
+      window.scrollBy(560, 560)
+      handlePlaceTitle(address)
     }
   }
 
+  const alternateCase = (word) => {
+    return word
+      .split('')
+      .map((char, index) => {
+        return index === 0 ? char.toUpperCase() : char.toLowerCase()
+      })
+      .join('')
+  }
   return (
     <div>
       <input
@@ -63,9 +78,10 @@ const PlaceSeeker = ({ onCoordinatesChange }) => {
       {coordinates && (
         <div>
           <h3>Coordinates:</h3>
-          <p>Address: {address.toUpperCase()}</p>
+          <p>Address: {address.slice(0).toUpperCase()}</p>
           <p>Latitude: {coordinates.latitude}</p>
           <p>Longitude: {coordinates.longitude}</p>
+          <h1>{placeTitle}</h1>
         </div>
       )}
     </div>

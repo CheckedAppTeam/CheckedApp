@@ -26,19 +26,19 @@ namespace CheckedAppProject.API.Controllers
         [HttpGet("GetAllDestinations")]
         public async Task<ActionResult<IEnumerable<ListDestinationDTO>>> GetAllDestinationsAsync()
         {
-            var itemLists = await _itemListService.GetAllAsync();
+            var publicItemLists = await _itemListService.GetPublicListsAsync();
 
-            if (itemLists is null)
+            if (publicItemLists is null || !publicItemLists.Any())
             {
-                _logger.LogInformation("No Item List found");
+                _logger.LogInformation("No public Item Lists found");
                 return NotFound();
             }
 
-            var itemListsDto = itemLists.Select(itemList => new ListDestinationDTO
+            var itemListsDto = publicItemLists.Select(itemList => new ListDestinationDTO
             {
                 ItemListId = itemList.ItemListId,
-                ItemListName = itemList.ListName,
-                ItemListDestination = itemList.TravelDestination
+                ItemListName = itemList.ItemListName,
+                ItemListDestination = itemList.ItemListDestination
             }).ToList();
 
             return Ok(itemListsDto);

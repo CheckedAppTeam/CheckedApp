@@ -1,8 +1,6 @@
 import React from 'react';
 import { useState, useCallback, useEffect } from 'react'
 import axios from 'axios';
-import { Link } from 'react-router-dom';
-import ItemListModal from './ItemListModal';
 import { itemListEndpoints } from '../endpoints';
 
 function ItemList({ itemList, openModalAtIndex, onDelete }) {
@@ -25,10 +23,6 @@ function ItemList({ itemList, openModalAtIndex, onDelete }) {
   }
 
   useEffect(() => {
-    console.log(itemListId)
-    console.log(listName)
-    console.log(travelDestination)
-    console.log(travelDate)
     if (itemList !== undefined) {
       setIsLoading(false);
     }
@@ -64,7 +58,6 @@ function ItemList({ itemList, openModalAtIndex, onDelete }) {
 
 function formatDate(dateString) {
     try {
-      // console.log(dateString)
       const date = new Date(dateString)
       const formattedDate = date.toISOString().split('T')[0]
       return formattedDate
@@ -74,3 +67,4 @@ function formatDate(dateString) {
 }
 
 export default ItemList
+
