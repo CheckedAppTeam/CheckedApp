@@ -12,7 +12,6 @@ public class CreateItemListDTO
     public DateTime? Date { get; set; }
     public bool ItemListPublic { get; set; }
     public string ItemListDestination { get; set; }
-    //public List<UserItemCreateListDTO> ItemsDTO { get; set; }
 }
 
 

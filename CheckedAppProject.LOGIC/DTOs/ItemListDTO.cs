@@ -12,9 +12,7 @@ namespace CheckedAppProject.LOGIC.DTOs
         public string ListName { get; set; }
         public string TravelDestination { get; set; }
         public DateTime TravelDate { get; set; }
-        //public string Month { get; set; }
         public bool IsPublic { get; set; }
-
         public List<ItemDTO> ItemsDto { get; set; }
     }
 }
