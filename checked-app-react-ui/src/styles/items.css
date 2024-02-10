@@ -1,0 +1,25 @@
+.allItems{
+    margin-left:2em;
+    margin-right:1em;
+    margin-top: 1em;
+}
+
+.AddItemButton{
+    display: flex;
+    align-items: center;
+}
+
+.AddItemButton button {
+    text-align: center;
+    justify-content: center;
+    width: 90vw;
+    height: 2em;
+    border: none;
+    color: var(--mainColorBlue);
+    font-size: 3em;
+    cursor: pointer;
+    background-color: var(--mainColor);
+    border-radius: 20px;
+    text-align: center;
+    margin: 1em;
+  }
