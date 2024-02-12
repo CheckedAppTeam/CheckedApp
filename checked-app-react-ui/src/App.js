@@ -3,7 +3,6 @@ import { Home } from './pages/Home'
 import { ItemLists } from './pages/ItemLists'
 import { UserHome } from './pages/UserHome'
 import { NotFound } from './pages/NotFound'
-import { NewList } from './pages/NewList'
 import { Items } from './pages/Items'
 import Navbar from './Components/NavBar/Navbar'
 import Signup from './Components/UserAuthForm/Signup'
@@ -21,8 +20,6 @@ function App() {
 
         <Route path='/itemlists'>
           <Route index element={<ItemLists />} />
-
-          <Route path='new' element={<NewList />} />
         </Route>
 
         <Route

@@ -21,6 +21,14 @@ export function Items() {
     getAllItems()
   }, [])
 
+  const handleItemUpdate = async () => {
+    try {
+      await getAllItems()
+    } catch (e) {
+      console.error(e)
+    }
+  }
+
   return (
     <div className='allItems'>
       <div className='body'>
@@ -30,9 +38,9 @@ export function Items() {
         </div>
         <Grid container spacing={{ xs: 2, md: 3 }} columns={{ xs: 2, sm: 4, md: 8 }}>
           {allItems &&
-            allItems.map((item, index) => (
-              <Grid xs={2} sm={4} md={4} key={index}>
-                <Item item={item}>xs=2</Item>
+            allItems.map(item => (
+              <Grid xs={2} sm={4} md={4} key={item.ItemId}>
+                <Item key={item.ItemId} item={item} onUpdate={handleItemUpdate}>xs=2</Item>
               </Grid>
             ))}
         </Grid>

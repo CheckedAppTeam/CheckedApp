@@ -85,7 +85,7 @@ namespace CheckedAppProject.API.Controllers
         //PUT edit item by Id, only by ADMIN
         [Authorize(Roles = "Admin")]
         [HttpPut("EditItem/{id}")]
-        public async Task<IActionResult> EditItemName([FromBody]ItemDTO dto, [FromRoute] int id)
+        public async Task<IActionResult> EditItemName([FromBody]EditItemDTO dto, [FromRoute] int id)
         {
             var isEdited = await _itemService.EditItemAsync(dto, id);
 

@@ -8,7 +8,7 @@ namespace CheckedAppProject.LOGIC.Services
     {
         Task AddItemAsync(NewItemDTO dto);
         Task<bool> DeleteItemAsync(int itemId);
-        Task<bool> EditItemAsync(ItemDTO dto, int itemId);
+        Task<bool> EditItemAsync(EditItemDTO dto, int itemId);
         Task<Item> GetItemByName(string name);
         Task<IEnumerable<GetItemDTO>> GetAllItemDtoAsync();
         Task<PageResult<GetItemDTO>> GetAllItemDtoAsyncPages(ItemsQuery query);

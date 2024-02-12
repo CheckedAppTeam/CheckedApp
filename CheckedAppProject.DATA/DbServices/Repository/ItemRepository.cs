@@ -88,6 +88,7 @@ namespace CheckedAppProject.DATA.DbServices.Repository
         {
             var item = await _userItemContext.Items
                 .Where(i => i.ItemId == itemId)
+                .OrderBy(i => i.ItemId)
                 .FirstOrDefaultAsync();
             //var itemName = item.ItemName;
 
