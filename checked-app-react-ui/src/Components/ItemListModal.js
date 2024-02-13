@@ -118,7 +118,6 @@ function ItemListModal({ closeModal, itemListName, itemListId }) {
       const response = await axios.get(
         userItemEndpoints.getAllUsersItemsByListId(itemListId)
       )
-      // console.log('Response:', response);
       setAllItemsByItemListId(response.data)
       setLoading(true)
     } catch (error) {
