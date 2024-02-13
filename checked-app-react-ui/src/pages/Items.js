@@ -13,6 +13,8 @@ export function Items() {
   const [fornSearch, setFormSearch] = useState(false)
   const [newItemName, setNewItemName] = useState('')
 
+  // const { token } = useAuth()
+
   const getAllItems = async () => {
     try {
       const response = await axios.get(itemEndpoints.getAllItems)
