@@ -2,6 +2,7 @@ import React from 'react';
 import { useState, useCallback, useEffect } from 'react'
 import axios from 'axios';
 import { itemListEndpoints } from '../endpoints';
+import Loader from '../spinners/Loader';
 
 function ItemList({ itemList, openModalAtIndex, onDelete }) {
   const [isLoading, setIsLoading] = useState(true);
@@ -31,7 +32,7 @@ function ItemList({ itemList, openModalAtIndex, onDelete }) {
   return (
     <>
       {isLoading ? (
-        <div>Loading...</div>
+        <Loader/>
       ) : (
         <>
             <div className='itemList' key={itemListId}>
