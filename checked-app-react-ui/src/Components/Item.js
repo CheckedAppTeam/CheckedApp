@@ -10,7 +10,6 @@ export default function Item({ item, onUpdate }) {
   const [isEditing, setIsEditing] = useState(false)
 
   useEffect(() => {
-    // setItemName(item.itemName);
     setEditedItemName(item.itemName);
   }, [item]);
 
@@ -36,6 +35,25 @@ export default function Item({ item, onUpdate }) {
       })
   }
 
+  const deleteItem = async () => {
+    try {
+      await axios.delete(itemEndpoints.deleteItem(item.itemId))
+      alert('Item is deleted')
+    } catch (error) {
+      console.error('Error deleting item:', error)
+    }
+  }
+
+  const handleDelete = async (e) => {
+    e.preventDefault()
+    try {
+      await deleteItem()
+    } catch (error) {
+      console.error('Error deleting item:', error)
+    }
+    onUpdate()
+  }
+
   return (
     <>
       {!isEditing &&
@@ -48,7 +66,7 @@ export default function Item({ item, onUpdate }) {
               <Button variant="outlined" onClick={toggleEdit}>Edit</Button>
             </div>
             <div className='deleteItemBtn'>
-              <Button variant="outlined">Delete</Button>
+              <Button variant="outlined" onClick={(e) => handleDelete(e)}>Delete</Button>
             </div>
           </div>
         </div>
