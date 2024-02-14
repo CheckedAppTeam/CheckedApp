@@ -67,9 +67,18 @@ function ItemListModal({ closeModal, itemListName, itemListId }) {
     setShowAddNew(false)
   }
 
+  const alternateCase = (word) => {
+    return word
+      .split('')
+      .map((char, index) => {
+        return index === 0 ? char.toUpperCase() : char.toLowerCase()
+      })
+      .join('')
+  }
+
   const handleNewItemSubmit = async () => {
     try {
-      const AddedItem = { itemName: newItemName }
+      const AddedItem = { itemName: alternateCase(newItemName) }
       await axios.post(itemEndpoints.addItem, AddedItem).then((response) => {
         console.log(response)
       })
@@ -109,7 +118,6 @@ function ItemListModal({ closeModal, itemListName, itemListId }) {
       const response = await axios.get(
         userItemEndpoints.getAllUsersItemsByListId(itemListId)
       )
-      // console.log('Response:', response);
       setAllItemsByItemListId(response.data)
       setLoading(true)
     } catch (error) {
@@ -120,7 +128,6 @@ function ItemListModal({ closeModal, itemListName, itemListId }) {
   const showAllItems = async () => {
     try {
       const response = await axios.get(itemEndpoints.getAllItems)
-      console.log('Response:', response)
       setAllItems(response.data)
     } catch (error) {
       console.error('Error:', error)
@@ -292,7 +299,6 @@ function ItemListModal({ closeModal, itemListName, itemListId }) {
                   .sort((a, b) => a.userItemId - b.userItemId)
                   .map((item, index) => (
                     <div className='item-container' key={item.userItemId}>
-                      {console.log(item)}
                       <UserItem item={item} onItemChange={handleItemChange} />
                     </div>
                   ))}

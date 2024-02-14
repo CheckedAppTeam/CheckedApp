@@ -1,0 +1,39 @@
+:root {
+    --mainColor: #FF9B36;
+    --mainColorLight: #9B9BFF;
+    --secondaryColor: #434AF2;
+    --textColor: #FFF5EB;
+  }
+
+.oneItem{
+    background-color: var(--mainColorLight);
+    border-radius: 20px;
+    font-size: 1em;
+    font-size: 2em;
+    text-align: center;
+    margin:0.4em;
+    color: var(--textColor)
+}
+
+.itemBtns {
+    display: flex;
+    justify-content: center;
+}
+
+.editItemBtn button{
+    margin: 1em;
+    border-color: var(--textColor);
+    color: var(--textColor);
+}
+
+.deleteItemBtn button {
+    margin: 1em;
+    border-color: var(--textColor);
+    color: var(--textColor);
+}
+
+.submitBtn button {
+    margin: 1em;
+    border-color: var(--textColor);
+    color: var(--textColor);
+}

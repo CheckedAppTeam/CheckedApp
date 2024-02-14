@@ -24,7 +24,6 @@ function UserItem({ item, onItemChange }) {
           updatedState,
           { headers: { 'Content-Type': 'application/json' } }
         )
-        console.log('Update response:', response)
       } catch (error) {
         console.error('Error updating item state:', error)
       }
@@ -55,7 +54,6 @@ function UserItem({ item, onItemChange }) {
 
   useEffect(() => {
     setId(item.userItemId)
-    console.log(id)
   }, [item])
 
   const handleDelete = async (e) => {

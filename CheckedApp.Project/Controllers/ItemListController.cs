@@ -20,6 +20,7 @@ namespace CheckedAppProject.API.Controllers
             _logger = logger;
         }
 
+        //GET all lists
         [HttpGet("GetAllLists")]
         public async Task<ActionResult<IEnumerable<ItemListDTO>>> GetAllAsync()
         {
@@ -34,6 +35,7 @@ namespace CheckedAppProject.API.Controllers
             return Ok(itemListsDto);
         }
 
+        //GET all itemLists of the user by user Id
         [HttpGet("User/{userid}")]
         public async Task<ActionResult<IEnumerable<ItemListDTO>>> GetAllByUserIdAsync([FromRoute] string userid)
         {
@@ -48,6 +50,7 @@ namespace CheckedAppProject.API.Controllers
             return Ok(itemListsDto);
         }
 
+        //GET itemList data by itemList Id
         [HttpGet("Getlist/{itemlistid}")]
         public async Task<ActionResult<ItemListDTO>> GetList([FromRoute] int itemlistid)
         {
@@ -62,6 +65,7 @@ namespace CheckedAppProject.API.Controllers
             return Ok(itemList);
         }
 
+        //GET all itemLists by destination name
         [HttpGet("City/{city}")]
         public async Task<ActionResult<IEnumerable<ItemListDTO>>> GetByCityAsync([FromRoute] string city)
         {
@@ -76,7 +80,7 @@ namespace CheckedAppProject.API.Controllers
             return Ok(itemLists);
         }
 
-
+        //GET all itemLists by destination and date
         [HttpGet("CityAndDate/{city}/{date}")]
         public async Task<ActionResult<ItemListDTO>> GetByDateAndCity([FromRoute] string city, [FromRoute] DateTime date)
         {
@@ -90,6 +94,7 @@ namespace CheckedAppProject.API.Controllers
             return Ok(itemList);
         }
 
+        //POST new list to user by user Id
         [HttpPost("AddList/{userid}")]
         public async Task<ActionResult> AddList([FromBody] CreateItemListDTO dto, [FromRoute] string userid)
         {
@@ -104,6 +109,7 @@ namespace CheckedAppProject.API.Controllers
             return Ok(new { Message = "Item List added successfully" });
         }
 
+        //GET and POST copy a existing list to own itemList list by itemList Id and to user by his Id
         [HttpPost("User/{itemListid}/{userid}")]
         public async Task<ActionResult> CopyItemListAsync([FromRoute] int itemListid, [FromRoute] string userid)
         {
@@ -118,6 +124,7 @@ namespace CheckedAppProject.API.Controllers
             return Ok(copy);
         }
 
+        //PUT edit itemList data by itemList Id
         [HttpPut("EditListSpecification/{id}")]
         public async Task<ActionResult> UpdateItemListAsync([FromBody] UpdateItemListDTO dto, int id)
         {
@@ -138,6 +145,7 @@ namespace CheckedAppProject.API.Controllers
             return NotFound();
         }
 
+        //DELETE delete itemlist by itemList Id
         [HttpDelete("DeleteList/{id}")]
         public async Task<ActionResult> DeleteAsync(int id)
         {

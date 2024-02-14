@@ -67,7 +67,7 @@ namespace CheckedAppProject.LOGIC.Services
 
         }
 
-        public async Task<bool> EditItemAsync(ItemDTO dto, int itemId)
+        public async Task<bool> EditItemAsync(EditItemDTO dto, int itemId)
         {
             var item = _mapper.Map<Item>(dto);
             return await _itemRepository.EditItemAsync(item, itemId);

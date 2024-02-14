@@ -53,9 +53,11 @@ function Navbar() {
         <Link onClick={showNavBar} to='/'>
           Home
         </Link>
+        {token && (
         <Link onClick={showNavBar} to='/ItemLists'>
           Item Lists
         </Link>
+        )}
         {isAdmin && (
           <Link onClick={showNavBar} to='/Items'>
             Items
