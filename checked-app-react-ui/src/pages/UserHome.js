@@ -7,12 +7,18 @@ import { userEndpoints } from '../endpoints'
 import { Link } from 'react-router-dom'
 
 export function UserHome() {
-  const { token } = useAuth()
-  const [user, setUser] = useState(null)
-  const [packingLists, setPackingLists] = useState([])
-  const [isEditing, setIsEditing] = useState(false)
+  const {token} = useAuth();
+  const [user, setUser] = useState(null);
+  const [packingLists, setPackingLists] = useState([]);
+  const [isEditing, setIsEditing] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
+    const storedToken = localStorage.getItem('token');
+  if (storedToken) {
+    axios.defaults.headers.common['Authorization'] =`Bearer ${storedToken}`;
+  }
+  setIsLoading(true);
     if (token) {
       const decodedToken = jwtDecode(token)
       const userId =
@@ -23,7 +29,6 @@ export function UserHome() {
         decodedToken[
           'http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress'
         ]
-
       axios
         .get(userEndpoints.getUserData(userId))
         .then((response) => {
@@ -36,10 +41,14 @@ export function UserHome() {
             email: userEmail,
           })
           setPackingLists(response.data.ownItemList)
+          setIsLoading(false);
         })
         .catch((error) => {
           console.error('Error while getting user', error)
+          setIsLoading(false);
         })
+    } else {
+      setIsLoading(false);
     }
   }, [token])
 
@@ -65,12 +74,14 @@ export function UserHome() {
       })
   }
 
-  if (!user) {
+  if (isLoading) {
+    return <div>Loading...</div>;
+  } else if (!user) {
     return (
       <Link to='/Login'>
         <h1>Unauthorized, click to Log In.</h1>
       </Link>
-    )
+    );
   }
   return (
     <>

@@ -11,8 +11,7 @@ export const useAuth = () => {
 
 export const AuthProvider = ({ children }) => {
   const [token, setToken] = useState(localStorage.getItem('token'))
-  const [refreshToken, setRefreshToken] = useState(
-    localStorage.getItem('refreshToken')
+  const [refreshToken, setRefreshToken] = useState(localStorage.getItem('refreshToken')
   )
 
   const updateTokens = (newToken, newRefreshToken) => {
@@ -38,6 +37,8 @@ export const AuthProvider = ({ children }) => {
   }
 
   useEffect(() => {
+    
+
     const interceptor = axios.interceptors.response.use(
       (response) => response,
       async (error) => {
@@ -70,7 +71,7 @@ export const AuthProvider = ({ children }) => {
     return () => {
       axios.interceptors.response.eject(interceptor)
     }
-  }, [refreshToken, updateTokens, removeTokens])
+  }, [refreshToken, updateTokens, removeTokens]);
 
   return (
     <AuthContext.Provider value={{ token, updateTokens, removeTokens }}>

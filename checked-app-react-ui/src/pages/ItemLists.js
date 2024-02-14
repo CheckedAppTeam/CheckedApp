@@ -29,6 +29,10 @@ export function ItemLists() {
   const { token } = useAuth()
 
   const fetchData = async () => {
+    const storedToken = localStorage.getItem('token');
+  if (storedToken) {
+    axios.defaults.headers.common['Authorization'] =`Bearer ${storedToken}`;
+  }
     if (token) {
       try {
         const decodedToken = jwtDecode(token)
