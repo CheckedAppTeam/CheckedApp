@@ -3,7 +3,7 @@ import { useState, useEffect } from 'react'
 import '../styles/modal.css'
 import axios from 'axios'
 import { itemEndpoints, userItemEndpoints } from '../endpoints'
-// import Loader from '../spinners/Loader'
+import Loader from '../spinners/Loader'
 import UserItem from './UserItem'
 import Select from 'react-select'
 import Button from '@mui/material/Button'
@@ -295,6 +295,7 @@ function ItemListModal({ closeModal, itemListName, itemListId }) {
           ) : ( */}
 
           {/* <div className='itemsAndFooter'> */}
+          {!loading && <Loader/>}
           <div className='items-inList'>
             {allItemsByItemListId
               .sort((a, b) => a.userItemId - b.userItemId)

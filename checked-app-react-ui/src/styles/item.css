@@ -37,3 +37,7 @@
     border-color: var(--textColor);
     color: var(--textColor);
 }
+
+@media screen and (max-width: 600px) {
+    
+}
