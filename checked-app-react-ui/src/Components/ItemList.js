@@ -3,6 +3,7 @@ import { useState, useCallback, useEffect } from 'react'
 import axios from 'axios';
 import { itemListEndpoints } from '../endpoints';
 import Loader from '../spinners/Loader';
+import '../styles/itemList.css'
 
 function ItemList({ itemList, openModalAtIndex, onDelete }) {
   const [isLoading, setIsLoading] = useState(true);
