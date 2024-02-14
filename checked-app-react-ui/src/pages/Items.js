@@ -34,6 +34,10 @@ export function Items() {
   }
 
   useEffect(() => {
+    const storedToken = localStorage.getItem('token');
+  if (storedToken) {
+    axios.defaults.headers.common['Authorization'] =`Bearer ${storedToken}`;
+  }
     getAllItems()
   }, [])
 
