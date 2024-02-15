@@ -126,7 +126,7 @@ namespace CheckedAppProject.API.Controllers
 
         //PUT edit itemList data by itemList Id
         [HttpPut("EditListSpecification/{id}")]
-        public async Task<ActionResult> UpdateItemListAsync([FromBody] UpdateItemListDTO dto, int id)
+        public async Task<ActionResult> UpdateItemListAsync([FromBody] UpdateItemListDTO dto, [FromRoute] int id)
         {
             if (!ModelState.IsValid)
             {
@@ -147,7 +147,7 @@ namespace CheckedAppProject.API.Controllers
 
         //DELETE delete itemlist by itemList Id
         [HttpDelete("DeleteList/{id}")]
-        public async Task<ActionResult> DeleteAsync(int id)
+        public async Task<ActionResult> DeleteAsync([FromRoute] int id)
         {
             var isDeleted = await _itemListService.DeleteAsync(id);
 

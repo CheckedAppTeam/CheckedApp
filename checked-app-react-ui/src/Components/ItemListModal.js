@@ -218,8 +218,66 @@ function ItemListModal({ closeModal, itemListName, itemListId }) {
   };
 
   const handleItemChange = () => {
-    showAllItemsByItemListId();
-  };
+    showAllItemsByItemListId()
+  }
+
+  const renderButtons = () => {
+    return (
+      <>
+        {showAdd && (
+          <div className='onlyOneButton'>
+            <div id='addBtn'>
+              <Button onClick={handleAdd} variant='contained' color='success'>
+                Add
+              </Button>
+            </div>
+          </div>
+        )}
+        <div className='twoButtons'>
+          {showBack && (
+            <div id='backBtn'>
+              <Button onClick={handleBack} variant='contained' color='success'>
+                Back
+              </Button>
+            </div>
+          )}
+          <div id='addNewItemBtn'>
+            {showAddNew && (
+              <>
+                <p className='modalText'>Can't find any item?</p>
+                <Button
+                  onClick={handleAddNewItem}
+                  variant='contained'
+                  color='success'
+                >
+                  Add New
+                </Button>
+              </>
+            )}
+            {showNewItemForm && (
+              <div className='inputAndSubmit'>
+                <input
+                  className='inputNewItem'
+                  type='text'
+                  value={newItemName}
+                  onChange={(e) => setNewItemName(e.target.value)}
+                  placeholder='Enter new item name'
+                />
+                <Button
+                  className='submitNewItem'
+                  onClick={handleNewItemSubmit}
+                  variant='contained'
+                  color='success'
+                >
+                  Submit
+                </Button>
+              </div>
+            )}
+          </div>
+        </div>
+      </>
+    )
+  }
 
   return (
     <div className='modalBackground'>
@@ -231,49 +289,49 @@ function ItemListModal({ closeModal, itemListName, itemListId }) {
           <h1>{itemListName}</h1>
         </div>
         <div className='body'>
-          {!loading ? (
+          {/* {!loading ? (
             <Loader />
-          ) : (
-            <div className='itemsAndFooter'>
-              <div className='items'>
-                {allItemsByItemListId
-                  .sort((a, b) => a.userItemId - b.userItemId)
-                  .map((item, index) => (
-                    <div className='item-container' key={item.userItemId}>
-                      <UserItem item={item} onItemChange={handleItemChange} />
-                    </div>
-                  ))}
-              </div>
-              <div className='footer'>
-                <div className='selectBtn'>
-                  {showSelect && (
-                    <Select
-                      className='map-input'
-                      defaultValue={inputValue}
-                      options={filterItems(inputValue)}
-                      onChange={handleItemsSelect}
-                      onInputChange={(value) => setInputValue(value)}
-                      placeholder='Type to search...'
-                      styles={customStyles}
-                    />
-                  )}
+          ) : ( */}
+
+          {/* <div className='itemsAndFooter'> */}
+          {!loading && <Loader/>}
+          <div className='items-inList'>
+            {allItemsByItemListId
+              .sort((a, b) => a.userItemId - b.userItemId)
+              .map((item, index) => (
+                <div className='item-container' key={item.userItemId}>
+                  <UserItem item={item} onItemChange={handleItemChange} />
                 </div>
-                <div className='selectButtons'>
-                  {!showItemAdd && (
-                    <>
-                      {/* Omitted rendering of buttons on the home page */}
-                    </>
-                  )}
-                </div>
-                {showItemAdd && (
-                  <Button id='AddItemBtn' onClick={handleAddClick}>
-                    Add
-                  </Button>
-                )}
-              </div>
-            </div>
+              ))}
+          </div>
+        </div>
+        <div className='footer'>
+          <div className='selectBtn'>
+            {showSelect && (
+              <Select
+                className='map-input'
+                defaultValue={inputValue}
+                options={filterItems(inputValue)}
+                onChange={handleItemsSelect}
+                onInputChange={(value) => setInputValue(value)}
+                placeholder='Type to search...'
+                styles={customStyles}
+              />
+            )}
+          </div>
+          <div className='selectButtons'>
+            {!showItemAdd && renderButtons()}
+          </div>
+          {showItemAdd && (
+            <Button id='AddItemBtn' onClick={handleAddClick}>
+              Add
+            </Button>
           )}
         </div>
+        {/* </div> */}
+
+        {/* )} */}
+
       </div>
     </div>
   );

@@ -13,8 +13,6 @@ export function Items() {
   const [fornSearch, setFormSearch] = useState(false)
   const [newItemName, setNewItemName] = useState('')
 
-  // const { token } = useAuth()
-
   const getAllItems = async () => {
     try {
       const response = await axios.get(itemEndpoints.getAllItems)
@@ -134,6 +132,7 @@ export function Items() {
             </form>
           </>
         }
+
 
         <Grid container spacing={{ xs: 2, md: 3 }} columns={{ xs: 2, sm: 4, md: 8 }}>
           {allItems &&
