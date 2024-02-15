@@ -203,6 +203,7 @@ export function ItemLists() {
                     openModalAtIndex={openModalAtIndex}
                     onDelete={handleDelete}
                     addedList={newListData}
+                    onChange={fetchData}
                   >
                     xs=2
                   </ItemList>

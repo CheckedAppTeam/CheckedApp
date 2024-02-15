@@ -76,8 +76,8 @@ public class ItemListRepository : IItemListRepository
             return false;
         }
 
-        dbItemList.ItemListName = itemList.ItemListName ?? itemList.ItemListName;
-        dbItemList.ItemListDestination = itemList.ItemListDestination ?? itemList.ItemListDestination;
+        dbItemList.ItemListName = itemList.ItemListName ?? dbItemList.ItemListName;
+        dbItemList.ItemListDestination = itemList.ItemListDestination ?? dbItemList.ItemListDestination;
         dbItemList.ItemListPublic = itemList.ItemListPublic;
         dbItemList.Date = itemList.Date ?? DateTime.Now;
 

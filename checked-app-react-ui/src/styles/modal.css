@@ -235,3 +235,27 @@
     color: #FF9B36;
   }
 }
+
+@media screen and (min-width: 1200px) {
+
+  .modalContainer .body {
+    margin-right: 4em;
+    margin-left: 4em;
+  }
+}
+
+@media screen and (min-width: 1600px) {
+
+  .modalContainer .body {
+    margin-right: 6em;
+    margin-left: 6em;
+  }
+}
+
+@media screen and (min-width: 20000px) {
+
+  .modalContainer .body {
+    margin-right: 8em;
+    margin-left: 8em;
+  }
+}
