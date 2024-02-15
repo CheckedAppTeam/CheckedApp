@@ -7,12 +7,10 @@ namespace CheckedAppProject.DATA.DbServices.Repository
     public class UserItemRepository : IUserItemRepository
     {
         private UserItemContext _userItemContext;
-
         public UserItemRepository(UserItemContext userItemContext)
         {
             _userItemContext = userItemContext;
         }
-
         public async Task<UserItem?> GetUserItemRepositoryAsync(Func<IQueryable<UserItem>, IQueryable<UserItem>> customQuery)
         {
             var query = _userItemContext.UserItems.AsQueryable();
@@ -22,7 +20,6 @@ namespace CheckedAppProject.DATA.DbServices.Repository
             return await query
                 .FirstOrDefaultAsync();
         }
-
         public async Task<List<UserItem?>> GetAllUserItemAsync(Func<IQueryable<UserItem>, IQueryable<UserItem>> customQuery)
         {
             var query = _userItemContext.UserItems.AsQueryable();
@@ -32,7 +29,6 @@ namespace CheckedAppProject.DATA.DbServices.Repository
             return await query
                 .ToListAsync();
         }
-
         public async Task AddUserItemAsync(UserItem userData)
         {
             try
@@ -45,7 +41,6 @@ namespace CheckedAppProject.DATA.DbServices.Repository
                 throw;
             }
         }
-
         public async Task<bool> EditUserItemData(UserItemState state, int userItemId)
         {
             var dbUserItem = await _userItemContext.UserItems
@@ -75,7 +70,6 @@ namespace CheckedAppProject.DATA.DbServices.Repository
             }
             return false;
         }
-
         public async Task<List<UserItem?>> GetAllUserItemFromListAsync(int itemListId)
         {
             List<UserItem> userItemList = await _userItemContext.UserItems
@@ -83,6 +77,5 @@ namespace CheckedAppProject.DATA.DbServices.Repository
 
             return userItemList;
         }
-
     }
 }

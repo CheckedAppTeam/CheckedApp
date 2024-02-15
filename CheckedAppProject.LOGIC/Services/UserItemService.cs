@@ -85,8 +85,8 @@ namespace CheckedAppProject.LOGIC.Services
                 await _userItemRepository.AddUserItemAsync(user);
 
             }
-
         }
+
         public async Task<bool> UpdateUserItemStateAsync(UserItemState state, int userItemId)
         {
             return await _userItemRepository.EditUserItemData(state, userItemId);
@@ -96,6 +96,5 @@ namespace CheckedAppProject.LOGIC.Services
         {
             return await _userItemRepository.DeleteUserItemAsync(query => query.Where(u => u.UserItemId == userItemId));
         }
-
     }
 }

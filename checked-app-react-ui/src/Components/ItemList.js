@@ -1,34 +1,37 @@
-import React from 'react';
+import React from 'react'
 import { useState, useCallback, useEffect } from 'react'
-import axios from 'axios';
-import { itemListEndpoints } from '../endpoints';
-import Loader from '../spinners/Loader';
-import '../styles/itemList.css';
+import axios from 'axios'
+import { itemListEndpoints } from '../endpoints'
+import Loader from '../spinners/Loader'
+import '../styles/itemList.css'
 import FormControlLabel from '@mui/material/FormControlLabel'
 import { orange } from '@mui/material/colors'
 import Checkbox from '@mui/material/Checkbox'
 
 function ItemList({ itemList, openModalAtIndex, onDelete, onChange }) {
-  const { itemListId, listName, travelDestination, travelDate, isPublic } = itemList;
-  const [isLoading, setIsLoading] = useState(true);
-  const [isEditing, setIsEditing] = useState(false);
+  const { itemListId, listName, travelDestination, travelDate, isPublic } =
+    itemList
+  const [isLoading, setIsLoading] = useState(true)
+  const [isEditing, setIsEditing] = useState(false)
   const [editDate, setEditDate] = useState(travelDate)
   const [editListName, setEditListName] = useState(listName)
   const [editIsPublic, setEditIsPublic] = useState(isPublic)
-  const [editTravelDestination, setEditTravelDestination] = useState(travelDestination)
-
+  const [editTravelDestination, setEditTravelDestination] =
+    useState(travelDestination)
 
   const handleClick = useCallback(() => {
-    openModalAtIndex(itemListId, listName);
-  }, [itemListId, listName, openModalAtIndex]);
+    openModalAtIndex(itemListId, listName)
+  }, [itemListId, listName, openModalAtIndex])
 
   const deleteItemList = async () => {
     try {
-      const response = await axios.delete(itemListEndpoints.deleteList(itemListId));
-      onDelete(itemListId);
-      alert('ItemList is deleted');
+      const response = await axios.delete(
+        itemListEndpoints.deleteList(itemListId)
+      )
+      onDelete(itemListId)
+      alert('ItemList is deleted')
     } catch (error) {
-      console.error('Error deleting item:', error);
+      console.error('Error deleting item:', error)
     }
   }
 
@@ -37,52 +40,52 @@ function ItemList({ itemList, openModalAtIndex, onDelete, onChange }) {
   }
 
   const handleInputNameChange = (event) => {
-    const { value } = event.target;
-    setEditListName(value);
-  };
+    const { value } = event.target
+    setEditListName(value)
+  }
 
   const handleInputDateChange = (event) => {
-    const { value } = event.target;
-    setEditDate(value);
-  };
+    const { value } = event.target
+    setEditDate(value)
+  }
 
   const handleInputDestinationChange = (event) => {
-    const { value } = event.target;
-    setEditTravelDestination(value);
-  };
+    const { value } = event.target
+    setEditTravelDestination(value)
+  }
 
   const handleCheckboxChange = (e) => {
-    const isChecked = e.target.checked;
-    setEditIsPublic(isChecked);
-  };
+    const isChecked = e.target.checked
+    setEditIsPublic(isChecked)
+  }
 
   const saveChanges = async () => {
     try {
       const isoString = new Date(editDate).toISOString()
-        console.log(isoString)
+      console.log(isoString)
 
       await axios.put(itemListEndpoints.updateItemList(itemListId), {
         ItemListName: editListName,
         ItemListDestination: editTravelDestination,
         Date: isoString,
-        ItemListPublic: editIsPublic
+        ItemListPublic: editIsPublic,
       })
-      setIsEditing(false);
-      onChange();
+      setIsEditing(false)
+      onChange()
     } catch (error) {
-      console.error('Error while sending data', error);
+      console.error('Error while sending data', error)
     }
-  };
+  }
 
   const handleCancel = () => {
-    setIsEditing(false);
+    setIsEditing(false)
   }
 
   useEffect(() => {
     if (itemList !== undefined) {
-      setIsLoading(false);
+      setIsLoading(false)
     }
-  }, [itemList]);
+  }, [itemList])
 
   return (
     <>
@@ -90,7 +93,7 @@ function ItemList({ itemList, openModalAtIndex, onDelete, onChange }) {
         <Loader />
       ) : (
         <>
-          {isEditing &&
+          {isEditing && (
             <div className='itemList'>
               <div className='titleCloseBtn'>
                 <button onClick={deleteItemList}></button>
@@ -129,7 +132,7 @@ function ItemList({ itemList, openModalAtIndex, onDelete, onChange }) {
                         color: orange[500],
                         '&.Mui-checked': {
                           color: orange[600],
-                        }
+                        },
                       }}
                     />
                   }
@@ -143,8 +146,8 @@ function ItemList({ itemList, openModalAtIndex, onDelete, onChange }) {
                 <button onClick={handleCancel}>Cancel</button>
               </div>
             </div>
-          }
-          {!isEditing &&
+          )}
+          {!isEditing && (
             <div className='itemList'>
               <div className='titleCloseBtn'>
                 <button onClick={deleteItemList}></button>
@@ -163,12 +166,11 @@ function ItemList({ itemList, openModalAtIndex, onDelete, onChange }) {
                 <button onClick={handleEdit}>Edit</button>
               </div>
             </div>
-          }
+          )}
         </>
       )}
     </>
-  );
-
+  )
 }
 
 function formatDate(dateString) {
@@ -182,4 +184,3 @@ function formatDate(dateString) {
 }
 
 export default ItemList
-

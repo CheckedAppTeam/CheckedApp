@@ -1,6 +1,4 @@
-﻿using System;
-namespace CheckedAppProject.DATA.Models;
-
+﻿namespace CheckedAppProject.DATA.Models;
 public class PageResult<T>
 {
     public List<T> Items { get; set; }

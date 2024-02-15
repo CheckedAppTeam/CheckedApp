@@ -62,5 +62,4 @@ namespace TestProject
             Assert.That(result.ErrorMessages["TestError"], Is.EqualTo("Test error"));
         }
     }
-
 }

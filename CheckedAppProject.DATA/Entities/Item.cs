@@ -1,5 +1,4 @@
-﻿
-namespace CheckedAppProject.DATA.Entities
+﻿namespace CheckedAppProject.DATA.Entities
 {
     public class Item
     {

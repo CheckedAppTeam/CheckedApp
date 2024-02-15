@@ -11,6 +11,5 @@
         public string UserId { get; set; }
         public List<UserItem> UserItems { get; set; }
         public List<Item> Items { get; set; }
-
     }
 }

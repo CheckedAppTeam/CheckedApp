@@ -1,5 +1,4 @@
-﻿using CheckedAppProject.LOGIC.DTOs;
-
+﻿
 namespace CheckedAppProject.DATA.Entities
 {
     public class UserItemDTO

@@ -28,16 +28,11 @@ namespace CheckedAppProject.API.StartConfiguration
                 app.UseSwagger();
                 app.UseSwaggerUI();
             }
-
             app.UseHttpsRedirection();
-
             app.UseCors();
-
             app.UseAuthentication();
             app.UseAuthorization();
-
             app.MapControllers();
-
             DbContextConfiguration.InitializeDatabase(app);
         }        
     }

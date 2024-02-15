@@ -4,7 +4,6 @@ using CheckedAppProject.DATA.DbServices.Repository;
 using CheckedAppProject.DATA.Entities;
 using CheckedAppProject.LOGIC.DTOs;
 using Microsoft.EntityFrameworkCore;
-using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace CheckedAppProject.LOGIC.Services
 {
@@ -52,8 +51,6 @@ namespace CheckedAppProject.LOGIC.Services
             var itemListsDto = _mapper.Map<IEnumerable<ItemListDTO>>(itemLists);
             return itemListsDto;
         }
-
-
 
         public async Task<IEnumerable<ItemListDTO>> GetAllAsync()
         {
@@ -104,6 +101,5 @@ namespace CheckedAppProject.LOGIC.Services
                 .Where(itemList => itemList.ItemListPublic)
                 .ToListAsync();
         }
-
     }
 }

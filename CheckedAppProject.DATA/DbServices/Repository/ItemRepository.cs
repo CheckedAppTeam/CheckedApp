@@ -15,7 +15,6 @@ namespace CheckedAppProject.DATA.DbServices.Repository
             _userItemContext = userItemContext;
             _logger = logger;
         }
-
         public async Task AddItemAsync(Item item)
         {
             try
@@ -50,7 +49,6 @@ namespace CheckedAppProject.DATA.DbServices.Repository
             }
             return false;
         }
-
         public async Task<(IEnumerable<Item>, int, int, int)> GetAllItemsAsyncPages(ItemsQuery query)
         {
             var baseQuery = _userItemContext
@@ -68,14 +66,12 @@ namespace CheckedAppProject.DATA.DbServices.Repository
 
             return (items, itemsCount, pageSize, pageNumber);
         }
-
         public async Task<IEnumerable<Item>> GetAllItemsAsync()
         {
             var items = await _userItemContext.Items.ToListAsync();
 
             return items;
         }
-
         public async Task<Item> GetItemByIdAsync(int itemId)
         {
             var item = await _userItemContext.Items
@@ -89,8 +85,7 @@ namespace CheckedAppProject.DATA.DbServices.Repository
             var item = await _userItemContext.Items
                 .Where(i => i.ItemId == itemId)
                 .OrderBy(i => i.ItemName)
-                .FirstOrDefaultAsync();
-            //var itemName = item.ItemName;
+                .FirstOrDefaultAsync();           
 
             var itemName = (item != null) ? item.ItemName : "DefaultName";
 
@@ -104,8 +99,7 @@ namespace CheckedAppProject.DATA.DbServices.Repository
                 .LastOrDefaultAsync();
 
             return item;
-        }
-        
+        }       
         public async Task<bool> DeleteItemAsync(Func<IQueryable<Item>, IQueryable<Item>> customQuery)
         {
             var query = _userItemContext.Items.AsQueryable();

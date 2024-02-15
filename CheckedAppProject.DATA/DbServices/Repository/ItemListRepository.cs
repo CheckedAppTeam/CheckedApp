@@ -5,7 +5,6 @@ using Microsoft.EntityFrameworkCore;
 namespace CheckedAppProject.DATA.DbServices.Repository;
 
 public class ItemListRepository : IItemListRepository
-
 {
     private UserItemContext _userItemContext;
 
@@ -16,16 +15,15 @@ public class ItemListRepository : IItemListRepository
 
     public async Task<IEnumerable<ItemList>> GetAllItemListsAsync()
     {
-        var itemLists = await _userItemContext
-            .ItemLists
-            .Include(il => il.Items)
-            .ToListAsync();
+        var itemLists = await _userItemContext.ItemLists.Include(il => il.Items).ToListAsync();
 
         return itemLists;
     }
+
     public async Task<string> GetItemListNameByIdAsync(int itemListId)
     {
-        var itemList = await _userItemContext.ItemLists
+        var itemList = await _userItemContext
+            .ItemLists
             .Where(i => i.ItemListId == itemListId)
             .FirstOrDefaultAsync();
         var itemListName = itemList.ItemListName;
@@ -33,25 +31,26 @@ public class ItemListRepository : IItemListRepository
         return itemListName;
     }
 
-    public async Task<IEnumerable<ItemList>> GetAllByUserIdAsync(Func<IQueryable<ItemList>, IQueryable<ItemList>> customQuery)
+    public async Task<IEnumerable<ItemList>> GetAllByUserIdAsync(
+        Func<IQueryable<ItemList>, IQueryable<ItemList>> customQuery
+    )
     {
         var query = _userItemContext.ItemLists.AsQueryable();
 
         query = customQuery(query);
 
-        return await query
-            .ToListAsync();
+        return await query.ToListAsync();
     }
 
-    public async Task<ItemList?> GetItemListAsync(Func<IQueryable<ItemList>, IQueryable<ItemList>> customQuery)
+    public async Task<ItemList?> GetItemListAsync(
+        Func<IQueryable<ItemList>, IQueryable<ItemList>> customQuery
+    )
     {
         var query = _userItemContext.ItemLists.AsQueryable();
 
         query = customQuery(query);
 
-        return await query
-                .Include(il => il.Items)
-                .FirstOrDefaultAsync();
+        return await query.Include(il => il.Items).FirstOrDefaultAsync();
     }
 
     public async Task CreateItemList(ItemList itemList)
@@ -69,7 +68,9 @@ public class ItemListRepository : IItemListRepository
 
     public async Task<bool> UpdateItemListAsync(ItemList itemList, int id)
     {
-        var dbItemList = await _userItemContext.ItemLists.FirstOrDefaultAsync(il => il.ItemListId == id);
+        var dbItemList = await _userItemContext
+            .ItemLists
+            .FirstOrDefaultAsync(il => il.ItemListId == id);
 
         if (dbItemList == null)
         {
@@ -77,7 +78,8 @@ public class ItemListRepository : IItemListRepository
         }
 
         dbItemList.ItemListName = itemList.ItemListName ?? dbItemList.ItemListName;
-        dbItemList.ItemListDestination = itemList.ItemListDestination ?? dbItemList.ItemListDestination;
+        dbItemList.ItemListDestination =
+            itemList.ItemListDestination ?? dbItemList.ItemListDestination;
         dbItemList.ItemListPublic = itemList.ItemListPublic;
         dbItemList.Date = itemList.Date ?? DateTime.Now;
 
@@ -88,7 +90,9 @@ public class ItemListRepository : IItemListRepository
 
     public async Task<ItemList> CopyItemList(int itemListid, string userId)
     {
-        var dbItemList = await _userItemContext.ItemLists.FirstOrDefaultAsync(il => il.ItemListId == itemListid);
+        var dbItemList = await _userItemContext
+            .ItemLists
+            .FirstOrDefaultAsync(il => il.ItemListId == itemListid);
 
         if (dbItemList is null)
         {
@@ -116,7 +120,6 @@ public class ItemListRepository : IItemListRepository
         }
 
         return copyItemList;
-
     }
 
     public async Task<IEnumerable<ItemList>> GetAllItemListsByCity(string city)
@@ -130,18 +133,28 @@ public class ItemListRepository : IItemListRepository
         return itemLists;
     }
 
-    public async Task<IEnumerable<ItemList>> GetAllItemListsByCityAndMonthAsync(string city, DateTime date)
+    public async Task<IEnumerable<ItemList>> GetAllItemListsByCityAndMonthAsync(
+        string city,
+        DateTime date
+    )
     {
         var itemLists = await _userItemContext
             .ItemLists
             .Include(il => il.Items)
-            .Where(il => il.ItemListDestination == city && il.Date.HasValue && il.Date.Value.Month == date.Month)
+            .Where(
+                il =>
+                    il.ItemListDestination == city
+                    && il.Date.HasValue
+                    && il.Date.Value.Month == date.Month
+            )
             .ToListAsync();
 
         return itemLists;
     }
 
-    public async Task<bool> DeleteAsync(Func<IQueryable<ItemList>, IQueryable<ItemList>> customQuery)
+    public async Task<bool> DeleteAsync(
+        Func<IQueryable<ItemList>, IQueryable<ItemList>> customQuery
+    )
     {
         var query = _userItemContext.ItemLists.AsQueryable();
 
@@ -157,6 +170,4 @@ public class ItemListRepository : IItemListRepository
         }
         return false;
     }
-
-
 }

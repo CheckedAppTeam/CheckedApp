@@ -68,7 +68,6 @@ function UserItem({ item, onItemChange }) {
 
   return (
     <>
-    {/* <div className='item-in-modal'> */}
       <IconButton aria-label='delete' size='small' color='white'>
         <DeleteIcon className='deleteIcon' onClick={(e) => handleDelete(e)} />
       </IconButton>
@@ -88,9 +87,9 @@ function UserItem({ item, onItemChange }) {
                     color: orange[600],
                   },
                   '@media (max-width: 600px)': {
-                    transform: "scale(0.8)",
-                      width: 20,
-                      height: 20
+                    transform: 'scale(0.8)',
+                    width: 20,
+                    height: 20,
                   },
                 }}
               />
@@ -111,9 +110,9 @@ function UserItem({ item, onItemChange }) {
                     color: orange[600],
                   },
                   '@media (max-width: 600px)': {
-                    transform: "scale(0.8)",
-                      width: 20,
-                      height: 20
+                    transform: 'scale(0.8)',
+                    width: 20,
+                    height: 20,
                   },
                 }}
               />
@@ -123,7 +122,6 @@ function UserItem({ item, onItemChange }) {
           />
         </FormGroup>
       </FormControl>
-      {/* </div> */}
     </>
   )
 }

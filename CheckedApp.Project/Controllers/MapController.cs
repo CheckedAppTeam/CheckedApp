@@ -1,10 +1,6 @@
 ﻿using CheckedAppProject.LOGIC.DTOs;
 using CheckedAppProject.LOGIC.Services;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-
-
 
 namespace CheckedAppProject.API.Controllers
 {

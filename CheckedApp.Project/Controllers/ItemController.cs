@@ -1,9 +1,9 @@
-﻿using CheckedAppProject.LOGIC.DTOs;
+﻿using CheckedAppProject.DATA.Models;
+using CheckedAppProject.LOGIC.DTOs;
 using CheckedAppProject.LOGIC.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using CheckedAppProject.DATA.Models;
 
 namespace CheckedAppProject.API.Controllers
 {
@@ -13,17 +13,20 @@ namespace CheckedAppProject.API.Controllers
     public class ItemController : ControllerBase
     {
         private readonly IItemService _itemService;
-        public ItemController( IItemService itemService)
+
+        public ItemController(IItemService itemService)
         {
             _itemService = itemService;
         }
 
         //GET filtered items, one item - depending on the function provided - delegate
         [HttpGet("GetAllPages")]
-        public async Task<IActionResult> GetAllItemsPages([FromQuery]ItemsQuery query)
+        public async Task<IActionResult> GetAllItemsPages([FromQuery] ItemsQuery query)
         {
-           var items = await _itemService.GetAllItemDtoAsyncPages(query);
-            return items == null ? NotFound(new { ErrorCode = 404, Message = "Item with this ID not found" }) : Ok(items);
+            var items = await _itemService.GetAllItemDtoAsyncPages(query);
+            return items == null
+                ? NotFound(new { ErrorCode = 404, Message = "Item with this ID not found" })
+                : Ok(items);
         }
 
         //GET all items
@@ -31,7 +34,9 @@ namespace CheckedAppProject.API.Controllers
         public async Task<IActionResult> GetAllItems()
         {
             var items = await _itemService.GetAllItemDtoAsync();
-            return items == null ? NotFound(new { ErrorCode = 404, Message = "Item with this ID not found" }) : Ok(items);
+            return items == null
+                ? NotFound(new { ErrorCode = 404, Message = "Item with this ID not found" })
+                : Ok(items);
         }
 
         //GET item by Id
@@ -56,7 +61,9 @@ namespace CheckedAppProject.API.Controllers
 
             if (item == null)
             {
-                return NotFound(new { ErrorCode = 404, Message = $"Item with ID {name} not found" });
+                return NotFound(
+                    new { ErrorCode = 404, Message = $"Item with ID {name} not found" }
+                );
             }
 
             return Ok(item);
@@ -64,32 +71,38 @@ namespace CheckedAppProject.API.Controllers
 
         //POST item
         [HttpPost("AddItem")]
-        public async Task <IActionResult> AddItem(NewItemDTO dto)
+        public async Task<IActionResult> AddItem(NewItemDTO dto)
         {
-            if(dto != null) await _itemService.AddItemAsync(dto);
-            
+            if (dto != null)
+                await _itemService.AddItemAsync(dto);
+
             return Ok(new { Message = "Item added successfully" });
         }
 
         //DELETE delete item by Id, only by ADMIN
         [Authorize(Roles = "Admin")]
         [HttpDelete("DeleteItem/{id}")]
-        public async Task<IActionResult>  DeleteItem([FromRoute]int id) 
+        public async Task<IActionResult> DeleteItem([FromRoute] int id)
         {
             var isDeleted = await _itemService.DeleteItemAsync(id);
-            
-            return isDeleted == false ? (NotFound(new { ErrorCode = 404, Message = "Item with this ID not found" }))
+
+            return isDeleted == false
+                ? (NotFound(new { ErrorCode = 404, Message = "Item with this ID not found" }))
                 : (Ok(new { Message = "Item successfully deleted" }));
         }
 
         //PUT edit item by Id, only by ADMIN
         [Authorize(Roles = "Admin")]
         [HttpPut("EditItem/{id}")]
-        public async Task<IActionResult> EditItemName([FromBody]EditItemDTO dto, [FromRoute] int id)
+        public async Task<IActionResult> EditItemName(
+            [FromBody] EditItemDTO dto,
+            [FromRoute] int id
+        )
         {
             var isEdited = await _itemService.EditItemAsync(dto, id);
 
-            return isEdited == false ? (NotFound(new { ErrorCode = 404, Message = "Item with this ID not found" }))
+            return isEdited == false
+                ? (NotFound(new { ErrorCode = 404, Message = "Item with this ID not found" }))
                 : (Ok(new { Message = "Item successfully edited" }));
         }
     }

@@ -1,5 +1,4 @@
-﻿using System;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace CheckedAppProject.LOGIC.DTOs;
 
@@ -11,5 +10,3 @@ public class GetItemDTO
     public int ItemId { get; set; }
     public string? ItemCompany { get; set; }
 }
-
-

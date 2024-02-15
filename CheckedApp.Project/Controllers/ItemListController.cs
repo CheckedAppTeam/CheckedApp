@@ -1,8 +1,8 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using CheckedAppProject.LOGIC.DTOs;
+﻿using CheckedAppProject.LOGIC.DTOs;
 using CheckedAppProject.LOGIC.Services;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 
 namespace CheckedAppProject.API.Controllers
 {
@@ -14,7 +14,10 @@ namespace CheckedAppProject.API.Controllers
         private readonly IItemListService _itemListService;
         private readonly ILogger<ItemListController> _logger;
 
-        public ItemListController(IItemListService itemListService, ILogger<ItemListController> logger)
+        public ItemListController(
+            IItemListService itemListService,
+            ILogger<ItemListController> logger
+        )
         {
             _itemListService = itemListService;
             _logger = logger;
@@ -37,7 +40,9 @@ namespace CheckedAppProject.API.Controllers
 
         //GET all itemLists of the user by user Id
         [HttpGet("User/{userid}")]
-        public async Task<ActionResult<IEnumerable<ItemListDTO>>> GetAllByUserIdAsync([FromRoute] string userid)
+        public async Task<ActionResult<IEnumerable<ItemListDTO>>> GetAllByUserIdAsync(
+            [FromRoute] string userid
+        )
         {
             var itemListsDto = await _itemListService.GetAllByUserIdAsync(userid);
 
@@ -67,7 +72,9 @@ namespace CheckedAppProject.API.Controllers
 
         //GET all itemLists by destination name
         [HttpGet("City/{city}")]
-        public async Task<ActionResult<IEnumerable<ItemListDTO>>> GetByCityAsync([FromRoute] string city)
+        public async Task<ActionResult<IEnumerable<ItemListDTO>>> GetByCityAsync(
+            [FromRoute] string city
+        )
         {
             var itemLists = await _itemListService.GetByCityAsync(city);
 
@@ -82,7 +89,10 @@ namespace CheckedAppProject.API.Controllers
 
         //GET all itemLists by destination and date
         [HttpGet("CityAndDate/{city}/{date}")]
-        public async Task<ActionResult<ItemListDTO>> GetByDateAndCity([FromRoute] string city, [FromRoute] DateTime date)
+        public async Task<ActionResult<ItemListDTO>> GetByDateAndCity(
+            [FromRoute] string city,
+            [FromRoute] DateTime date
+        )
         {
             var itemList = await _itemListService.GetByMonthAndCity(date, city);
 
@@ -96,7 +106,10 @@ namespace CheckedAppProject.API.Controllers
 
         //POST new list to user by user Id
         [HttpPost("AddList/{userid}")]
-        public async Task<ActionResult> AddList([FromBody] CreateItemListDTO dto, [FromRoute] string userid)
+        public async Task<ActionResult> AddList(
+            [FromBody] CreateItemListDTO dto,
+            [FromRoute] string userid
+        )
         {
             if (!ModelState.IsValid)
             {
@@ -111,7 +124,10 @@ namespace CheckedAppProject.API.Controllers
 
         //GET and POST copy a existing list to own itemList list by itemList Id and to user by his Id
         [HttpPost("User/{itemListid}/{userid}")]
-        public async Task<ActionResult> CopyItemListAsync([FromRoute] int itemListid, [FromRoute] string userid)
+        public async Task<ActionResult> CopyItemListAsync(
+            [FromRoute] int itemListid,
+            [FromRoute] string userid
+        )
         {
             if (!ModelState.IsValid)
             {
@@ -126,7 +142,10 @@ namespace CheckedAppProject.API.Controllers
 
         //PUT edit itemList data by itemList Id
         [HttpPut("EditListSpecification/{id}")]
-        public async Task<ActionResult> UpdateItemListAsync([FromBody] UpdateItemListDTO dto, [FromRoute] int id)
+        public async Task<ActionResult> UpdateItemListAsync(
+            [FromBody] UpdateItemListDTO dto,
+            [FromRoute] int id
+        )
         {
             if (!ModelState.IsValid)
             {

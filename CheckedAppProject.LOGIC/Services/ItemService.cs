@@ -1,12 +1,8 @@
 ﻿using AutoMapper;
-using CheckedAppProject.DATA.CheckedAppDbContext;
 using CheckedAppProject.DATA.DbServices.Repository;
 using CheckedAppProject.DATA.Entities;
 using CheckedAppProject.LOGIC.DTOs;
 using CheckedAppProject.DATA.Models;
-using CheckedAppProject.LOGIC.AutoMapperProfiles;
-using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
-
 
 namespace CheckedAppProject.LOGIC.Services
 {
@@ -72,6 +68,5 @@ namespace CheckedAppProject.LOGIC.Services
             var item = _mapper.Map<Item>(dto);
             return await _itemRepository.EditItemAsync(item, itemId);
         }
-
     }
 }

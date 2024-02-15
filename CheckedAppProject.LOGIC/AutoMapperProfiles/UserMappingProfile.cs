@@ -2,7 +2,6 @@
 using CheckedAppProject.DATA.Entities;
 using CheckedAppProject.LOGIC.DTOs;
 
-
 namespace CheckedAppProject.LOGIC.AutoMapperProfiles
 {
     public class UserMappingProfile : Profile

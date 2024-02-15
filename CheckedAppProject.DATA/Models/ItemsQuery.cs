@@ -1,6 +1,4 @@
-﻿using System;
-namespace CheckedAppProject.DATA.Models;
-
+﻿namespace CheckedAppProject.DATA.Models;
 public class ItemsQuery
 {
     public string SearchPhrase { get; set; }

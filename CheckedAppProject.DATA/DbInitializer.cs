@@ -27,9 +27,7 @@ namespace CheckedAppProject.DATA
                 {
                     await userManager.AddToRoleAsync(adminUser, "Admin");
                 }
-            }
-
-         
+            }       
         }
     }
 }

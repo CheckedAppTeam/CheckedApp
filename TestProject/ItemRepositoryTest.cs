@@ -115,6 +115,5 @@ namespace TestProject
             Assert.That(result, Is.True);
             Assert.That(itemInDb, Is.False);
         }
-
     }
 }

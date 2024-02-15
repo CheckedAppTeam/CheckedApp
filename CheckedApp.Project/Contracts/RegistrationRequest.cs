@@ -1,5 +1,4 @@
 ﻿using CheckedAppProject.LOGIC.DTOs;
-using System.ComponentModel.DataAnnotations;
 
 namespace CheckedAppProject.API.Contracts
 {

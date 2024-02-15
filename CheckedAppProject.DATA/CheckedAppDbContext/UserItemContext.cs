@@ -13,7 +13,6 @@ namespace CheckedAppProject.DATA.CheckedAppDbContext
         public DbSet<Item> Items { get; set; }
         public DbSet<ItemList> ItemLists { get; set; }
         public DbSet<UserItem> UserItems { get; set; }
-
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);

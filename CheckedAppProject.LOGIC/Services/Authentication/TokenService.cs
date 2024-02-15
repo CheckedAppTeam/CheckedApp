@@ -7,7 +7,6 @@ using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
 
-
 namespace CheckedAppProject.LOGIC.Services.Authentication
 {
     public class TokenService : ITokenService
@@ -89,5 +88,4 @@ namespace CheckedAppProject.LOGIC.Services.Authentication
             return refreshToken;
         }
     }
-
 }

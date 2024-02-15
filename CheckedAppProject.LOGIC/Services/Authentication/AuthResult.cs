@@ -11,5 +11,4 @@ namespace CheckedAppProject.LOGIC.Services.Authentication
     {
         public readonly Dictionary<string, string> ErrorMessages = new();
     }
-
 }

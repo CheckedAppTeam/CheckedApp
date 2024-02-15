@@ -94,5 +94,4 @@ namespace TestProject
             Assert.That(result, Is.True);
         }
     }
-
 }

@@ -102,7 +102,5 @@ namespace CheckedAppProject.LOGIC.Services.Authentication
             result.ErrorMessages.Add("Bad credentials", "Invalid password");
             return result;
         }
-
     }
-
 }
