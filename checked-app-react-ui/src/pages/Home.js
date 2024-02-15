@@ -1,6 +1,6 @@
 import Map from '../Components/Map/Map'
 import React, { useState } from 'react'
-import ItemListModal from '../Components/ItemListModal'
+import SimpleItemListModal from '../Components/SimpleItemListModal';
 
 export function Home() {
   const [openModal, setOpenModal] = useState(false)
@@ -17,7 +17,7 @@ export function Home() {
     <div className='map-container'>
       <Map handleMarkerClick={handleMarkerClick} />
       {openModal && (
-        <ItemListModal
+        <SimpleItemListModal
           closeModal={() => setOpenModal(false)}
           itemListName={currentListName}
           itemListId={currentId}
