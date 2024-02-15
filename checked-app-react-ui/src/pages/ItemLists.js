@@ -12,6 +12,7 @@ import ItemList from '../Components/ItemList.js'
 import Grid from '@mui/material/Grid'
 import Checkbox from '@mui/material/Checkbox'
 import FormControlLabel from '@mui/material/FormControlLabel'
+import { orange } from '@mui/material/colors'
 
 export function ItemLists() {
   const [allItemListsResponseData, setAllitemListsResponseData] = useState(null)
@@ -174,6 +175,12 @@ export function ItemLists() {
                   <Checkbox
                     checked={newListData.ItemListPublic}
                     onChange={handleCheckboxChange}
+                    sx={{
+                      color: orange[500],
+                      '&.Mui-checked': {
+                        color: orange[600],
+                      }
+                    }}
                   />
                 }
                 label='Public'
@@ -200,6 +207,7 @@ export function ItemLists() {
                     openModalAtIndex={openModalAtIndex}
                     onDelete={handleDelete}
                     addedList={newListData}
+                    onChange={fetchData}
                   >
                     xs=2
                   </ItemList>

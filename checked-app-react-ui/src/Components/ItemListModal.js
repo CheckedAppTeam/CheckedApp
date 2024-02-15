@@ -245,7 +245,7 @@ function ItemListModal({ closeModal, itemListName, itemListId }) {
           <div id='addNewItemBtn'>
             {showAddNew && (
               <>
-                <p className='modalText'>Can't find any matching item?</p>
+                <p className='modalText'>Can't find any item?</p>
                 <Button
                   onClick={handleAddNewItem}
                   variant='contained'
@@ -290,45 +290,49 @@ function ItemListModal({ closeModal, itemListName, itemListId }) {
           <h1>{itemListName}</h1>
         </div>
         <div className='body'>
-          {!loading ? (
+          {/* {!loading ? (
             <Loader />
-          ) : (
-            <div className='itemsAndFooter'>
-              <div className='items'>
-                {allItemsByItemListId
-                  .sort((a, b) => a.userItemId - b.userItemId)
-                  .map((item, index) => (
-                    <div className='item-container' key={item.userItemId}>
-                      <UserItem item={item} onItemChange={handleItemChange} />
-                    </div>
-                  ))}
-              </div>
-              <div className='footer'>
-                <div className='selectBtn'>
-                  {showSelect && (
-                    <Select
-                      className='map-input'
-                      defaultValue={inputValue}
-                      options={filterItems(inputValue)}
-                      onChange={handleItemsSelect}
-                      onInputChange={(value) => setInputValue(value)}
-                      placeholder='Type to search...'
-                      styles={customStyles}
-                    />
-                  )}
+          ) : ( */}
+
+          {/* <div className='itemsAndFooter'> */}
+          {!loading && <Loader/>}
+          <div className='items-inList'>
+            {allItemsByItemListId
+              .sort((a, b) => a.userItemId - b.userItemId)
+              .map((item, index) => (
+                <div className='item-container' key={item.userItemId}>
+                  <UserItem item={item} onItemChange={handleItemChange} />
                 </div>
-                <div className='selectButtons'>
-                  {!showItemAdd && renderButtons()}
-                </div>
-                {showItemAdd && (
-                  <Button id='AddItemBtn' onClick={handleAddClick}>
-                    Add
-                  </Button>
-                )}
-              </div>
-            </div>
+              ))}
+          </div>
+        </div>
+        <div className='footer'>
+          <div className='selectBtn'>
+            {showSelect && (
+              <Select
+                className='map-input'
+                defaultValue={inputValue}
+                options={filterItems(inputValue)}
+                onChange={handleItemsSelect}
+                onInputChange={(value) => setInputValue(value)}
+                placeholder='Type to search...'
+                styles={customStyles}
+              />
+            )}
+          </div>
+          <div className='selectButtons'>
+            {!showItemAdd && renderButtons()}
+          </div>
+          {showItemAdd && (
+            <Button id='AddItemBtn' onClick={handleAddClick}>
+              Add
+            </Button>
           )}
         </div>
+        {/* </div> */}
+
+        {/* )} */}
+
       </div>
     </div>
   )
