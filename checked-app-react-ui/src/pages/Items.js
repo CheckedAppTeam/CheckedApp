@@ -13,6 +13,13 @@ export function Items() {
   const [fornSearch, setFormSearch] = useState(false)
   const [newItemName, setNewItemName] = useState('')
 
+  const [originalItems, setOriginalItems] = useState([]);
+
+  // useEffect(() => {
+  //   getAllItems();
+  // }, []);
+
+
   const getAllItems = async () => {
     try {
       const response = await axios.get(itemEndpoints.getAllItems)
@@ -33,11 +40,22 @@ export function Items() {
 
   useEffect(() => {
     const storedToken = localStorage.getItem('token');
-  if (storedToken) {
-    axios.defaults.headers.common['Authorization'] =`Bearer ${storedToken}`;
-  }
+    if (storedToken) {
+      axios.defaults.headers.common['Authorization'] = `Bearer ${storedToken}`;
+    }
     getAllItems()
   }, [])
+
+  // useEffect(() => {
+  //   setOriginalItems(allItems);
+  // }, [allItems]);
+
+  // const handleOkSearch = () => {
+  //   const filteredItems = originalItems.filter(item =>
+  //     item.itemName.toLowerCase().includes(newItemName.toLowerCase())
+  //   );
+  //   setAllItems(filteredItems);
+  // }
 
   const handleItemUpdate = async () => {
     try {
@@ -73,19 +91,26 @@ export function Items() {
     }
   }
 
-  const handleOkSearch = () => {
+  const handleOkSearch = (e) => {
+    console.log(e)
     const filteredItems = allItems.filter(item =>
-      item.itemName.toLowerCase().includes(newItemName.toLowerCase())
+      item.itemName.toLowerCase().includes(e.toLowerCase())
     );
     setAllItems(filteredItems);
   }
+
 
   const handleCancel = () => {
     setAddBtn(true)
     setSearchBtn(true)
     setFormAdd(false)
     setFormSearch(false)
+    getAllItems()
   }
+
+  useEffect(() => {
+    setOriginalItems(allItems);
+  }, [allItems]);
 
   return (
     <div className='allItems'>
@@ -119,26 +144,27 @@ export function Items() {
         {fornSearch &&
           <>
             <form className='addForm'>
-              <label className='nameLabel'>Search Item</label>
+              <label className='nameLabelSearch'>Search Item</label>
               <div className='buttonsForm'>
                 <input
                   className='addItemInput'
                   value={newItemName}
-                  onChange={(e) => setNewItemName(e.target.value)}
+                  onChange={(e) => {
+                    setNewItemName(e.target.value);
+                    handleOkSearch(e.target.value);
+                  }}
                 />
-                <button className='submitAdd' onClick={handleOkSearch}>Ok</button>
                 <button className='cancelAdd' onClick={handleCancel}>X</button>
               </div>
             </form>
           </>
         }
 
-
         <Grid container spacing={{ xs: 2, md: 3 }} columns={{ xs: 2, sm: 4, md: 8 }}>
           {allItems &&
             allItems.map(item => (
-              <Grid xs={2} sm={4} md={4} key={item.ItemId}>
-                <Item key={item.ItemId} item={item} onUpdate={handleItemUpdate}>xs=2</Item>
+              <Grid item xs={2} sm={4} md={4} key={item.itemId}>
+                <Item item={item} onUpdate={handleItemUpdate} />
               </Grid>
             ))}
         </Grid>
