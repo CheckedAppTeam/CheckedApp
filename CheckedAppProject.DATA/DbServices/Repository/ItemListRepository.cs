@@ -88,7 +88,9 @@ public class ItemListRepository : IItemListRepository
 
     public async Task<ItemList> CopyItemList(int itemListid, string userId)
     {
-        var dbItemList = await _userItemContext.ItemLists.FirstOrDefaultAsync(il => il.ItemListId == itemListid);
+        var dbItemList = await _userItemContext
+            .ItemLists
+            .FirstOrDefaultAsync(il => il.ItemListId == itemListid);
 
         if (dbItemList is null)
         {
@@ -102,7 +104,11 @@ public class ItemListRepository : IItemListRepository
             UserId = userId,
             ItemListName = dbItemList.ItemListName ?? "ItemList",
             UserItems = dbItemList.UserItems,
-            ItemListPublic = false
+            ItemListPublic = false,
+            //UserItems = dbItemList.UserItems.Select(userItem => new UserItem
+            //{
+            //    ItemListId = itemListid
+            //}).ToList()
         };
 
         try
@@ -116,47 +122,46 @@ public class ItemListRepository : IItemListRepository
         }
 
         return copyItemList;
-
     }
 
     public async Task<IEnumerable<ItemList>> GetAllItemListsByCity(string city)
+{
+    var itemLists = await _userItemContext
+        .ItemLists
+        .Include(il => il.Items)
+        .Where(il => il.ItemListDestination == city)
+        .ToListAsync();
+
+    return itemLists;
+}
+
+public async Task<IEnumerable<ItemList>> GetAllItemListsByCityAndMonthAsync(string city, DateTime date)
+{
+    var itemLists = await _userItemContext
+        .ItemLists
+        .Include(il => il.Items)
+        .Where(il => il.ItemListDestination == city && il.Date.HasValue && il.Date.Value.Month == date.Month)
+        .ToListAsync();
+
+    return itemLists;
+}
+
+public async Task<bool> DeleteAsync(Func<IQueryable<ItemList>, IQueryable<ItemList>> customQuery)
+{
+    var query = _userItemContext.ItemLists.AsQueryable();
+
+    query = customQuery(query);
+
+    var itemListToDelete = await query.FirstOrDefaultAsync();
+
+    if (itemListToDelete != null)
     {
-        var itemLists = await _userItemContext
-            .ItemLists
-            .Include(il => il.Items)
-            .Where(il => il.ItemListDestination == city)
-            .ToListAsync();
-
-        return itemLists;
+        _userItemContext.ItemLists.Remove(itemListToDelete);
+        await _userItemContext.SaveChangesAsync();
+        return true;
     }
-
-    public async Task<IEnumerable<ItemList>> GetAllItemListsByCityAndMonthAsync(string city, DateTime date)
-    {
-        var itemLists = await _userItemContext
-            .ItemLists
-            .Include(il => il.Items)
-            .Where(il => il.ItemListDestination == city && il.Date.HasValue && il.Date.Value.Month == date.Month)
-            .ToListAsync();
-
-        return itemLists;
-    }
-
-    public async Task<bool> DeleteAsync(Func<IQueryable<ItemList>, IQueryable<ItemList>> customQuery)
-    {
-        var query = _userItemContext.ItemLists.AsQueryable();
-
-        query = customQuery(query);
-
-        var itemListToDelete = await query.FirstOrDefaultAsync();
-
-        if (itemListToDelete != null)
-        {
-            _userItemContext.ItemLists.Remove(itemListToDelete);
-            await _userItemContext.SaveChangesAsync();
-            return true;
-        }
-        return false;
-    }
+    return false;
+}
 
 
 }

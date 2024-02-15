@@ -289,11 +289,6 @@ function ItemListModal({ closeModal, itemListName, itemListId }) {
           <h1>{itemListName}</h1>
         </div>
         <div className='body'>
-          {/* {!loading ? (
-            <Loader />
-          ) : ( */}
-
-          {/* <div className='itemsAndFooter'> */}
           {!loading && <Loader/>}
           <div className='items-inList'>
             {allItemsByItemListId
@@ -328,9 +323,6 @@ function ItemListModal({ closeModal, itemListName, itemListId }) {
             </Button>
           )}
         </div>
-        {/* </div> */}
-
-        {/* )} */}
 
       </div>
     </div>

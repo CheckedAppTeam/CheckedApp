@@ -1,0 +1,33 @@
+:root {
+    --mainColor: #FF9B36;
+    --mainColorLight: #9B9BFF;
+    --secondaryColor: #434AF2;
+    --textColor: #FFF5EB;
+  }
+  
+  h3{
+    color: var(--mainColorLight);
+  }
+
+  .items-map {
+    flex: 1;
+    overflow: scroll;
+    height: 40vh;
+    align-items: center;
+    margin: 1em 2em;
+  }
+
+  
+  .titleCloseBtn {
+    display: flex;
+    justify-content: flex-end;
+  }
+  
+  .modalContainer .body {
+    display: flex;
+    justify-content: center;
+  }
+  
+
+
+ 
