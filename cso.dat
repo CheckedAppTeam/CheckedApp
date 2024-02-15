@@ -1,0 +1,9 @@
+V1
+2:ItemService,v
+2:EditName,t
+2:itemName,A
+2:DeleteItem,G
+2:itemListId,g
+2:ToggleItemToBuy,R
+2:ToggleItemToPack,C
+2:IItemRepository,y

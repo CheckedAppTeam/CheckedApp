@@ -1,0 +1,66 @@
+@import '~leaflet/dist/leaflet.css';
+
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+
+
+#root {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    gap: 1em;
+    font-family: sans-serif;
+    color: #333;
+    
+    
+  }
+  .map-input{
+    
+    position: relative;
+  }
+  
+  
+  .map-container{
+    position: relative; 
+    z-index: 1;
+    align-items: center; 
+    min-width: 100%;
+    padding: 4rem;
+    box-sizing: border-box;
+    max-width: none;
+    
+  }
+  .custom-marker-icon{
+    font-size: 18px;
+    color: red;
+  }
+  /* height of the container */
+  .leaflet-container {
+    height: 100vh;
+    align-self: center;
+    
+    height: 90vh;
+    width: 90%;
+    border-radius: 2rem;
+  }
+  
+  .cluster-icon {
+    background-color: #333;
+    height: 2em;
+    width: 2em;
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    font-size: 1.2rem;
+    box-shadow: 0 0 0px 5px #fff;
+  }
+  
+  
+  

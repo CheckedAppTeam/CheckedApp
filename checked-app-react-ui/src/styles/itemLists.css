@@ -1,0 +1,133 @@
+@import url("https://fonts.googleapis.com/css2?family=Titillium+Web:wght@300;400;700&display=swap");
+
+:root {
+  --mainColor: #FF9B36;
+  --mainColorLight: #9B9BFF;
+  --mainColorBlue: #311ABB;
+  --secondaryColor: #434AF2;
+  --textColor: #FFF5EB;
+  --backgroundCoor: #FAE2CA;
+  --greenColor: #3BB927;
+  --redColour: #DB5353;
+}
+
+.item-list {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  margin-top: 1em;
+}
+
+.itemList {
+  background-color: var(--backgroundCoor);
+  border-radius: 20px;
+  padding: 10px;
+  margin: 10px;
+  text-align: center;
+  box-sizing: border-box;
+}
+
+.itemList a {
+  font-size: 20px;
+  font-weight: bold;
+  text-decoration: none;
+  display: block;
+}
+
+.itemList p {
+  margin: 8px 0;
+}
+
+.itemList p.public {
+  color: var(--greenColor);
+}
+
+.itemList p.private {
+  color: var(--redColour);
+}
+
+.openModalClick {
+  border: none;
+  color: var(--mainColorBlue);
+  cursor: pointer;
+}
+
+.itemListBackground .footer {
+  position: relative;
+}
+
+.footerButton {
+  display: flex;
+  justify-content: center;
+}
+
+
+.AddItemListButton button {
+  display: flex;
+  align-items: center;
+  text-align: center;
+  justify-content: center;
+  width: 97vw;
+  height: 2em;
+  border: none;
+  color: var(--mainColorBlue);
+  border-radius: 8px;
+  font-size: 3em;
+  cursor: pointer;
+  background-color: var(--mainColor);
+  border-radius: 20px;
+  text-align: center;
+  margin: 0.4em;
+}
+
+.closeBtnForm button {
+  background-image: url('../assets/Cancel.png');
+  background-color: transparent;
+  height: 40px;
+  width: 40px;
+  border: none;
+  font-size: 25px;
+  cursor: pointer;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.addItemListForm {
+  margin: 1em;
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 20px;
+  background-color: var(--mainColorBlue);
+}
+
+.addItemListForm label {
+  display: block;
+  margin-bottom: 10px;
+  color: var(--textColor);
+}
+
+.addItemListForm input[type="text"],
+.addItemListForm input[type="date"],
+.addItemListForm input[type="checkbox"] {
+  width: 100%;
+  padding: 8px;
+  margin-top: 4px;
+  margin-bottom: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  box-sizing: border-box;
+  background-color: var(--mainColorLight);
+}
+
+.addItemListForm button[type="submit"] {
+  background-color: var(--mainColor);
+  color: var(--mainColorBlue);
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.addItemListForm button[type="submit"]:hover {
+  background-color: var(--mainColorLight);
+}

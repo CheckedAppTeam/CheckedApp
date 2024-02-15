@@ -1,0 +1,261 @@
+:root {
+  --mainColor: #FF9B36;
+  --mainColorLight: #9B9BFF;
+  --secondaryColor: #434AF2;
+  --textColor: #FFF5EB;
+}
+
+.modalBackground {
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(199, 199, 254, 0.6);
+  position: fixed;
+  top: 0;
+  left: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 10002;
+}
+
+.modalContainer {
+  width: 70%;
+  height: 70%;
+  min-width: 500px;
+  border-radius: 12px;
+  background-color: var(--secondaryColor);
+  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+  display: flex;
+  flex-direction: column;
+  padding: 2em;
+  z-index: 10003;
+}
+
+.items-inList {
+  flex: 1;
+}
+
+.footer {
+  display: flex;
+  align-items: center;
+  flex-direction: row;
+  justify-content: center;
+  bottom: 0;
+  left: 0;
+  right: 0;
+}
+
+.modalContainer .title {
+  color: #FFF5EB;
+  display: inline-block;
+  text-align: center;
+  margin-top: -1.2em;
+}
+
+.titleCloseBtn {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.titleCloseBtn button {
+  background-image: url('../assets/Cancel.png');
+  background-color: transparent;
+  height: 40px;
+  width: 40px;
+  border: none;
+  font-size: 25px;
+  cursor: pointer;
+
+}
+
+.modalContainer .body {
+  margin-top: -0.2em;
+  margin-right: 1em;
+  margin-left: 1em;
+  padding: auto;
+  justify-content: center;
+  align-items: center;
+  font-size: 1.7rem;
+  text-align: center;
+}
+
+.modalContainer h1 {
+  font-size: 3rem;
+  color: #FF9B36;
+}
+
+.item-container {
+  display: flex;
+  align-items: center;
+  margin-bottom: 0.3em;
+}
+
+.deleteIcon {
+  margin-right: 10px;
+
+  path {
+    color: #FF9B36
+  };
+}
+
+.item {
+  color: #FFF5EB;
+  flex-grow: 1;
+  display: flex;
+  justify-content: space-between;
+}
+
+.modalContainer .footer {
+  flex: 10%;
+  display: flex;
+  flex-direction: column;
+}
+
+.modalContainer .footer button {
+  width: 150px;
+  height: 45px;
+  border: none;
+  background-color: #434AF2;
+  border: 4px solid #C7C7FE;
+  color: white;
+  border-radius: 8px;
+  font-size: 20px;
+  cursor: pointer;
+  margin:0.5em;
+}
+
+.items-inList {
+  flex: 1;
+  overflow: scroll;
+  height: 30vh;
+}
+
+.cancelBtn {
+  background-color: #434AF2;
+  border: 4px solid #C7C7FE;
+}
+
+.selectButtons {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+}
+
+.twoButtons {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.addBtn {
+  display: flex;
+  align-items: center;
+}
+
+.modalText {
+  align-items: center;
+  font-size: 1.4em;
+  color: #FF9B36;
+}
+
+.inputAndSubmit {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.inputNewItem {
+  padding: 8px;
+  background-color: #C7C7FE;
+  border: 1px solid white;
+  border-radius: 6px;
+  font-size: 16px;
+}
+
+.submitNewItem {
+  margin: 0.5em;
+}
+
+@media screen and (max-width: 600px) {
+  .modalContainer {
+    width: 100%;
+    height: 100%;
+    min-width: auto;
+    max-width: 100%;
+    max-height: 100%;
+    border-radius: 0;
+    padding: 1em;
+  }
+
+  .items-inList {
+    height: 50vh;
+}
+
+  .item-container {
+    font-size: 0.8em;
+  }
+
+  .deleteIcon {
+    margin-right: 5px;
+  }
+
+  .checkbox-container {
+    margin-right: 5px;
+  }
+
+  .item {
+    font-size: 0.6em;
+  }
+
+  .modalContainer .footer button {
+    width: 100px;
+    height: 30px;
+    border: none;
+    background-color: #434AF2;
+    border: 2px solid #C7C7FE;
+    color: white;
+    border-radius: 6px;
+    font-size: 12px;
+    cursor: pointer;
+    margin:0.5em;
+  }
+
+  .inputNewItem {
+    padding: 8px;
+    background-color: #C7C7FE;
+    border: 1px solid white;
+    border-radius: 6px;
+    font-size: 10px;
+  }
+
+  .modalText {
+    align-items: center;
+    font-size: 0.9em;
+    color: #FF9B36;
+  }
+}
+
+@media screen and (min-width: 1200px) {
+
+  .modalContainer .body {
+    margin-right: 4em;
+    margin-left: 4em;
+  }
+}
+
+@media screen and (min-width: 1600px) {
+
+  .modalContainer .body {
+    margin-right: 6em;
+    margin-left: 6em;
+  }
+}
+
+@media screen and (min-width: 20000px) {
+
+  .modalContainer .body {
+    margin-right: 8em;
+    margin-left: 8em;
+  }
+}
