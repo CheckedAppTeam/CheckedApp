@@ -92,6 +92,8 @@ public class ItemListRepository : IItemListRepository
     {
         var dbItemList = await _userItemContext
             .ItemLists
+            .Include(il => il.Items)
+            .ThenInclude(item => item.UserItems)
             .FirstOrDefaultAsync(il => il.ItemListId == itemListid);
 
         if (dbItemList is null)
@@ -105,9 +107,26 @@ public class ItemListRepository : IItemListRepository
             ItemListDestination = dbItemList.ItemListDestination ?? "Destination",
             UserId = userId,
             ItemListName = dbItemList.ItemListName ?? "ItemList",
-            UserItems = dbItemList.UserItems,
-            ItemListPublic = false
+            ItemListPublic = false,
+            //UserItems = new List<UserItem>(),
+            //Items = dbItemList.Items.ToList()
         };
+
+        //foreach (var item in copyItemList.Items)
+        //{
+        //    foreach (var userItem in item.UserItems)
+        //    {
+        //        var copiedUserItem = new UserItem
+        //        {
+        //            ItemList = copyItemList,
+        //            Item = item,
+        //            ItemState = UserItemState.toPack,
+        //            ItemId = item.ItemId,
+        //            ItemListId = copyItemList.ItemListId
+        //        };
+        //        copyItemList.UserItems.Add(copiedUserItem);
+        //    }
+        //}
 
         try
         {

@@ -107,3 +107,12 @@
     align-items: center;
     margin-left: 2.5em;
   }
+
+  .nameLabelSearch{
+    text-align: center;
+    font-size: 3vw;
+    margin-bottom: 1em;
+    color: var(--mainColor);
+    align-items: center;
+    margin-left: 4em;
+  }
