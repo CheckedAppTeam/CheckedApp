@@ -59,9 +59,8 @@ function SimpleItemListModal({ closeModal, itemListName, itemListId }) {
             <div className='items-map'>
               {allItemsByItemListId
                 .sort((a, b) => a.userItemId - b.userItemId)
-                .map((item, index) => (
+                .map(item => (
                   <div className='item-container' key={item.userItemId}>
-                    {console.log(item)}
                     <h3>{item && item.userItemName}</h3>
                   </div>
                 ))}

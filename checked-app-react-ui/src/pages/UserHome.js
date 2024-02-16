@@ -5,9 +5,10 @@ import '../styles/userProfile.css'
 import { jwtDecode } from 'jwt-decode'
 import { userEndpoints } from '../endpoints'
 import { Link } from 'react-router-dom'
+import Loader from '../spinners/Loader.js'
 
 export function UserHome() {
-  const {token} = useAuth();
+  const { token } = useAuth();
   const [user, setUser] = useState(null);
   const [packingLists, setPackingLists] = useState([]);
   const [isEditing, setIsEditing] = useState(false);
@@ -15,19 +16,19 @@ export function UserHome() {
 
   useEffect(() => {
     const storedToken = localStorage.getItem('token');
-  if (storedToken) {
-    axios.defaults.headers.common['Authorization'] =`Bearer ${storedToken}`;
-  }
-  setIsLoading(true);
+    if (storedToken) {
+      axios.defaults.headers.common['Authorization'] = `Bearer ${storedToken}`;
+    }
+    setIsLoading(true);
     if (token) {
       const decodedToken = jwtDecode(token)
       const userId =
         decodedToken[
-          'http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier'
+        'http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier'
         ]
       const userEmail =
         decodedToken[
-          'http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress'
+        'http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress'
         ]
       axios
         .get(userEndpoints.getUserData(userId))
@@ -75,7 +76,7 @@ export function UserHome() {
   }
 
   if (isLoading) {
-    return <div>Loading...</div>;
+    return <Loader/>;
   } else if (!user) {
     return (
       <Link to='/Login'>
@@ -90,14 +91,14 @@ export function UserHome() {
         <div className='user-info'>
           {isEditing ? (
             <>
-              <label for='firstName'>Name</label>
+              <label htmlFor='firstName'>Name</label>
               <input
                 type='text'
                 name='firstName'
                 value={user.firstName}
                 onChange={handleInputChange}
               />
-              <label for='lastName'>Surname</label>
+              <label htmlFor='lastName'>Surname</label>
 
               <input
                 type='text'
@@ -105,7 +106,7 @@ export function UserHome() {
                 value={user.lastName}
                 onChange={handleInputChange}
               />
-              <label for='age'>Age</label>
+              <label htmlFor='age'>Age</label>
 
               <input
                 type='number'
@@ -133,8 +134,8 @@ export function UserHome() {
           <h2>Your packing lists</h2>
           {packingLists.length > 0 ? (
             packingLists.map((list) => (
-              <Link to='/ItemLists' className='linkButton'>
-                <button key={list.itemListId}>{list.listName}</button>
+              <Link to='/ItemLists' key={list.itemListId} className='linkButton'>
+                <button>{list.listName}</button>
               </Link>
             ))
           ) : (

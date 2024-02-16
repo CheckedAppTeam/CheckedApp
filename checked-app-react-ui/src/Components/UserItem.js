@@ -68,9 +68,8 @@ function UserItem({ item, onItemChange }) {
 
   return (
     <>
-    {/* <div className='item-in-modal'> */}
-      <IconButton aria-label='delete' size='small' color='white'>
-        <DeleteIcon className='deleteIcon' onClick={(e) => handleDelete(e)} />
+      <IconButton aria-label='delete' size='small' color='white' onClick={handleDelete}>
+        <DeleteIcon className='deleteIcon' />
       </IconButton>
       <div className='item'>{item.userItemName}</div>
       <FormControl component='fieldset'>
@@ -89,8 +88,8 @@ function UserItem({ item, onItemChange }) {
                   },
                   '@media (max-width: 600px)': {
                     transform: "scale(0.8)",
-                      width: 20,
-                      height: 20
+                    width: 20,
+                    height: 20
                   },
                 }}
               />
@@ -112,8 +111,8 @@ function UserItem({ item, onItemChange }) {
                   },
                   '@media (max-width: 600px)': {
                     transform: "scale(0.8)",
-                      width: 20,
-                      height: 20
+                    width: 20,
+                    height: 20
                   },
                 }}
               />

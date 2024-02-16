@@ -31,15 +31,15 @@ export function ItemLists() {
 
   const fetchData = async () => {
     const storedToken = localStorage.getItem('token');
-  if (storedToken) {
-    axios.defaults.headers.common['Authorization'] =`Bearer ${storedToken}`;
-  }
+    if (storedToken) {
+      axios.defaults.headers.common['Authorization'] = `Bearer ${storedToken}`;
+    }
     if (token) {
       try {
         const decodedToken = jwtDecode(token)
         const userId =
           decodedToken[
-            'http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier'
+          'http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier'
           ]
         const data = await axios.get(userEndpoints.getUserData(userId))
         setAllitemListsResponseData(data.data)
@@ -79,7 +79,7 @@ export function ItemLists() {
       const decodedToken = jwtDecode(token)
       const userId =
         decodedToken[
-          'http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier'
+        'http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier'
         ]
       const dateObject = newListData.Date
       try {
@@ -200,9 +200,8 @@ export function ItemLists() {
               columns={{ xs: 4, sm: 8, md: 12 }}
             >
               {allItemListsResponseData.ownItemList.map((item, index) => (
-                <Grid item xs={2} sm={4} md={4} key={index}>
+                <Grid item xs={2} sm={4} md={4} key={item.ItemListId}>
                   <ItemList
-                    key={item.ItemListId}
                     itemList={item}
                     openModalAtIndex={openModalAtIndex}
                     onDelete={handleDelete}

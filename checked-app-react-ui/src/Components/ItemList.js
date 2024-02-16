@@ -95,14 +95,14 @@ function ItemList({ itemList, openModalAtIndex, onDelete, onChange }) {
               <div className='titleCloseBtn'>
                 <button onClick={deleteItemList}></button>
               </div>
-              <label for='firstName'>List name</label>
+              <label htmlFor='listName'>List name</label>
               <input
                 type='text'
                 name='listName'
                 value={editListName}
                 onChange={handleInputNameChange}
               />
-              <label for='lastName'>Destination</label>
+              <label htmlFor='destination'>Destination</label>
 
               <input
                 type='text'
@@ -110,7 +110,7 @@ function ItemList({ itemList, openModalAtIndex, onDelete, onChange }) {
                 value={editTravelDestination}
                 onChange={handleInputDestinationChange}
               />
-              <label for='age'>Date</label>
+              <label htmlFor='age'>Date</label>
 
               <input
                 type='date'
