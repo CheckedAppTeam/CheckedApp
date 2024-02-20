@@ -12,7 +12,8 @@
     font-size: 2em;
     text-align: center;
     margin:0.4em;
-    color: var(--textColor)
+    color: var(--textColor);
+    padding: 0.4em;
 }
 
 .itemBtns {
