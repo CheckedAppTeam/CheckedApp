@@ -1,118 +1,127 @@
 :root {
-    --mainColor: #FF9B36;
-    --mainColorLight: #9B9BFF;
-    --secondaryColor: #434AF2;
-    --textColor: #FFF5EB;
-  }
-
-.allItems{
-    margin-left:2em;
-    margin-right:1em;
-    margin-top: 1em;
+  --mainColor: #FF9B36;
+  --mainColorLight: #9B9BFF;
+  --secondaryColor: #434AF2;
+  --textColor: #FFF5EB;
 }
 
-/* .AddItemButton{
-    display: flex;
-    align-items: center;
-} */
+.allItems {
+  margin-left: 2em;
+  margin-right: 1em;
+  margin-top: 1em;
+}
 
 .itemsButtons {
-    display: flex;
-    align-items: center;
-    justify-content: space-around;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
 }
 
 .addItemButton button {
-    text-align: center;
-    /* justify-content: center; */
-    width: 40vw;
-    height: 2em;
-    border: none;
-    color: var(--mainColorBlue);
-    font-size: 3em;
-    cursor: pointer;
-    background-color: var(--mainColor);
-    border-radius: 20px;
-    text-align: center;
-    margin-bottom: 1em;
-  }
+  text-align: center;
+  width: 40vw;
+  height: 2em;
+  border: none;
+  color: var(--mainColorBlue);
+  font-size: 3em;
+  cursor: pointer;
+  background-color: var(--mainColor);
+  border-radius: 20px;
+  text-align: center;
+  margin-bottom: 1em;
+}
 
-  .searchItemButton button {
-    text-align: center;
-    /* justify-content: center; */
-    width: 40vw;
-    height: 2em;
-    border: none;
-    color: var(--mainColorBlue);
-    font-size: 3em;
-    cursor: pointer;
-    background-color: var(--mainColor);
-    border-radius: 20px;
-    text-align: center;
-    margin-bottom: 1em;
-  }
+.searchItemButton button {
+  text-align: center;
+  width: 40vw;
+  height: 2em;
+  border: none;
+  color: var(--mainColorBlue);
+  font-size: 3em;
+  cursor: pointer;
+  background-color: var(--mainColor);
+  border-radius: 20px;
+  text-align: center;
+  margin-bottom: 1em;
+}
 
-  
-  .addForm{
-    align-items: center;
-    }
 
-    .buttonsForm{
-        display: flex;
-        align-items: center;
-        justify-content: space-around;
-    }
-    
-    .addItemInput{
-      margin-bottom: 3em;
-      width: 30vw;
-      height: 4em;
-      background-color: var(--mainColorLight);
-      font-size: 1.1em;
-      color: var(--textColor);
-      border-radius: 14px;
-    }
+.addForm {
+  align-items: center;
+}
 
-  .submitAdd{
-    text-align: center;
-    width: 20vw;
-    height: 1.5em;
-    border: none;
-    color: var(--mainColorBlue);
-    font-size: 3em;
-    cursor: pointer;
-    background-color: var(--mainColor);
-    border-radius: 20px;
-    margin-bottom: 1em;
-  }
+.buttonsForm {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+}
 
-  .cancelAdd{
-    text-align: center;
-    width: 20vw;
-    height: 1.5em;
-    border: none;
-    color: var(--mainColorBlue);
-    font-size: 3em;
-    cursor: pointer;
-    background-color: var(--mainColor);
-    border-radius: 20px;
-    margin-bottom: 1em;
-  }
+.addItemInput {
+  margin-bottom: 3em;
+  width: 30vw;
+  height: 4em;
+  background-color: var(--mainColorLight);
+  font-size: 1.1em;
+  color: var(--textColor);
+  border-radius: 14px;
+}
 
-  .nameLabel{
-    text-align: center;
-    font-size: 3vw;
-    margin-bottom: 1em;
-    color: var(--mainColor);
-    align-items: center;
-    margin-left: 2.5em;
-  }
+.inputform{
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
 
-  .nameLabelSearch{
-    text-align: center;
-    font-size: 3vw;
-    margin-bottom: 1em;
-    color: var(--mainColor);
-    align-items: center;
-    margin-left: 4em;
-  }
+.searchItemInput {
+  margin-bottom: 3em;
+  margin-right: 2em;
+  width: 60vw;
+  height: 4em;
+  background-color: var(--mainColorLight);
+  font-size: 1.1em;
+  color: var(--textColor);
+  border-radius: 14px;
+}
+
+.submitAdd {
+  text-align: center;
+  width: 20vw;
+  height: 1.5em;
+  border: none;
+  color: var(--mainColorBlue);
+  font-size: 3em;
+  cursor: pointer;
+  background-color: var(--mainColor);
+  border-radius: 20px;
+  margin-bottom: 1em;
+}
+
+.cancelAdd {
+  text-align: center;
+  width: 20vw;
+  height: 1.5em;
+  border: none;
+  color: var(--mainColorBlue);
+  font-size: 3em;
+  cursor: pointer;
+  background-color: var(--mainColor);
+  border-radius: 20px;
+  margin-bottom: 1em;
+}
+
+.nameLabel {
+  text-align: center;
+  font-size: 3vw;
+  margin-bottom: 1em;
+  color: var(--mainColor);
+  align-items: center;
+  margin-left: 2.5em;
+}
+
+.nameLabelSearch {
+  font-size: 3vw;
+  margin-bottom: 1em;
+  color: var(--mainColor);
+  align-items: center;
+  margin-left: 2em;
+}

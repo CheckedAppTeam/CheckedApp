@@ -38,5 +38,5 @@ export default function useItemSearch(query, pageNumb) {
         return () => cancel()
     }, [query, pageNumb])
 
-    return { loading, error, allItems, hasMore }
+    return { loading, error, allItems, hasMore, setAllItems }
 }

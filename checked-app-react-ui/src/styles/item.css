@@ -8,12 +8,10 @@
 .oneItem{
     background-color: var(--mainColorLight);
     border-radius: 20px;
-    font-size: 1em;
-    font-size: 2em;
+    font-size: 1.5em;
     text-align: center;
     margin:0.4em;
     color: var(--textColor);
-    padding: 0.4em;
 }
 
 .itemBtns {
