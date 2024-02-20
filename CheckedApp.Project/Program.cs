@@ -9,4 +9,6 @@ var app = builder.Build();
 
 StartupConfiguration.ConfigureApp(app);
 
+await ExtensionIdentityService.InitializeDatabaseAsync(app);
+
 app.Run();

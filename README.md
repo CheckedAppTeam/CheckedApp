@@ -15,7 +15,6 @@ Key Features**
 
 **Getting Started**
 
-    Download CheckedApp: Available on iOS and Android, CheckedApp is your go-to travel packing app.
     Create Your Trip: Input your destination and trip dates to start crafting your personalized packing list.
     Explore and Customize: Use our suggestions based on your destination or explore what others have packed. Customize your list to fit your needs perfectly.
     Track Your Progress: Update your list status as you pack, buy, or decide against items. Keep everything organized and under control.
@@ -27,4 +26,4 @@ Key Features**
     Stay Organized: Our intuitive interface makes managing your packing list a breeze.
     Peace of Mind: Never again worry about forgetting essentials or packing unnecessary items.
 
-**CheckedApp is more than just an app; it's your personal packing assistant. It's designed to make your travel preparation as enjoyable as the journey itself. Ready to transform the way you pack? Download PackSmart today and embark on your next adventure with confidence.**
+**CheckedApp is more than just an app; it's your personal packing assistant. It's designed to make your travel preparation as enjoyable as the journey itself.**

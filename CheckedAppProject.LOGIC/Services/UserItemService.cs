@@ -2,8 +2,6 @@
 using CheckedAppProject.DATA.CheckedAppDbContext;
 using CheckedAppProject.DATA.DbServices.Repository;
 using CheckedAppProject.DATA.Entities;
-using CheckedAppProject.LOGIC.DTOs;
-using System.Threading.Tasks;
 
 namespace CheckedAppProject.LOGIC.Services
 {
