@@ -4,6 +4,7 @@ const baseURL = process.env.REACT_APP_API_URL
 
 const itemEndpoints = {
   getAllItems: `${baseURL}/Item/GetAll`,
+  getAllPages: `${baseURL}/Item/GetAllPages`,
   getItemById: (id) => `${baseURL}/Item/GetById/${id}`,
   getItemByName: (name) => `${baseURL}/Item/GetByName/${name}`,
   addItem: `${baseURL}/Item/AddItem`,
