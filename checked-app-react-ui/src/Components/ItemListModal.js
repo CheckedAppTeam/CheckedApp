@@ -289,7 +289,7 @@ function ItemListModal({ closeModal, itemListName, itemListId }) {
           <h1>{itemListName}</h1>
         </div>
         <div className='body'>
-          {!loading && <Loader />}
+          {!loading && <Loader/>}
           <div className='items-inList'>
             {allItemsByItemListId
               .sort((a, b) => a.userItemId - b.userItemId)

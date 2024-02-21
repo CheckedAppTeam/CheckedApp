@@ -11,14 +11,14 @@ namespace CheckedAppProject.API.StartConfiguration
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddAppServices();
             builder.Services.AddAppRepositories();
-            AuthenticationConfiguration.ConfigureAuthentication(builder);
+            builder.Services.AddJwtAuthentication(builder.Configuration);
             builder.Services.AddAuthorization();
             builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
             builder.Services.AddSwaggerGen();
             builder.Services.AddTransient<IConfigureOptions<SwaggerGenOptions>, SwaggerConfiguration>();
-            CorsConfiguration.ConfigureCors(builder);
-            DbContextConfiguration.ConfigureDbContext(builder);
-            DbContextConfiguration.ConfigureIdentity(builder);
+            builder.Services.ConfigureCors(builder.Configuration);
+            builder.Services.ConfigureDbContext(builder.Configuration);
+            builder.Services.ConfigureIdentity();
         }
         public static void ConfigureApp(WebApplication app)
         {
@@ -33,7 +33,6 @@ namespace CheckedAppProject.API.StartConfiguration
             app.UseAuthentication();
             app.UseAuthorization();
             app.MapControllers();
-            DbContextConfiguration.InitializeDatabase(app);
         }        
     }
 }

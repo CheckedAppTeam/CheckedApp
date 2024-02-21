@@ -3,7 +3,8 @@ import { Home } from './pages/Home'
 import { ItemLists } from './pages/ItemLists'
 import { UserHome } from './pages/UserHome'
 import { NotFound } from './pages/NotFound'
-import { Items } from './pages/Items'
+import {ItemsByPages} from './pages/ItemsByPages'
+// import { Items } from './pages/Items'
 import Navbar from './Components/NavBar/Navbar'
 import Signup from './Components/UserAuthForm/Signup'
 import Login from './Components/UserAuthForm/Login'
@@ -26,7 +27,7 @@ function App() {
           path='/items'
           element={
             <PrivateRoute>
-              <Items />
+              <ItemsByPages />
             </PrivateRoute>
           }
         />

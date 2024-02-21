@@ -5,7 +5,7 @@ import { useState, useEffect } from 'react'
 import { itemEndpoints } from '../endpoints'
 import axios from 'axios'
 
-export default function Item({ item, onUpdate }) {
+export default function Item({ item, change, onDelete }) {
   const [editedItemName, setEditedItemName] = useState(item.itemName)
   const [isEditing, setIsEditing] = useState(false)
 
@@ -15,6 +15,7 @@ export default function Item({ item, onUpdate }) {
 
   const handleInputChange = (event) => {
     const { value } = event.target
+    change(item.itemId, value)
     setEditedItemName(value)
   }
 
@@ -22,12 +23,12 @@ export default function Item({ item, onUpdate }) {
     setIsEditing(!isEditing)
   }
 
-  const saveChanges = () => {
+  const saveChanges = (event) => {
+    event.preventDefault();
     axios
       .put(itemEndpoints.editItem(item.itemId), { ItemName: editedItemName })
       .then(() => {
         setIsEditing(false)
-        onUpdate(item.itemId)
       })
       .catch((error) => {
         console.error('Error while sending data', error)
@@ -47,10 +48,10 @@ export default function Item({ item, onUpdate }) {
     e.preventDefault()
     try {
       await deleteItem()
+      onDelete(item.itemId)
     } catch (error) {
       console.error('Error deleting item:', error)
     }
-    onUpdate()
   }
 
   return (
