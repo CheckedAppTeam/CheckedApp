@@ -10,12 +10,16 @@ namespace CheckedAppProject.API.Controllers
     public class AuthController : ControllerBase
     {
         private readonly IAuthService _authenticationService;
+        private readonly ILogger<AuthController> _logger;
 
-        public AuthController(IAuthService authenticationService)
+        public AuthController(IAuthService authenticationService, ILogger<AuthController> logger)
         {
             _authenticationService = authenticationService;
+            _logger = logger;
         }
 
+
+       
         [HttpPost("Register")]
         public async Task<ActionResult<RegistrationResponse>> Register(RegistrationRequest request)
         {
@@ -24,7 +28,10 @@ namespace CheckedAppProject.API.Controllers
             if (!result.Success)
             {
                 AddErrors(result);
+                _logger.LogWarning("Failed to register");
                 return BadRequest(ModelState);
+            }else{
+                _logger.LogInformation("Registered");
             }
 
             return CreatedAtAction(
@@ -49,7 +56,10 @@ namespace CheckedAppProject.API.Controllers
             if (!result.Success)
             {
                 AddErrors(result);
+                _logger.LogWarning("Logging failed");
                 return BadRequest(ModelState);
+            }else{
+                _logger.LogInformation($"User with email: {request.Email} has logged successfully");
             }
             return Ok(
                 new AuthResponse(result.Email, result.UserName, result.Token, result.RefreshToken)
@@ -57,16 +67,17 @@ namespace CheckedAppProject.API.Controllers
         }
 
         [HttpPost("RefreshToken")]
-        public async Task<ActionResult<AuthResponse>> RefreshToken(
-            [FromBody] RefreshTokenDTO refreshToken
-        )
+        public async Task<ActionResult<AuthResponse>> RefreshToken([FromBody] RefreshTokenDTO refreshToken)
         {
             var result = await _authenticationService.RefreshTokenAsync(refreshToken);
 
             if (!result.Success)
             {
                 AddErrors(result);
+                _logger.LogWarning("Refresh token not found");
                 return BadRequest(ModelState);
+            }else{
+                _logger.LogInformation($"Refresh token: {result.RefreshToken}");
             }
             return Ok(
                 new AuthResponse(result.Email, result.UserName, result.Token, result.RefreshToken)
