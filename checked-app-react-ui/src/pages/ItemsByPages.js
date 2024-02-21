@@ -2,7 +2,6 @@ import React, { useEffect, useState, useRef, useCallback } from 'react'
 import { itemEndpoints } from '../endpoints'
 import axios from 'axios'
 import Item from '../Components/Item'
-import Grid from '@mui/material/Grid'
 import '../styles/items.css'
 import useItemSearch from '../Components/useItemSearch'
 import Loader from '../spinners/Loader'
@@ -15,14 +14,8 @@ export function ItemsByPages() {
   const [fornSearch, setFormSearch] = useState(false)
   const [newItemName, setNewItemName] = useState('')
 
-
   const [query, setQuery] = useState('')
   const [pageNumb, setPageNumb] = useState(1)
-
-  function handleSearch(e) {
-    setQuery(e.target.value)
-    setPageNumb(1)
-  }
 
   const {
     allItems,
@@ -31,20 +24,24 @@ export function ItemsByPages() {
     error,
     setAllItems
   } = useItemSearch(query, pageNumb)
-
-
+  
   const observer = useRef()
   const lastItemElement = useCallback(node => {
     if (loading) return
     if (observer.current) observer.current.disconnect()
     observer.current = new IntersectionObserver(entries => {
-      if (entries[0].isIntersecting && hasMore) {
-        setPageNumb(prevPageNumb => prevPageNumb + 1)
-      }
-    })
-    if (node) observer.current.observe(node)
-    console.log(node)
-  }, [loading, hasMore])
+  if (entries[0].isIntersecting && hasMore) {
+    setPageNumb(prevPageNumb => prevPageNumb + 1)
+  }
+})
+if (node) observer.current.observe(node)
+console.log(node)
+}, [loading, hasMore])
+
+function handleSearch(e) {
+  setQuery(e.target.value)
+  setPageNumb(1)
+}
 
   const handleDeleteItem = async (itemId) => {
     setAllItems(prevItems => prevItems.filter(item => item.itemId !== itemId));

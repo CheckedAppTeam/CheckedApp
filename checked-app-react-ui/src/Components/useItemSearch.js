@@ -13,13 +13,12 @@ export default function useItemSearch(query, pageNumb) {
     }, [query])
 
     useEffect(() => {
-    
         setLoading(true)
         setError(false)
         let cancel
         axios.get(itemEndpoints.getAllPages, {
             params: {
-                SearchPharse: query,
+                SearchPhrase: query,
                 PageNumber: pageNumb,
                 PageSize: 10
             },
@@ -28,9 +27,11 @@ export default function useItemSearch(query, pageNumb) {
             setAllItems(prevItems => {
                 return [...prevItems, ...res.data.items]
             })
+            console.log(allItems)
             setHasMore(res.data.items.length === 10)
             setLoading(false)
             console.log(res.data)
+            console.log(allItems)
         }).catch(e => {
             if (axios.isCancel(e)) return
             setError(true)
