@@ -2,43 +2,41 @@
 using CheckedAppProject.LOGIC.Services;
 using Microsoft.AspNetCore.Mvc;
 
-namespace CheckedAppProject.API.Controllers
+namespace CheckedAppProject.API.Controllers;
+
+[ApiController]
+[Route("Map")]
+
+public class MapController : ControllerBase
 {
-    [ApiController]
-    [Route("Map")]
-    //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+    private readonly IItemListService _itemListService;
+    private readonly ILogger<MapController> _logger;
 
-    public class MapController : ControllerBase
+    public MapController(IItemListService itemListService, ILogger<MapController> logger)
     {
-        private readonly IItemListService _itemListService;
-        private readonly ILogger<MapController> _logger;
+        _itemListService = itemListService;
+        _logger = logger;
+    }
 
-        public MapController(IItemListService itemListService, ILogger<MapController> logger)
+    //GET all destinations from API
+    [HttpGet("GetAllDestinations")]
+    public async Task<ActionResult<IEnumerable<ListDestinationDTO>>> GetAllDestinationsAsync()
+    {
+        var publicItemLists = await _itemListService.GetPublicListsAsync();
+
+        if (publicItemLists is null || !publicItemLists.Any())
         {
-            _itemListService = itemListService;
-            _logger = logger;
+            _logger.LogWarning("No public Item Lists found");
+            return NotFound();
         }
 
-        //GET all destinations from API
-        [HttpGet("GetAllDestinations")]
-        public async Task<ActionResult<IEnumerable<ListDestinationDTO>>> GetAllDestinationsAsync()
+        var itemListsDto = publicItemLists.Select(itemList => new ListDestinationDTO
         {
-            var publicItemLists = await _itemListService.GetPublicListsAsync();
+            ItemListId = itemList.ItemListId,
+            ItemListName = itemList.ItemListName,
+            ItemListDestination = itemList.ItemListDestination
+        }).ToList();
 
-            if (publicItemLists is null || !publicItemLists.Any())
-            {
-                _logger.LogInformation("No public Item Lists found");
-                return NotFound();
-            }
-
-            var itemListsDto = publicItemLists.Select(itemList => new ListDestinationDTO
-            {
-                ItemListId = itemList.ItemListId,
-                ItemListName = itemList.ItemListName,
-                ItemListDestination = itemList.ItemListDestination
-            }).ToList();
-
-            return Ok(itemListsDto);
-        }
+        return Ok(itemListsDto);
     }
 }

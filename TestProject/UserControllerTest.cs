@@ -2,6 +2,7 @@
 using CheckedAppProject.LOGIC.DTOs;
 using CheckedAppProject.LOGIC.Services;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using Moq;
 
 namespace TestProject
@@ -10,13 +11,15 @@ namespace TestProject
     public class UserControllerTests
     {
         private Mock<IUserService> _userServiceMock;
+        private Mock<ILogger<UserController>> _loggerMock;
         private UserController _controller;
 
         [SetUp]
         public void Setup()
         {
             _userServiceMock = new Mock<IUserService>();
-            _controller = new UserController(_userServiceMock.Object);
+            _loggerMock = new Mock<ILogger<UserController>>();
+            _controller = new UserController(_userServiceMock.Object, _loggerMock.Object);
         }
 
         [Test]

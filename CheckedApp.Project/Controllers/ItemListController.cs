@@ -31,7 +31,7 @@ namespace CheckedAppProject.API.Controllers
 
             if (itemListsDto is null)
             {
-                _logger.LogInformation("No Item List found");
+                _logger.LogWarning("No Item List found");
                 return NotFound();
             }
 
@@ -40,15 +40,13 @@ namespace CheckedAppProject.API.Controllers
 
         //GET all itemLists of the user by user Id
         [HttpGet("User/{userid}")]
-        public async Task<ActionResult<IEnumerable<ItemListDTO>>> GetAllByUserIdAsync(
-            [FromRoute] string userid
-        )
+        public async Task<ActionResult<IEnumerable<ItemListDTO>>> GetAllByUserIdAsync([FromRoute] string userid)
         {
             var itemListsDto = await _itemListService.GetAllByUserIdAsync(userid);
 
             if (itemListsDto is null)
             {
-                _logger.LogInformation("No Item List found");
+                _logger.LogWarning("No Item List found");
                 return NotFound();
             }
 
@@ -63,7 +61,7 @@ namespace CheckedAppProject.API.Controllers
 
             if (itemList is null)
             {
-                _logger.LogInformation($"Item List with id {itemList} not found");
+                _logger.LogWarning($"Item List with id {itemList} not found");
                 return NotFound();
             }
 
@@ -72,15 +70,13 @@ namespace CheckedAppProject.API.Controllers
 
         //GET all itemLists by destination name
         [HttpGet("City/{city}")]
-        public async Task<ActionResult<IEnumerable<ItemListDTO>>> GetByCityAsync(
-            [FromRoute] string city
-        )
+        public async Task<ActionResult<IEnumerable<ItemListDTO>>> GetByCityAsync([FromRoute] string city)
         {
             var itemLists = await _itemListService.GetByCityAsync(city);
 
             if (itemLists is null)
             {
-                _logger.LogInformation("Item List not found");
+                _logger.LogWarning("Item List not found");
                 return NotFound();
             }
 
@@ -89,10 +85,7 @@ namespace CheckedAppProject.API.Controllers
 
         //GET all itemLists by destination and date
         [HttpGet("CityAndDate/{city}/{date}")]
-        public async Task<ActionResult<ItemListDTO>> GetByDateAndCity(
-            [FromRoute] string city,
-            [FromRoute] DateTime date
-        )
+        public async Task<ActionResult<ItemListDTO>> GetByDateAndCity([FromRoute] string city,[FromRoute] DateTime date)
         {
             var itemList = await _itemListService.GetByMonthAndCity(date, city);
 
@@ -106,10 +99,7 @@ namespace CheckedAppProject.API.Controllers
 
         //POST new list to user by user Id
         [HttpPost("AddList/{userid}")]
-        public async Task<ActionResult> AddList(
-            [FromBody] CreateItemListDTO dto,
-            [FromRoute] string userid
-        )
+        public async Task<ActionResult> AddList([FromBody] CreateItemListDTO dto,[FromRoute] string userid)
         {
             if (!ModelState.IsValid)
             {
@@ -124,10 +114,7 @@ namespace CheckedAppProject.API.Controllers
 
         //GET and POST copy a existing list to own itemList list by itemList Id and to user by his Id
         [HttpPost("User/{itemListid}/{userid}")]
-        public async Task<ActionResult> CopyItemListAsync(
-            [FromRoute] int itemListid,
-            [FromRoute] string userid
-        )
+        public async Task<ActionResult> CopyItemListAsync([FromRoute] int itemListid,[FromRoute] string userid)
         {
             if (!ModelState.IsValid)
             {
@@ -142,10 +129,7 @@ namespace CheckedAppProject.API.Controllers
 
         //PUT edit itemList data by itemList Id
         [HttpPut("EditListSpecification/{id}")]
-        public async Task<ActionResult> UpdateItemListAsync(
-            [FromBody] UpdateItemListDTO dto,
-            [FromRoute] int id
-        )
+        public async Task<ActionResult> UpdateItemListAsync([FromBody] UpdateItemListDTO dto,[FromRoute] int id)
         {
             if (!ModelState.IsValid)
             {
@@ -160,7 +144,7 @@ namespace CheckedAppProject.API.Controllers
                 return NoContent();
             }
 
-            _logger.LogInformation($"Item List with id {id} is not found");
+            _logger.LogWarning($"Item List with id {id} is not found");
             return NotFound();
         }
 
