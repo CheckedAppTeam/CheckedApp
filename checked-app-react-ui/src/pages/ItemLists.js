@@ -42,7 +42,9 @@ export function ItemLists() {
           'http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier'
           ]
         const data = await axios.get(userEndpoints.getUserData(userId))
-        setAllitemListsResponseData(data.data)
+        const sortedItemLists = data.data.ownItemList.sort((a, b) => new Date(b.travelDate) - new Date(a.travelDate));
+        setAllitemListsResponseData({ ...data.data, ownItemList: sortedItemLists });
+        // setAllitemListsResponseData(data.data)
         setLoading(true)
       } catch (error) {
         console.error(error)
@@ -52,6 +54,29 @@ export function ItemLists() {
   useEffect(() => {
     fetchData()
   }, [])
+
+  const handleChange = (itemListId, name, value) => {
+    setAllitemListsResponseData((prevData) => ({
+      ...prevData,
+      ownItemList: prevData.ownItemList.map((itemList) =>
+        itemList.itemListId === itemListId
+          ? { ...itemList, [name]: value }
+          : itemList
+      ),
+    }));
+  };
+  // const handleChange = (itemListId, name, value) => {
+  //   setAllitemListsResponseData((prevData) => {
+  //     const updatedItemList = prevData.ownItemList.map((itemList) =>
+  //       itemList.itemListId === itemListId
+  //         ? { ...itemList, [name]: value }
+  //         : itemList
+  //     );
+  //     const sortedItemLists = updatedItemList.sort((a, b) => new Date(b.travelDate) - new Date(a.travelDate));
+  //     return { ...prevData, ownItemList: sortedItemLists };
+  //   });
+  // };
+
 
   const openModalAtIndex = (index, name) => {
     if (index !== null) {
@@ -66,7 +91,8 @@ export function ItemLists() {
     setShowForm(true)
   }
 
-  const handleChange = (e) => {
+
+  const handleChangeInput = (e) => {
     const { name, value } = e.target
     setNewListData({ ...newListData, [name]: value })
   }
@@ -97,6 +123,7 @@ export function ItemLists() {
           ...allItemListsResponseData,
           ownItemList: updatedItemLists,
         })
+      // setShowForm(false);
         await fetchData()
       } catch (error) {
         console.error(error)
@@ -144,7 +171,7 @@ export function ItemLists() {
                 type='text'
                 name='ItemListName'
                 value={newListData.ItemListName}
-                onChange={handleChange}
+                onChange={handleChangeInput}
                 required
               />
             </label>
@@ -154,7 +181,7 @@ export function ItemLists() {
                 type='text'
                 name='ItemListDestination'
                 value={newListData.ItemListDestination}
-                onChange={handleChange}
+                onChange={handleChangeInput}
                 required
               />
             </label>
@@ -164,7 +191,7 @@ export function ItemLists() {
                 type='date'
                 name='Date'
                 value={newListData.Date}
-                onChange={handleChange}
+                onChange={handleChangeInput}
                 required
               />
             </label>
@@ -199,19 +226,21 @@ export function ItemLists() {
               spacing={{ xs: 2, md: 2 }}
               columns={{ xs: 4, sm: 8, md: 12 }}
             >
-              {allItemListsResponseData.ownItemList.map((item, index) => (
-                <Grid item xs={2} sm={4} md={4} key={item.ItemListId}>
-                  <ItemList
-                    itemList={item}
-                    openModalAtIndex={openModalAtIndex}
-                    onDelete={handleDelete}
-                    addedList={newListData}
-                    onChange={fetchData}
-                  >
-                    xs=2
-                  </ItemList>
-                </Grid>
-              ))}
+              {allItemListsResponseData.ownItemList.map(item => {
+                return (
+                  <Grid item xs={2} sm={4} md={4} key={item.itemListId}>
+                    <ItemList
+                      itemList={item}
+                      openModalAtIndex={openModalAtIndex}
+                      onDelete={handleDelete}
+                      addedList={newListData}
+                      onChange={handleChange}
+                    >
+                      xs=2
+                    </ItemList>
+                  </Grid>
+                );
+              })}
             </Grid>
           </div>
         )}

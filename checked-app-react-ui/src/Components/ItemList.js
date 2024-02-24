@@ -39,30 +39,35 @@ function ItemList({ itemList, openModalAtIndex, onDelete, onChange }) {
     setIsEditing(true)
   }
 
-  const handleInputNameChange = (event) => {
-    const { value } = event.target
-    setEditListName(value)
-  }
-
-  const handleInputDateChange = (event) => {
-    const { value } = event.target
-    setEditDate(value)
-  }
-
-  const handleInputDestinationChange = (event) => {
-    const { value } = event.target
-    setEditTravelDestination(value)
+  const handleItemListElementChange = (event) => {
+    const { name, value } = event.target
+    switch (name) {
+      case 'listName':
+        setEditListName(value);
+        onChange(itemListId, name, value)
+        break;
+      case 'travelDestination':
+        setEditTravelDestination(value);
+        onChange(itemListId, name, value)
+        break;
+      case 'travelDate':
+        setEditDate(value);
+        onChange(itemListId, name, value)
+        break;
+      default:
+        break;
+    }
   }
 
   const handleCheckboxChange = (e) => {
     const isChecked = e.target.checked
     setEditIsPublic(isChecked)
+    onChange(itemListId, 'isPublic', isChecked)
   }
 
   const saveChanges = async () => {
     try {
       const isoString = new Date(editDate).toISOString()
-      console.log(isoString)
 
       await axios.put(itemListEndpoints.updateItemList(itemListId), {
         ItemListName: editListName,
@@ -71,7 +76,6 @@ function ItemList({ itemList, openModalAtIndex, onDelete, onChange }) {
         ItemListPublic: editIsPublic,
       })
       setIsEditing(false)
-      onChange()
     } catch (error) {
       console.error('Error while sending data', error)
     }
@@ -103,7 +107,7 @@ function ItemList({ itemList, openModalAtIndex, onDelete, onChange }) {
                 type='text'
                 name='listName'
                 value={editListName}
-                onChange={handleInputNameChange}
+                onChange={handleItemListElementChange}
               />
               <label htmlFor='destination'>Destination</label>
 
@@ -111,7 +115,7 @@ function ItemList({ itemList, openModalAtIndex, onDelete, onChange }) {
                 type='text'
                 name='travelDestination'
                 value={editTravelDestination}
-                onChange={handleInputDestinationChange}
+                onChange={handleItemListElementChange}
               />
               <label htmlFor='age'>Date</label>
 
@@ -119,7 +123,7 @@ function ItemList({ itemList, openModalAtIndex, onDelete, onChange }) {
                 type='date'
                 name='travelDate'
                 value={editDate}
-                onChange={handleInputDateChange}
+                onChange={handleItemListElementChange}
               />
               <label>
                 Do you want to make it public?
