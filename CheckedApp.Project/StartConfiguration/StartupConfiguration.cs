@@ -19,9 +19,14 @@ namespace CheckedAppProject.API.StartConfiguration
             builder.Services.ConfigureCors(builder.Configuration);
             builder.Services.ConfigureDbContext(builder.Configuration);
             builder.Services.ConfigureIdentity();
+            builder.Services.AddTransient<MigrationCD>();
         }
         public static void ConfigureApp(WebApplication app)
         {
+            var scope = app.Services.CreateScope();
+            var migrationCD = scope.ServiceProvider.GetRequiredService<MigrationCD>();
+            migrationCD.MigrationCheck();
+
             if (app.Environment.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
