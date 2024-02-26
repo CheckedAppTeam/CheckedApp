@@ -12,7 +12,7 @@ public static class ExtensionIdentityService
     public static IServiceCollection ConfigureDbContext(this IServiceCollection services, IConfiguration configuration)
     {
         services.AddDbContext<UserItemContext>(options =>
-            options.UseNpgsql(configuration.GetConnectionString("CheckedAppDbConnection")),
+options.UseNpgsql(configuration["CheckedAppDbConnection"]),
             ServiceLifetime.Transient
         );
 

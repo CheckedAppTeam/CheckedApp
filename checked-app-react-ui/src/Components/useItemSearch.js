@@ -27,11 +27,8 @@ export default function useItemSearch(query, pageNumb) {
             setAllItems(prevItems => {
                 return [...prevItems, ...res.data.items]
             })
-            console.log(allItems)
             setHasMore(res.data.items.length === 10)
             setLoading(false)
-            console.log(res.data)
-            console.log(allItems)
         }).catch(e => {
             if (axios.isCancel(e)) return
             setError(true)

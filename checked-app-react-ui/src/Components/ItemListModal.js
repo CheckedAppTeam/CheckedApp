@@ -79,13 +79,10 @@ function ItemListModal({ closeModal, itemListName, itemListId }) {
     try {
       const AddedItem = { itemName: alternateCase(newItemName) }
       await axios.post(itemEndpoints.addItem, AddedItem).then((response) => {
-        console.log(response)
       })
       const newItem = await axios.get(
         itemEndpoints.getItemByName(AddedItem.itemName)
       )
-      console.log(newItem.data.itemName)
-
       const newUserItemDTO = {
         itemListId: itemListId,
         itemId: newItem.data.itemId,
@@ -191,14 +188,11 @@ function ItemListModal({ closeModal, itemListName, itemListId }) {
     setShowNewItemForm(false)
     setShowAddNew(false)
 
-    console.log(selectedItem.itemName.value)
     const matchingItem = allItems.find(
       (item) =>
         selectedItem.itemName.value.toLowerCase() ===
         item.itemName.toLowerCase()
     )
-    console.log(allItems)
-    console.log(matchingItem)
     if (matchingItem) {
       const userItemDTO = {
         itemListId: itemListId,
@@ -206,7 +200,6 @@ function ItemListModal({ closeModal, itemListName, itemListId }) {
         itemState: 0,
       }
       try {
-        console.log(userItemDTO)
         await axios.post(userItemEndpoints.addUserItem, userItemDTO)
         setUserItemDTO(userItemDTO)
         setAllItemsByItemListId((prevItems) => [...prevItems, matchingItem])
@@ -289,15 +282,17 @@ function ItemListModal({ closeModal, itemListName, itemListId }) {
           <h1>{itemListName}</h1>
         </div>
         <div className='body'>
-          {!loading && <Loader/>}
+          {!loading && <Loader />}
           <div className='items-inList'>
             {allItemsByItemListId
               .sort((a, b) => a.userItemId - b.userItemId)
-              .map((item, index) => (
-                <div className='item-container' key={item.userItemId}>
-                  <UserItem item={item} onItemChange={handleItemChange} />
-                </div>
-              ))}
+              .map(item => {
+                return (
+                  <div className='item-container' key={item.userItemId}>
+                    <UserItem item={item} onItemChange={handleItemChange} />
+                  </div>
+                );
+              })}
           </div>
         </div>
         <div className='footer'>

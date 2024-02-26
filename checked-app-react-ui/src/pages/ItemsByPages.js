@@ -35,7 +35,6 @@ export function ItemsByPages() {
   }
 })
 if (node) observer.current.observe(node)
-console.log(node)
 }, [loading, hasMore])
 
 function handleSearch(e) {
@@ -60,7 +59,6 @@ function handleSearch(e) {
     try {
       const addedItem = { itemName: alternateCase(newItemName) };
       const response = await axios.post(itemEndpoints.addItem, addedItem);
-      console.log(response)
       setAllItems(prevItems => [response.data, ...prevItems]);
       setNewItemName('');
       handleCancel();
