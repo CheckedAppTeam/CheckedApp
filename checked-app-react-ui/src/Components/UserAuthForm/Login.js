@@ -22,7 +22,8 @@ function Login() {
       Email: email,
       Password: password,
     }
-
+    console.log(`Base URL: ${process.env.REACT_APP_API_URL}`);
+    console.log(userEndpoints.logUser);
     try {
       const response = await axios.post(userEndpoints.logUser, loginPayload)
       const { token, refreshToken } = response.data
