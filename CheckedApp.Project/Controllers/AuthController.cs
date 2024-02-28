@@ -17,9 +17,7 @@ namespace CheckedAppProject.API.Controllers
             _authenticationService = authenticationService;
             _logger = logger;
         }
-
-
-       
+      
         [HttpPost("Register")]
         public async Task<ActionResult<RegistrationResponse>> Register(RegistrationRequest request)
         {
